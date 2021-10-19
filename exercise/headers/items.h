@@ -12,13 +12,13 @@ class item{
 private:
 
 	string itemID;
-	vector<int> coordinates;
+	vector<double> coordinates;
 
 public:
 
-	item(string,vector<int>);
+	item(string,vector<double>);
 	string getID();
-	vector<int> getVector();
+	vector<double> getVector();
 	void print();
 };
 
