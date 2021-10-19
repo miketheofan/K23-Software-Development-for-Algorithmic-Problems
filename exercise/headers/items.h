@@ -11,14 +11,12 @@ class item{
 
 private:
 
-	int dimension =0;
 	string itemID;
 	vector<int> coordinates;
 
 public:
 
 	item(string,vector<int>);
-	int getDimension();
 	string getID();
 	vector<int> getVector();
 	void print();

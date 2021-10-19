@@ -30,3 +30,4 @@ run:
 clean:
 	@rm ../$(OUT)
 	@rm $(SOURCE_FILES)*.o
+	@rm $(DATA_FILES)*.o

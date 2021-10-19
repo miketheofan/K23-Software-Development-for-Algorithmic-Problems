@@ -4,12 +4,6 @@ item::item(string itemID,vector<int> coordinates) : itemID(itemID){
 
 	for(long unsigned int i=0;i<coordinates.size();i++)
 		this->coordinates.push_back(coordinates[i]);
-
-	this->dimension = this->coordinates.size();
-}
-
-int item::getDimension(){
-	return this->dimension;
 }
 
 string item::getID(){
