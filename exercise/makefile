@@ -17,3 +17,7 @@ main.o: main.cpp
 run:
 	@mv $(OUT) ../
 	@../$(OUT)	
+
+clear:
+	@rm ../$(OUT)
+	@rm $(SOURCE_FILES)*.o
