@@ -49,9 +49,9 @@ int main(int argc,char **argv){
 	vec1.push_back(7);
 
 	vector<int> vec2;
-	vec1.push_back(8);
-	vec1.push_back(4);
-	vec1.push_back(3);
+	vec2.push_back(8);
+	vec2.push_back(4);
+	vec2.push_back(3);
 
 	item x("lol",vec1);
 	item y("lol2",vec2);
