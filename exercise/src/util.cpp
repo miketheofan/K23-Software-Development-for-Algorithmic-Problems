@@ -16,3 +16,35 @@ double dist(item x,item y){
 	
 	return sqrt(result);
 }
+
+void readDataset(string fileName){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	vector<double> words;
+	string line,id,word;// , arg1 , arg2 , arg3 , arg4 , arg5 , arg6 , arg7 , arg8;
+	int counter =0;
+
+	while( getline(fp,line) ){
+
+		stringstream linestream(line);
+
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		item temp(id,words);
+		temp.print();
+	}
+}

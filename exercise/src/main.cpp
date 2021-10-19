@@ -43,6 +43,20 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
+	ifstream file1(inputFile);
+	if(!file1){
+
+		cerr << "Input file does not exist." << endl;
+		exit(-1);
+	}
+
+	ifstream file2(queryFile);
+	if(!file2){
+
+		cerr << "Query file does not exist." << endl;
+		exit(-1);
+	}
+
 	vector<double> vec1;
 	vec1.push_back(0);
 	vec1.push_back(-2);
@@ -56,6 +70,8 @@ int main(int argc,char **argv){
 	item x("lol",vec1);
 	item y("lol2",vec2);
 	cout << dist(x,y) << endl;
+
+	readDataset(inputFile);
 
 	return 0;
 }
