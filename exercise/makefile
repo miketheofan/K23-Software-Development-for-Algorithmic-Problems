@@ -2,9 +2,10 @@ SOURCE_FILES = ./src/
 HEADER_FILES = ./headers/
 DATA_FILES = ./data/
 TESTS_FILES = ./tests/
+LSH_FILES = ./LSH/
 
-OBJS = $(SOURCE_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o
-SOURCE = $(SOURCE_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp
+OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o
+SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp
 HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h
 OUT = lsh
 # ARGS = -i input.txt -q query.txt -k 1 -L 1 -o output.txt -N 1 -R 1
@@ -16,7 +17,7 @@ all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT)
 
 main.o: main.cpp
-	$(CC) $(FLAGS) $(SOURCE_FILES)main.cpp
+	$(CC) $(FLAGS) $(LSH_FILES)main.cpp
 
 util.o: util.cpp
 	$(CC) $(FLAGS) $(SOURCE_FILES)util.cpp
@@ -32,3 +33,4 @@ clean:
 	@rm ../$(OUT)
 	@rm $(SOURCE_FILES)*.o
 	@rm $(DATA_FILES)*.o
+	@rm $(LSH_FILES)*.o
