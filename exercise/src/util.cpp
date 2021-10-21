@@ -21,17 +21,17 @@ int module(int a, int b){
     return (a%b + b) % b;
 }
 
-void readDataset(string fileName){
+void readDataset(string fileName,Hash* hash){
 
 	ifstream fp;
 	fp.open(fileName);
 
-	vector<double> words;
 	string line,id,word;
 	int counter =0;
 
 	while( getline(fp,line) ){
 
+		vector<double> words;
 		stringstream linestream(line);
 
 		while(linestream >> word){
@@ -48,9 +48,25 @@ void readDataset(string fileName){
 
 		counter =0;
 
-		item temp(id,words);
-		temp.print();
+		hash->insert(new item(id,words));
+		// item temp(id,words);
+		// temp.print();
 	}
+}
+
+int countItems(string fileName){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line;
+	int n =0;
+
+	while( getline(fp,line) )
+		n++;
+
+	return n;
+
 }
 
 vector<double>* produceNdistVector(int dimension,int mean,int stddev){
@@ -67,9 +83,9 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 }
 
-int32_t H(item p,int w){
+int32_t H(item *p,int w){
 
-	p.print();
+	// p->print();
 
 	/* We use uniform distribution in order to generate a random t in range [0,w). */
 	random_device rd;
@@ -80,15 +96,15 @@ int32_t H(item p,int w){
 	// cout << "t is " << t << endl;
 
 	/* We use normal distribution in order to generate a random vector v. */
-	vector<double> *v = produceNdistVector(p.getDimension(),0.0,1.0);
+	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
-	// cout << "v ";
-	// for(unsigned long int i=0;i<v->size();i++)
-	// 	cout << (*v)[i] << " "; 
-	// cout << endl;
+	cout << "v ";
+	for(unsigned long int i=0;i<v->size();i++)
+		cout << (*v)[i] << " "; 
+	cout << endl;
 
 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
-	double scalerProduct = inner_product(p.getVector().begin(),p.getVector().end(),v->begin(),0.0);
+	double scalerProduct = inner_product(p->getVector().begin(),p->getVector().end(),v->begin(),0.0);
 
 	// cout << "Scaler product is " << scalerProduct << endl;
 
@@ -98,25 +114,35 @@ int32_t H(item p,int w){
 
 }
 
-int32_t G(item p,int w,int k,int tableSize){
+int32_t G(item* p,int w,int k,int tableSize){
 
     srand(time(0));
     unsigned long int M = pow(2,32)-5;
 
 	// vector<uint32_t> hashFunctions;
 	int32_t result =0;
-
+	int32_t result2 =0;
 
 	for(int i=0;i<k;i++){
 
 		int32_t r = rand();
-		result += H(p,w)*r;
+		cout << "Before it is: " << bitset<32>(result) << endl;
+		int32_t tee = H(p,w)*r;
+		// result2 += tee;
+		// result2 += H(p,w)*r;
+		cout << "H is: " << bitset<32>(tee) << endl;
+		result = result | tee;
+		cout << "It is: " << bitset<32>(result) << endl;
 	}
 
-	result = result | module(result,M);
+	result = module(result,M);
+	// result2 = module(result,M);
 	result = module(result,tableSize);
+	// result2 = module(result,tableSize);
 	
 	cout << "Result is: " << result << endl;
+	cout << "Result2 is: " << result2 << endl;
+
 	return result;
 
 }

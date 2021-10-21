@@ -8,6 +8,7 @@
 
 #include "../headers/items.h"
 #include "../headers/util.h"
+#include "../headers/Hash.h"
 
 using namespace std;
 

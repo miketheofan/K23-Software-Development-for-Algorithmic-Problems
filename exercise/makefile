@@ -4,12 +4,11 @@ DATA_FILES = ./data/
 TESTS_FILES = ./tests/
 LSH_FILES = ./LSH/
 
-OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o
-SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp
+OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o
+SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp
 HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h
 OUT = lsh
-# ARGS = -i input.txt -q query.txt -k 1 -L 1 -o output.txt -N 1 -R 1
-ARGS = -i $(TESTS_FILES)beta.txt -q $(TESTS_FILES)beta.txt -k 1 -o output.txt -N 1
+ARGS = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 1 -o output.txt -N 1
 CC = g++ -std=c++11
 FLAGS = -g -c -Wall
 
@@ -25,12 +24,15 @@ util.o: util.cpp
 items.o: items.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)items.cpp
 
+Hash.o: Hash.cpp
+	$(CC) $(FLAGS) $(LSH_FILES)Hash.cpp
+
 run:
 # 	@mv $(OUT) ../
 	@./$(OUT) $(ARGS)
 
 debug:
-	@valgrind ./$(OUT) $(ARGS) 	
+	@valgrind ./$(OUT) $(ARGS) -ggdb 	
 
 clean:
 	@rm $(OUT)

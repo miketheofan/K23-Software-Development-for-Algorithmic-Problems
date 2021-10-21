@@ -57,14 +57,30 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
-	vector<double> testv;
-	testv.push_back(1.2);
-	testv.push_back(1.4);
-	testv.push_back(1.6);
+	Hash hash(k,L,10,countItems(inputFile));
+	readDataset(inputFile,&hash);
 
-	item test("Spyros",testv);
+	// vector<double> testv;
+	// testv.push_back(1.2);
+	// testv.push_back(1.4);
+	// testv.push_back(1.6);
 
-	cout << G(test,2,4,10) << endl;
+	// item test("Spyros",testv);
+
+	// cout << "Entering for Spyros:" << endl;
+	// cout << G(test,2,4,10) << endl;
+
+	// cout << endl << endl << endl;
+
+	// vector<double> testv2;
+	// testv2.push_back(1.2);
+	// testv2.push_back(1.4);
+	// testv2.push_back(1.6);
+
+	// item test2("Mike",testv2);
+
+	// cout << "Entering for Mike:" << endl;
+	// cout << G(test2,2,4,10) << endl;
 
 	return 0;
 }
