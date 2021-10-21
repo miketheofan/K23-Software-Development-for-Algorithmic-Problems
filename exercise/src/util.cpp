@@ -17,6 +17,10 @@ double dist(item x,item y){
 	return sqrt(result);
 }
 
+int module(int a, int b){
+    return (a%b + b) % b;
+}
+
 void readDataset(string fileName){
 
 	ifstream fp;
@@ -73,25 +77,45 @@ int32_t H(item p,int w){
 	uniform_real_distribution<> distance(0,w);
 
 	double t = distance(generator);
-	cout << "t is " << t << endl;
+	// cout << "t is " << t << endl;
 
 	/* We use normal distribution in order to generate a random vector v. */
 	vector<double> *v = produceNdistVector(p.getDimension(),0.0,1.0);
 
-	cout << "v ";
-	for(unsigned long int i=0;i<v->size();i++)
-		cout << (*v)[i] << " "; 
-	cout << endl;
+	// cout << "v ";
+	// for(unsigned long int i=0;i<v->size();i++)
+	// 	cout << (*v)[i] << " "; 
+	// cout << endl;
 
 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
 	double scalerProduct = inner_product(p.getVector().begin(),p.getVector().end(),v->begin(),0.0);
 
-	cout << "Scaler product is " << scalerProduct << endl;
+	// cout << "Scaler product is " << scalerProduct << endl;
 
-	cout << floor((scalerProduct + t) / (double)w) << endl;
+	// cout << (scalerProduct + t) / (double)w << endl;
 
-	int32_t result = floor( (scalerProduct + t) / (double)w);
+	return (int32_t)floor( (scalerProduct + t) / (double)w );
 
+}
+
+int32_t G(item p,int w,int k,int tableSize){
+
+    srand(time(0));
+    unsigned long int M = pow(2,32)-5;
+
+	// vector<uint32_t> hashFunctions;
+	int32_t result =0;
+
+
+	for(int i=0;i<k;i++){
+
+		int32_t r = rand();
+		result += H(p,w)*r;
+	}
+
+	result = module(result,M);
+	result = module(result,tableSize);
+	
 	return result;
 
 }
