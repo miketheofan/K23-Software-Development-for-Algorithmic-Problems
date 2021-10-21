@@ -57,21 +57,28 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
-	vector<double> vec1;
-	vec1.push_back(0);
-	vec1.push_back(-2);
-	vec1.push_back(7);
+	// vector<double> vec1;
+	// vec1.push_back(0);
+	// vec1.push_back(-2);
+	// vec1.push_back(7);
 
-	vector<double> vec2;
-	vec2.push_back(8);
-	vec2.push_back(4);
-	vec2.push_back(3);
+	// vector<double> vec2;
+	// vec2.push_back(8);
+	// vec2.push_back(4);
+	// vec2.push_back(3);
 
-	item x("lol",vec1);
-	item y("lol2",vec2);
-	cout << dist(x,y) << endl;
+	// item x("lol",vec1);
+	// item y("lol2",vec2);
+	// cout << dist(x,y) << endl;
 
-	readDataset(inputFile);
+	vector<double> testv;
+	testv.push_back(1.2);
+	testv.push_back(1.4);
+	testv.push_back(1.6);
+
+	item test("Spyros",testv);
+
+	cout << H(test,2) << endl;
 
 	return 0;
 }

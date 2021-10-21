@@ -14,6 +14,10 @@ vector<double> item::getVector(){
 	return this->coordinates;
 }
 
+int item::getDimension(){
+	return this->coordinates.size();
+}
+
 void item::print(){
 
 	cout << this->itemID << " ";

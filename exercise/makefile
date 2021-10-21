@@ -26,11 +26,14 @@ items.o: items.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)items.cpp
 
 run:
-	@mv $(OUT) ../
-	@../$(OUT) $(ARGS) 	
+# 	@mv $(OUT) ../
+	@./$(OUT) $(ARGS)
+
+debug:
+	@valgrind ./$(OUT) $(ARGS) 	
 
 clean:
-	@rm ../$(OUT)
+	@rm $(OUT)
 	@rm $(SOURCE_FILES)*.o
 	@rm $(DATA_FILES)*.o
 	@rm $(LSH_FILES)*.o

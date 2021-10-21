@@ -19,6 +19,7 @@ public:
 	item(string,vector<double>);
 	string getID();
 	vector<double> getVector();
+	int getDimension();
 	void print();
 };
 
