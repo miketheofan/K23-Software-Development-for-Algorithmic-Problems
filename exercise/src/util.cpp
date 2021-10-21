@@ -113,9 +113,10 @@ int32_t G(item p,int w,int k,int tableSize){
 		result += H(p,w)*r;
 	}
 
-	result = module(result,M);
+	result = result | module(result,M);
 	result = module(result,tableSize);
 	
+	cout << "Result is: " << result << endl;
 	return result;
 
 }
