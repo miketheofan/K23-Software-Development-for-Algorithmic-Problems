@@ -2,6 +2,8 @@
 
 int main(int argc,char **argv){
 
+    srand(time(0));
+
 	string inputFile = "";
 	string queryFile = "";
 	int k = 4;
@@ -57,8 +59,12 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
-	Hash hash(k,L,10,countItems(inputFile));
+	int w = rand()%6+2;
+
+	Hash hash(k,L,w,countItems(inputFile)/4);
+
 	readDataset(inputFile,&hash);
+	answerQueries(hash,queryFile);
 
 	// vector<double> testv;
 	// testv.push_back(1.2);

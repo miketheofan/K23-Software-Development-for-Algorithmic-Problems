@@ -2,17 +2,17 @@
 
 double dist(item x,item y){
 
-	if(x.getVector().size() != y.getVector().size()){
+	if(x.getVector()->size() != y.getVector()->size()){
 
 		cerr << "Cannot compute Euclidean Distance between vertexes from different dimensions." << endl;
 		return 0;
 	}
 
-	unsigned long int d = x.getVector().size();
+	unsigned long int d = x.getVector()->size();
 	double result = 0.0;
 
 	for(unsigned long int i = 0;i<d;i++)
-		result += pow(x.getVector()[i]-y.getVector()[i],2);
+		result += pow((*x.getVector())[i]-(*y.getVector())[i],2);
 	
 	return sqrt(result);
 }
@@ -98,17 +98,17 @@ int32_t H(item *p,int w){
 	/* We use normal distribution in order to generate a random vector v. */
 	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
-	cout << "v ";
-	for(unsigned long int i=0;i<v->size();i++)
-		cout << (*v)[i] << " "; 
-	cout << endl;
+	// cout << "v ";
+	// for(unsigned long int i=0;i<v->size();i++)
+	// 	cout << (*v)[i] << " "; 
+	// cout << endl;
 
 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
-	double scalerProduct = inner_product(p->getVector().begin(),p->getVector().end(),v->begin(),0.0);
+	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),v->begin(),0.0);
+
+	// double scalerProduct = 0.0;
 
 	// cout << "Scaler product is " << scalerProduct << endl;
-
-	// cout << (scalerProduct + t) / (double)w << endl;
 
 	return (int32_t)floor( (scalerProduct + t) / (double)w );
 
@@ -117,32 +117,65 @@ int32_t H(item *p,int w){
 int32_t G(item* p,int w,int k,int tableSize){
 
     srand(time(0));
-    unsigned long int M = pow(2,32)-5;
+    uint32_t M = pow(2,32)-5;
 
 	// vector<uint32_t> hashFunctions;
 	int32_t result =0;
-	int32_t result2 =0;
 
 	for(int i=0;i<k;i++){
 
 		int32_t r = rand();
-		cout << "Before it is: " << bitset<32>(result) << endl;
-		int32_t tee = H(p,w)*r;
-		// result2 += tee;
-		// result2 += H(p,w)*r;
-		cout << "H is: " << bitset<32>(tee) << endl;
-		result = result | tee;
-		cout << "It is: " << bitset<32>(result) << endl;
+
+		// cout << "Before addition is: " << (result) << endl;
+		result += H(p,w)*r;
+		// cout << "After addition is: " << (result) << endl;
 	}
 
+	// cout << "It came out as: " << result << endl;
+
 	result = module(result,M);
+
+	// cout << endl << "NOw IT IS " << result << endl;
+
 	// result2 = module(result,M);
 	result = module(result,tableSize);
 	// result2 = module(result,tableSize);
 	
-	cout << "Result is: " << result << endl;
-	cout << "Result2 is: " << result2 << endl;
+	// cout << "Result is: " << result << endl;
 
 	return result;
 
+}
+
+void answerQueries(Hash hash,string fileName){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line,id,word;
+	int counter =0;
+
+	while( getline(fp,line) ){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		item queryItem(id,words);
+
+		hash.findNN(&queryItem);
+	}
 }

@@ -7,6 +7,7 @@ using namespace std;
 
 #include <vector>
 #include <map>
+#include <limits>
 
 class Hash{
 
@@ -24,6 +25,8 @@ public:
 	Hash(int,int,int,int);
 	~Hash();
 	void insert(item*);
+	item* findNN(item*);
+	// void print();
 
 };
 

@@ -17,8 +17,9 @@ private:
 public:
 
 	item(string,vector<double>);
+	item(const item&);
 	string getID();
-	vector<double> getVector();
+	vector<double> *getVector();
 	int getDimension();
 	void print();
 };
