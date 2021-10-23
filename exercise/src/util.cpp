@@ -179,13 +179,24 @@ void answerQueries(Hash hash,string fileName){
 
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	
-		vector<pair<double,item*> > results = hash.findkNN(5,&queryItem);
+		// vector<pair<double,item*> > results = hash.findkNN(5,&queryItem);
 
-		cout << "Item " << id << " 5 closest neighbours: " << endl;
+		// cout << "Item " << id << " 5 closest neighbours: " << endl;
+		// for(unsigned long int i=0;i<results.size();i++){
+
+		// 	if(results.at(i).second != NULL)
+		// 		cout << results.at(i).first << " , " << results.at(i).second->getID() << endl;
+		// }
+		// cout << endl;
+
+		vector<pair<item*,double>> results = hash.findRange(500,&queryItem);
+
+		cout << "Item " << id << " neighbors in range 10.000: " << endl;
 		for(unsigned long int i=0;i<results.size();i++){
-
-			if(results.at(i).second != NULL)
-				cout << results.at(i).first << " , " << results.at(i).second->getID() << endl;
+				
+			if(results.at(i).first != NULL)
+				cout << results.at(i).second << " , " << results.at(i).first->getID() << endl;
+			
 		}
 		cout << endl;
 	}

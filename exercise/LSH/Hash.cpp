@@ -117,13 +117,18 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 	return queries;
 }
 
-vector<item*> > Hash::findRange(int r,item* queryItem){
+vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
     
-    vector<pair<item*> > queries;
-    //int minimum = numeric_limits<int>::max();
+    vector<pair<item*,double>> queries;
+
     int32_t hash = G(queryItem,this->w,this->k,this->size);
+    
     HashNode* tempBucket;
+
+    double distance;
+
     for (int i=0 ; i<this->L ; i++){
+
         tempBucket = this->hashTables.at(i)->getBucket(hash);
         
         while (tempBucket != NULL){
@@ -132,15 +137,18 @@ vector<item*> > Hash::findRange(int r,item* queryItem){
             
                 distance = dist(*queryItem,*tempBucket->getValue());
                 
-                if (distance < r){
-                    queries.push_back(tempBucket->getValue());
-                }
-                if (queries.size() > 20*this->L){
+                if(distance < r)
+                    queries.push_back(make_pair(tempBucket->getValue(),distance));
+
+                if(queries.size() > (long unsigned int)20*this->L)
                     return queries;
-                }
+
             }
-            
+
+  			tempBucket = tempBucket->getNext();
+          
         }
     }
+
     return queries;
 }

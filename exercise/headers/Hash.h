@@ -29,7 +29,7 @@ public:
 	void insert(item*);
 	item* findNN(item*);
 	vector<pair<double,item*> > findkNN(int,item*);
-    vector<item*> findRange(int,item*);
+    vector<pair<item*,double>> findRange(int,item*);
 	void print();
 
 };

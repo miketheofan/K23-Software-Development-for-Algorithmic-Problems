@@ -43,3 +43,4 @@ clean:
 	@rm $(SOURCE_FILES)*.o
 	@rm $(DATA_FILES)*.o
 	@rm $(LSH_FILES)*.o
+	@rm $(STRUCTURES_FILES)*.o
