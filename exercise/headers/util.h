@@ -21,7 +21,7 @@ vector<double>* produceNdistVector(int,int,int);
 int32_t H(item*,int,int);
 int32_t G(item*,int,int,int);
 int countItems(string);
-void answerQueries(Hash,string);
+void answerQueries(Hash,string,int,int);
 
 // double mean = 0.0;
 // double stddev = 1.0;

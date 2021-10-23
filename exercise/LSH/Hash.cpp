@@ -36,10 +36,10 @@ void Hash::print(){
 	}
 }
 
-item* Hash::findNN(item* queryItem){
+pair<item*,double> Hash::findNN(item* queryItem){
 
 	int minimum = numeric_limits<int>::max();
-	item *b = NULL;
+	pair<item*,double> b;
 	double distance;
 	int totalItems = 0;
 
@@ -55,7 +55,7 @@ item* Hash::findNN(item* queryItem){
 			distance = dist(*queryItem,*tempBucket->getValue());
 			if(distance < minimum){
 
-				b = tempBucket->getValue();
+				b = make_pair(tempBucket->getValue(),distance);
 				minimum = distance;
 			}
 		
@@ -85,7 +85,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 		while(tempBucket != NULL){
 
-			if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+			// if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
 				distance = dist(*queryItem,*tempBucket->getValue());
 
@@ -103,10 +103,10 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 						}else
 							queries.push_back(make_pair(distance,tempBucket->getValue()));
-					}
+				}
 
-				// }
-			}
+			// }
+			// }
 		
 			if(++totalItems > 10*this->L) return queries;
 

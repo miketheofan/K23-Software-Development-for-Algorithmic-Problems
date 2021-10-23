@@ -148,7 +148,7 @@ int32_t G(item* p,int w,int k,int tableSize){
 
 }
 
-void answerQueries(Hash hash,string fileName){
+void answerQueries(Hash hash,string fileName,int N,int R){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -177,6 +177,27 @@ void answerQueries(Hash hash,string fileName){
 
 		item queryItem(id,words);
 
+		cout << "Query: " << queryItem.getID() << endl;
+		cout << "Nearest neighbor-1: " << hash.findNN(&queryItem).first->getID() << endl;
+		cout << "distanceLSH: " << hash.findNN(&queryItem).second << endl;
+		cout << "distanceTrue: " << dist(queryItem,*hash.findNN(&queryItem).first) << endl;
+		if(hash.findkNN(N,&queryItem).size() >= (unsigned long int)N){
+		
+			cout << "Nearest neigbor-N" << hash.findkNN(N,&queryItem).at(N).second->getID() << endl;
+			cout << "distanceLSH: " << hash.findkNN(N,&queryItem).at(N).first << endl;
+			cout << "distanceTrue: " << dist(queryItem,*hash.findkNN(N,&queryItem).at(N).second) << endl;
+		}
+		cout << "tLSH: " << endl;
+		cout << "tTrue: " << endl;
+		cout << "R-near neigbors: " << endl;
+		vector<pair<item*,double>> results = hash.findRange(R,&queryItem);
+		cout << "Item " << id << " neighbors in range " << R << ": " << endl;
+		for(unsigned long int i=0;i<results.size();i++)
+			if(results.at(i).first != NULL)
+				cout << results.at(i).first->getID() << endl;
+
+		cout << endl;
+
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	
 		// vector<pair<double,item*> > results = hash.findkNN(5,&queryItem);
@@ -189,15 +210,15 @@ void answerQueries(Hash hash,string fileName){
 		// }
 		// cout << endl;
 
-		vector<pair<item*,double>> results = hash.findRange(500,&queryItem);
+		// vector<pair<item*,double>> results = hash.findRange(500,&queryItem);
 
-		cout << "Item " << id << " neighbors in range 10.000: " << endl;
-		for(unsigned long int i=0;i<results.size();i++){
+		// cout << "Item " << id << " neighbors in range 10.000: " << endl;
+		// for(unsigned long int i=0;i<results.size();i++){
 				
-			if(results.at(i).first != NULL)
-				cout << results.at(i).second << " , " << results.at(i).first->getID() << endl;
+		// 	if(results.at(i).first != NULL)
+		// 		cout << results.at(i).second << " , " << results.at(i).first->getID() << endl;
 			
-		}
-		cout << endl;
+		// }
+		// cout << endl;
 	}
 }
