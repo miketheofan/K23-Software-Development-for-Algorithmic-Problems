@@ -79,27 +79,31 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 
 	HashNode* tempBucket;	
 
+	item* tempItem;
+
 	for(int i=0;i<this->L;i++){
 
 		tempBucket = this->hashTables.at(i)->getBucket(hash);
 
 		while(tempBucket != NULL){
 
-			distance = dist(*queryItem,*tempBucket->getValue());
+			tempItem = tempBucket->getValue();
+
+			distance = dist(*queryItem,*tempItem);
 			if(distance < minimum){
 
 				if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
 					if((int)queries.size() == k){
 
 						queries.pop_back();
-						queries.push_back(make_pair(distance,tempBucket->getValue()));
+						queries.push_back(make_pair(distance,tempItem));
 
 						sort(queries.begin(),queries.end());
 						
 						minimum	= distance;
 
 					}else
-						queries.push_back(make_pair(distance,tempBucket->getValue()));
+						queries.push_back(make_pair(distance,tempItem));
 				}
 
 			}

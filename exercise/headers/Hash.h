@@ -21,7 +21,6 @@ private:
 	int size;
 	vector<item*> items;
 	vector<HashTable*> hashTables;
-	/*jvkedv*/
 
 public:
 
