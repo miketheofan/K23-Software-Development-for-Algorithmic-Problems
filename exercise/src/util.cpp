@@ -175,7 +175,7 @@ void answerQueries(Hash hash,string fileName,int N,int R){
 
 		counter =0;
 
-		item queryItem(id,words);
+		item queryItem(id,words);//
 
 		cout << "Query: " << queryItem.getID() << endl;
 		cout << "Nearest neighbor-1: " << hash.findNN(&queryItem).first->getID() << endl;
