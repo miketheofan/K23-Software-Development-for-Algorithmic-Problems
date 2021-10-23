@@ -43,6 +43,15 @@ void HashTable::print(){
 
 }
 
+HashNode* HashTable::getBucket(int32_t key){
+
+	for(int i=0;i<this->tableSize;i++)
+		if(this->table[i]->getKey() == key)
+			return this->table[i];
+	
+	return NULL;
+}
+
 void HashNode::deleteList(){
 
 	if(this->next != NULL)
@@ -63,6 +72,10 @@ item* HashNode::getValue(){
 
 int32_t HashNode::getKey(){
 	return this->key;
+}
+
+HashNode* HashNode::getNext(){
+	return this->next;
 }
 
 void HashNode::insert(int32_t key,item* value){

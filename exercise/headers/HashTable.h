@@ -41,6 +41,7 @@ public:
 	void insert(int32_t,item*);
 	int HashFunction(int32_t);
 	void print();
+	HashNode* getBucket(int32_t);
 };
 
 #endif

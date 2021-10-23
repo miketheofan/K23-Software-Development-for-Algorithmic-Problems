@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
 	~Hash();
 	void insert(item*);
 	item* findNN(item*);
+	vector<pair<double,item*>> findkNN(int,item*);
 	void print();
 
 };

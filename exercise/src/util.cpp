@@ -176,6 +176,15 @@ void answerQueries(Hash hash,string fileName){
 
 		item queryItem(id,words);
 
-		hash.findNN(&queryItem);
+		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
+	
+		vector<pair<double,item*>> results = hash.findkNN(3,&queryItem);
+
+		cout << "Item " << id << " 3 closest neighbours: " << endl;
+		for(int i=0;i<3;i++){
+
+			if(results[i].second != NULL)
+				cout << results[i].first << " , " << results[i].second->getID() << endl;
+		}
 	}
 }
