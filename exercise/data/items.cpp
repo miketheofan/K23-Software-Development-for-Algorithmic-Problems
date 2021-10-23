@@ -18,6 +18,14 @@ string item::getID(){
 	return this->itemID;
 }
 
+int32_t item::getTrick(){
+	return this->trick;
+}
+
+void item::setTrick(int32_t trick){
+	this->trick = trick;
+}
+
 vector<double> *item::getVector(){
 	return &this->coordinates;
 }

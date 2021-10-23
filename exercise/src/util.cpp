@@ -17,7 +17,7 @@ double dist(item x,item y){
 	return sqrt(result);
 }
 
-int module(int a, int b){
+int32_t module(int a, int b){
     return (a%b + b) % b;
 }
 
@@ -135,6 +135,7 @@ int32_t G(item* p,int w,int k,int tableSize){
 
 	result = module(result,M);
 
+	p->setTrick(result);
 	// cout << endl << "NOw IT IS " << result << endl;
 
 	// result2 = module(result,M);

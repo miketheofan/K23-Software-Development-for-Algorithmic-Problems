@@ -15,7 +15,7 @@ using namespace std;
 #include "Hash.h"
 
 double dist(item,item);
-int module(int,int);
+int32_t module(int,int);
 void readDataset(string,Hash*);
 vector<double>* produceNdistVector(int,int,int);
 int32_t H(item*,int,int);

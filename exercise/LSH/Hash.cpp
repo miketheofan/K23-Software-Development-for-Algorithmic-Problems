@@ -79,33 +79,33 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 
 	HashNode* tempBucket;	
 
-	item* tempItem;
-
 	for(int i=0;i<this->L;i++){
 
 		tempBucket = this->hashTables.at(i)->getBucket(hash);
 
 		while(tempBucket != NULL){
 
-			tempItem = tempBucket->getValue();
+			if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
-			distance = dist(*queryItem,*tempItem);
-			if(distance < minimum){
+				distance = dist(*queryItem,*tempBucket->getValue());
 
-				if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
-					if((int)queries.size() == k){
+				if(distance < minimum){
 
-						queries.pop_back();
-						queries.push_back(make_pair(distance,tempItem));
+					// if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
+						if((int)queries.size() == k){
 
-						sort(queries.begin(),queries.end());
-						
-						minimum	= distance;
+							queries.pop_back();
+							queries.push_back(make_pair(distance,tempBucket->getValue()));
 
-					}else
-						queries.push_back(make_pair(distance,tempItem));
-				}
+							sort(queries.begin(),queries.end());
+							
+							minimum	= distance;
 
+						}else
+							queries.push_back(make_pair(distance,tempBucket->getValue()));
+					}
+
+				// }
 			}
 		
 			if(++totalItems > 10*this->L) return queries;
