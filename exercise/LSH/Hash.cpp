@@ -106,7 +106,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 				}
 
 			// }
-			// }
+			// }///
 		
 			if(++totalItems > 10*this->L) return queries;
 
