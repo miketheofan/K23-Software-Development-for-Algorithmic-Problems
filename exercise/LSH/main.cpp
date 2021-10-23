@@ -64,7 +64,9 @@ int main(int argc,char **argv){
 	Hash hash(k,L,w,countItems(inputFile)/4);
 
 	readDataset(inputFile,&hash);
-	answerQueries(hash,queryFile);
+
+	hash.print();
+	// answerQueries(hash,queryFile);
 
 	// vector<double> testv;
 	// testv.push_back(1.2);

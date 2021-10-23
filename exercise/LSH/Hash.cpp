@@ -5,7 +5,7 @@ Hash::Hash(int k,int L,int w,int size) : k(k), L(L), w(w), size(size) {
 
 	for(int i=0;i<this->L;i++){
 
-		map<int32_t,item*> tempMap;
+		HashTable *tempMap = new HashTable(size);
 		hashTables.push_back(tempMap);
 	}
 }
@@ -19,8 +19,35 @@ void Hash::insert(item* newItem){
 	for(int i=0;i<this->L;i++){
 
 		int temp = G(newItem,this->w,this->k,this->size);
-		// cout << "Hashtable " << i << " inserting " << newItem->getID() << " in " << temp << endl;
-		this->hashTables.at(i).insert(pair<int32_t,item*>( temp , newItem ));
+		cout << "Hashtable " << i << " inserting " << newItem->getID() << " in " << temp << endl;
+		this->hashTables.at(i)->insert(temp , newItem );
+	}
+
+	cout << endl;
+}
+
+void Hash::print(){
+
+	for(int i=0;i<this->L;i++){
+
+		cout << "Hash table: " << i << ": " << endl;
+		// pair<unordered_map<int32_t,item *>::iterator,unordered_map<uint32_t,item*>::iterator> it = this->hashTables.at(i).equal_range();
+
+		// for(std::pair<int32_t,item*> element: this->hashTables.at(i)){
+		
+		// 	// cout << element.second->getID() << " ";
+		// 	cout << "Bucket: " << element.first << ": ";
+		// 	for ( auto it = this->hashTables.at(i).begin(element.first); it != this->hashTables.at(i).end(element.first); ++it)
+		// 		cout << it->second->getID() << " ";
+
+		// 	cout << endl;
+
+		// }
+
+		this->hashTables.at(i)->print();
+
+
+		cout << endl;
 	}
 }
 
