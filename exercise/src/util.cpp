@@ -179,7 +179,7 @@ void answerQueries(Hash hash,string fileName){
 
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	
-		vector<pair<double,item*>> results = hash.findkNN(5,&queryItem);
+		vector<pair<double,item*> > results = hash.findkNN(5,&queryItem);
 
 		cout << "Item " << id << " 5 closest neighbours: " << endl;
 		for(unsigned long int i=0;i<results.size();i++){

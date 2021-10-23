@@ -28,7 +28,8 @@ public:
 	~Hash();
 	void insert(item*);
 	item* findNN(item*);
-	vector<pair<double,item*>> findkNN(int,item*);
+	vector<pair<double,item*> > findkNN(int,item*);
+    vector<item*> findRange(int,item*);
 	void print();
 
 };
