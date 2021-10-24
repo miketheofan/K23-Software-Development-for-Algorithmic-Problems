@@ -215,8 +215,8 @@ void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 
 		auto endTrue = high_resolution_clock::now();
 
-		cout << "tLSH: " << duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
-		cout << "tTrue: " << duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+		cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+		cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
 		cout << "R-near neigbors: " << endl;
 		vector<pair<item*,double>> results = hash.findRange(R,&queryItem);
 		cout << "Item " << id << " neighbors in range " << R << ": " << endl;
@@ -225,6 +225,7 @@ void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 				cout << results.at(i).first->getID() << endl;
 
 		cout << endl;
+		
 /***********/
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	

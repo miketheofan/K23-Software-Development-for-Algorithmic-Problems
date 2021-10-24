@@ -10,7 +10,7 @@ OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FI
 SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctions.cpp
 HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctions.h
 OUT = outLSH
-ARGS = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 2000
+ARGS = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
 CC = g++ -std=c++11
 FLAGS = -g -c -Wall
 
