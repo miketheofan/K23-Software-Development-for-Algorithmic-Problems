@@ -4,10 +4,11 @@ DATA_FILES = ./data/
 TESTS_FILES = ./tests/
 LSH_FILES = ./LSH/
 STRUCTURES_FILES = ./structures/
+BRUTE_FILES = ./brute/
 
-OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o
-SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp
-HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o
+OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctions.o
+SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctions.cpp
+HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctions.h
 OUT = outLSH
 ARGS = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 1 -r 10000
 CC = g++ -std=c++11
@@ -30,6 +31,9 @@ Hash.o: Hash.cpp
 
 HashTable.o: HashTable.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)HashTable.cpp	
+
+bruteFunctions.o: bruteFunctions.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)bruteFunctions.cpp	
 
 run:
 # 	@mv $(OUT) ../

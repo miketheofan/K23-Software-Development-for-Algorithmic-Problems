@@ -148,7 +148,7 @@ int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
 
 }
 
-void answerQueries(Hash hash,string fileName,int N,int R){
+void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -180,7 +180,7 @@ void answerQueries(Hash hash,string fileName,int N,int R){
 		cout << "Query: " << queryItem.getID() << endl;
 		cout << "Nearest neighbor-1: " << hash.findNN(&queryItem).first->getID() << endl;
 		cout << "distanceLSH: " << hash.findNN(&queryItem).second << endl;
-		cout << "distanceTrue: " << dist(queryItem,*hash.findNN(&queryItem).first) << endl;
+		cout << "distanceTrue: " << bruteNN(&queryItem,dataFile) << endl;
 
 		vector<pair<double,item*>> tempVector = hash.findkNN(N,&queryItem);
 		
@@ -196,7 +196,7 @@ void answerQueries(Hash hash,string fileName,int N,int R){
 		
 		cout << "distanceTrue: ";
 		if(tempVector.size() == (unsigned long int)N)		
-			cout << dist(queryItem,*tempVector.at(N-1).second);
+			cout << brutekNN(N,&queryItem,dataFile);
 		cout << endl;
 
 		cout << "tLSH: " << endl;

@@ -9,5 +9,6 @@ using namespace std;
 #include "items.h"
 
 double bruteNN(item*,string);
+double brutekNN(int,item*,string);
 
 #endif

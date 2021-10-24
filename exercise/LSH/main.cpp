@@ -66,7 +66,7 @@ int main(int argc,char **argv){
 	readDataset(inputFile,&hash);
 
 	// hash.print();
-	answerQueries(hash,queryFile,N,R);
+	answerQueries(hash,queryFile,inputFile,N,R);
 
 	// vector<double> testv;
 	// testv.push_back(1.2);
