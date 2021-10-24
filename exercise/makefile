@@ -8,7 +8,7 @@ STRUCTURES_FILES = ./structures/
 OBJS = $(LSH_FILES)/main.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o
 SOURCE = $(LSH_FILES)main.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp
 HEADER = $(HEADER_FILES)main.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o
-OUT = lsh
+OUT = outLSH
 ARGS = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 1 -r 10000
 CC = g++ -std=c++11
 FLAGS = -g -c -Wall
