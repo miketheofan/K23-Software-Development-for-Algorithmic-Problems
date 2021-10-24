@@ -32,9 +32,9 @@ double bruteNN(item* i,string fileName){
 
 		item temp(id,words);
 
-		distance = dist(*i,temp);
+		distance = dist(2,*i,temp);
 
-		if(dist(*i,temp) < minimum)
+		if(dist(2,*i,temp) < minimum)
 			minimum = distance;
 
 	}
@@ -76,7 +76,7 @@ double brutekNN(int k,item* i,string fileName){
 
 		item temp(id,words);
 
-		distance = dist(*i,temp);
+		distance = dist(2,*i,temp);
 
 		if(distance < minimum){
 

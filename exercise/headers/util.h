@@ -17,7 +17,7 @@ using namespace std::chrono;
 #include "Hash.h"
 #include "bruteFunctions.h"
 
-double dist(item,item);
+double dist(int,item,item);
 int32_t module(int,int);
 void readDataset(string,Hash*);
 vector<double>* produceNdistVector(int,int,int);

@@ -1,6 +1,8 @@
 #include "../headers/util.h"
 
-double dist(item x,item y){
+/* Distance calculator function is implemented in order to be easily extendable in vector 
+spaced with other metrics. */
+double dist(int distance,item x,item y){
 
 	if(x.getVector()->size() != y.getVector()->size()){
 
@@ -12,15 +14,12 @@ double dist(item x,item y){
 	double result = 0.0;
 
 	for(unsigned long int i = 0;i<d;i++)
-		result += pow((*x.getVector()).at(i)-(*y.getVector()).at(i),2);
+		result += pow((*x.getVector()).at(i)-(*y.getVector()).at(i),distance);
 	
-	return sqrt(result);
+	return pow(result,1.0/d);
 }
 
 int module(int32_t a, int32_t b){
-	// assert(b != 0);
- //  	int r = a % b;
- //  	return r >= 0 ? r : r + abs(b);
     return (a%b + b) % b;
 }
 
@@ -217,15 +216,14 @@ void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 
 		cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
 		cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
-		cout << "R-near neigbors: " << endl;
+		cout << R << "-near neigbors: " << endl;
 		vector<pair<item*,double>> results = hash.findRange(R,&queryItem);
-		cout << "Item " << id << " neighbors in range " << R << ": " << endl;
 		for(unsigned long int i=0;i<results.size();i++)
 			if(results.at(i).first != NULL)
 				cout << results.at(i).first->getID() << endl;
 
 		cout << endl;
-		
+
 /***********/
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	

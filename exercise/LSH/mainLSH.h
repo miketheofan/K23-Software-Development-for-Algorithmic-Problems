@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MAINLSH_H
+#define MAINLSH_H
 
 #include <iostream>
 #include <cstring>

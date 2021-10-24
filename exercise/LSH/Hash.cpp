@@ -56,7 +56,7 @@ pair<item*,double> Hash::findNN(item* queryItem){
 
 		while(tempBucket != NULL){
 
-			distance = dist(*queryItem,*tempBucket->getValue());
+			distance = dist(2,*queryItem,*tempBucket->getValue());
 			if(distance < minimum){
 
 				b = make_pair(tempBucket->getValue(),distance);
@@ -91,7 +91,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 			//if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
-				distance = dist(*queryItem,*tempBucket->getValue());
+				distance = dist(2,*queryItem,*tempBucket->getValue());
 
 				if(distance < minimum){
 
@@ -149,7 +149,7 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
               	
   					totalItems++;
 
-	              	distance = dist(*queryItem,*tempBucket->getValue());
+	              	distance = dist(2,*queryItem,*tempBucket->getValue());
 	                
 	                if(distance < r)
 	                    queries.push_back(make_pair(tempBucket->getValue(),distance));

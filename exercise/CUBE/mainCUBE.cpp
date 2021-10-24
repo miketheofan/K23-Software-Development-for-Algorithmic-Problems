@@ -1,13 +1,12 @@
-#include "../headers/main.h"
+#include "./mainCUBE.h"
 
 int main(int argc,char **argv){
 
-    srand(time(0));
-
 	string inputFile = "";
 	string queryFile = "";
-	int k = 4;
-	int L = 5;
+	int k = 14;
+	int M = 10;
+	int probes = 2;
 	string outputFile = "";
 	int N = 1;
 	int R = 10000;
@@ -20,8 +19,8 @@ int main(int argc,char **argv){
 			queryFile = argv[++i];
 		else if(!strcmp(argv[i],"-k"))
 			k = stoi(argv[++i]);
-		else if(!strcmp(argv[i],"-L"))
-			L = stoi(argv[++i]);
+		else if(!strcmp(argv[i],"-probes"))
+			probes = stoi(argv[++i]);
 		else if(!strcmp(argv[i],"-o"))
 			outputFile = argv[++i];
 		else if(!strcmp(argv[i],"-N"))
@@ -57,38 +56,9 @@ int main(int argc,char **argv){
 
 		cerr << "Query file does not exist." << endl;
 		exit(-1);
-	}
+	}	
 
-	int w = rand()%6+2;
-
-	Hash hash(k,L,w,countItems(inputFile)/4);
-
-	readDataset(inputFile,&hash);
-
-	// hash.print();
-	answerQueries(hash,queryFile,inputFile,N,R);
-
-	// vector<double> testv;
-	// testv.push_back(1.2);
-	// testv.push_back(1.4);
-	// testv.push_back(1.6);
-
-	// item test("Spyros",testv);
-
-	// cout << "Entering for Spyros:" << endl;
-	// cout << G(test,2,4,10) << endl;
-
-	// cout << endl << endl << endl;
-
-	// vector<double> testv2;
-	// testv2.push_back(1.2);
-	// testv2.push_back(1.4);
-	// testv2.push_back(1.6);
-
-	// item test2("Mike",testv2);
-
-	// cout << "Entering for Mike:" << endl;
-	// cout << G(test2,2,4,10) << endl;
+	cout << "We here" << endl;
 
 	return 0;
 }
