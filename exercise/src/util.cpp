@@ -17,8 +17,11 @@ double dist(item x,item y){
 	return sqrt(result);
 }
 
-int32_t module(int a, int b){
-    return (a%b + b) % b;
+int module(int32_t a, int32_t b){
+	assert(b != 0);
+  	int r = a % b;
+  	return r >= 0 ? r : r + abs(b);
+    //return (a%b + b) % b;
 }
 
 void readDataset(string fileName,Hash* hash){
@@ -117,32 +120,37 @@ int32_t H(item *p,int w){
 int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
 
     srand(time(0));
-    uint32_t M = pow(2,32)-5;
+    long int M = pow(2,32)-5;
+    //cout << "M : " << M << endl;
 
 	// vector<uint32_t> hashFunctions;
 	int32_t result =0;
-
+	//int32_t temp;
 	for(int i=0;i<k;i++){
 
 		// int32_t r = rand();
 
 		// cout << "Before addition is: " << (result) << endl;
-		result += H(p,w)*rVector.at(i);
+		//temp = H(p,w);
+		//temp = module(temp,M);
+		//cout << "temp is : " << temp << endl;
+		result += module((module(H(p,w),M) * module(rVector.at(i),M)),M);
 		// cout << "After addition is: " << (result) << endl;
 	}
 
 	// cout << "It came out as: " << result << endl;
-
+	//cout << "Result is : " << result;
 	result = module(result,M);
-
+	//cout << " and result is : " << result;
 	p->setTrick(result);
 	// cout << endl << "NOw IT IS " << result << endl;
 
 	// result2 = module(result,M);
 	result = module(result,tableSize);
+	//cout << "  and " << result << endl;
 	// result2 = module(result,tableSize);
 	
-	// cout << "Result is: " << result << endl;
+	//cout << "Result is: " << result << endl;
 
 	return result;
 
@@ -209,7 +217,7 @@ void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 				cout << results.at(i).first->getID() << endl;
 
 		cout << endl;
-
+/***********/
 		// cout << "Item " << id << " has nearest-neighbour " << hash.findNN(&queryItem)->getID() << endl;
 	
 		// vector<pair<double,item*> > results = hash.findkNN(5,&queryItem);

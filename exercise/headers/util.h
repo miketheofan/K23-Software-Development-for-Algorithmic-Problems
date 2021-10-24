@@ -8,6 +8,7 @@
 #include <random>
 #include <time.h>
 #include <bitset>
+#include <cassert>
 
 using namespace std;
 

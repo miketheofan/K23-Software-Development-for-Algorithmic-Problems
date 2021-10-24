@@ -26,7 +26,7 @@ int main(int argc,char **argv){
 			outputFile = argv[++i];
 		else if(!strcmp(argv[i],"-N"))
 			N = stoi(argv[++i]);
-		else if(!strcmp(argv[i],"-R"))
+		else if(!strcmp(argv[i],"-r"))
 			R = stoi(argv[++i]);
 
 	if(inputFile == ""){

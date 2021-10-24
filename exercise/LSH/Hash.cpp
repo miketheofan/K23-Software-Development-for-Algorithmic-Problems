@@ -80,7 +80,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 	int totalItems = 0;
 
 	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
-
+	//cout << "G is : " << hash <<endl;
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){
@@ -89,7 +89,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 		while(tempBucket != NULL){
 
-			if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+			//if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
 				distance = dist(*queryItem,*tempBucket->getValue());
 
@@ -112,7 +112,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 							queries.push_back(make_pair(distance,tempBucket->getValue()));
 				}
 
-			}
+			//}
 			}
 		
 			if(totalItems > 10*this->L)
@@ -130,7 +130,7 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
     vector<pair<item*,double>> queries;
 
     int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
-    
+    //cout << "G is : " << G << endl;
     HashNode* tempBucket;
 
     double distance;
@@ -143,7 +143,7 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
         
         while (tempBucket != NULL){
             
-            if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+            //if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
             
   				if(!any_of(queries.begin(), queries.end(),[&tempBucket](const pair<item*,double>& p){ return p.first->getID() == tempBucket->getValue()->getID(); })){
               	
@@ -158,7 +158,7 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
 	                    return queries;
 
             	}
-            }
+            //}
 
             if(totalItems > 20*this->L) return queries;
 
