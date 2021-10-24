@@ -18,10 +18,10 @@ double dist(item x,item y){
 }
 
 int module(int32_t a, int32_t b){
-	assert(b != 0);
-  	int r = a % b;
-  	return r >= 0 ? r : r + abs(b);
-    //return (a%b + b) % b;
+	// assert(b != 0);
+ //  	int r = a % b;
+ //  	return r >= 0 ? r : r + abs(b);
+    return (a%b + b) % b;
 }
 
 void readDataset(string fileName,Hash* hash){
@@ -192,23 +192,31 @@ void answerQueries(Hash hash,string fileName,string dataFile,int N,int R){
 
 		vector<pair<double,item*>> tempVector = hash.findkNN(N,&queryItem);
 		
-		cout << "Nearest neigbor-N:";
+		auto startLSH = high_resolution_clock::now();
+
+		cout << "Nearest neigbor-" << N << ":";
 		if(tempVector.size() == (unsigned long int)N)		
 			cout << tempVector.at(N-1).second->getID();
 		cout << endl;
-		
+
 		cout << "distanceLSH: ";
 		if(tempVector.size() == (unsigned long int)N)		
 			cout << tempVector.at(N-1).first;
 		cout << endl;
+
+		auto endLSH = high_resolution_clock::now();
 		
+		auto startTrue = high_resolution_clock::now();
+
 		cout << "distanceTrue: ";
 		if(tempVector.size() == (unsigned long int)N)		
 			cout << brutekNN(N,&queryItem,dataFile);
 		cout << endl;
 
-		cout << "tLSH: " << endl;
-		cout << "tTrue: " << endl;
+		auto endTrue = high_resolution_clock::now();
+
+		cout << "tLSH: " << duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+		cout << "tTrue: " << duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
 		cout << "R-near neigbors: " << endl;
 		vector<pair<item*,double>> results = hash.findRange(R,&queryItem);
 		cout << "Item " << id << " neighbors in range " << R << ": " << endl;

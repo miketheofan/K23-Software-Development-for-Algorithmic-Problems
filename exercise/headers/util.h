@@ -8,9 +8,10 @@
 #include <random>
 #include <time.h>
 #include <bitset>
-#include <cassert>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 #include "items.h"
 #include "Hash.h"
