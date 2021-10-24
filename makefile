@@ -15,6 +15,4 @@ push:
 	@read -p "Message: " Message; \
 	git commit -m $$Message
 	@git push -u origin main
-	Username for 'https://github.com':  miketheofan@gmail.com
-	Password for 'https://miketheofan@gmail.com@github.com': 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
 	@git pull origin main

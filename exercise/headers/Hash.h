@@ -18,6 +18,7 @@ private:
 	int k;
 	int L;
 	int w;
+	vector<int32_t> rVector;
 	int size;
 	vector<item*> items;
 	vector<HashTable*> hashTables;

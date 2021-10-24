@@ -114,7 +114,7 @@ int32_t H(item *p,int w){
 
 }
 
-int32_t G(item* p,int w,int k,int tableSize){
+int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
 
     srand(time(0));
     uint32_t M = pow(2,32)-5;
@@ -124,10 +124,10 @@ int32_t G(item* p,int w,int k,int tableSize){
 
 	for(int i=0;i<k;i++){
 
-		int32_t r = rand();
+		// int32_t r = rand();
 
 		// cout << "Before addition is: " << (result) << endl;
-		result += H(p,w)*r;
+		result += H(p,w)*rVector.at(i);
 		// cout << "After addition is: " << (result) << endl;
 	}
 
@@ -175,18 +175,30 @@ void answerQueries(Hash hash,string fileName,int N,int R){
 
 		counter =0;
 
-		item queryItem(id,words);//
+		item queryItem(id,words);
 
 		cout << "Query: " << queryItem.getID() << endl;
 		cout << "Nearest neighbor-1: " << hash.findNN(&queryItem).first->getID() << endl;
 		cout << "distanceLSH: " << hash.findNN(&queryItem).second << endl;
 		cout << "distanceTrue: " << dist(queryItem,*hash.findNN(&queryItem).first) << endl;
-		if(hash.findkNN(N,&queryItem).size() >= (unsigned long int)N){
+
+		vector<pair<double,item*>> tempVector = hash.findkNN(N,&queryItem);
 		
-			cout << "Nearest neigbor-N" << hash.findkNN(N,&queryItem).at(N).second->getID() << endl;
-			cout << "distanceLSH: " << hash.findkNN(N,&queryItem).at(N).first << endl;
-			cout << "distanceTrue: " << dist(queryItem,*hash.findkNN(N,&queryItem).at(N).second) << endl;
-		}
+		cout << "Nearest neigbor-N:";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << tempVector.at(N-1).second->getID();
+		cout << endl;
+		
+		cout << "distanceLSH: ";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << tempVector.at(N-1).first;
+		cout << endl;
+		
+		cout << "distanceTrue: ";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << dist(queryItem,*tempVector.at(N-1).second);
+		cout << endl;
+
 		cout << "tLSH: " << endl;
 		cout << "tTrue: " << endl;
 		cout << "R-near neigbors: " << endl;

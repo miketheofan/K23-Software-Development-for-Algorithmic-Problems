@@ -22,12 +22,12 @@ int HashTable::HashFunction(int32_t key){
 
 void HashTable::insert(int32_t key,item* value){
 
-	int hash = HashFunction(key);/*Calculate in which position of Hash Table this id given must be inserted.*/
+	// int hash = HashFunction(key); /* Calculate in which position of Hash Table this id given must be inserted.
 
-	if( table[hash] == NULL )/*If this position is empty , insert it in the position,othterwise find the end of the list and insert it at the end.*/
-		table[hash] = new HashNode(key,value);
+	if( table[key] == NULL )/*If this position is empty , insert it in the position,othterwise find the end of the list and insert it at the end.*/
+		table[key] = new HashNode(key,value);
 	else	
-		table[hash]->insert(key,value);
+		table[key]->insert(key,value);
 }
 
 void HashTable::print(){

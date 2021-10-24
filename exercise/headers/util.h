@@ -19,7 +19,7 @@ int32_t module(int,int);
 void readDataset(string,Hash*);
 vector<double>* produceNdistVector(int,int,int);
 int32_t H(item*,int,int);
-int32_t G(item*,int,int,int);
+int32_t G(item*,int,int,vector<int32_t>,int);
 int countItems(string);
 void answerQueries(Hash,string,int,int);
 
