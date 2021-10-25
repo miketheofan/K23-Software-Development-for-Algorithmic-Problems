@@ -179,7 +179,7 @@ vector<pair<item*,double>> HyperCube::findRange(int r,item* queryItem,int M){
     return queries;
 }
 
-set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
+set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int count){
 
 	set<int32_t> result;
 	int32_t mask;
@@ -192,7 +192,7 @@ set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
 		return result;	
 	}
 
-	for (int i=spyros ; i<k ; i++){
+	for (int i=count ; i<k ; i++){
 
 		mask = 1 << i;
 		masked_key = key & mask;
@@ -203,7 +203,7 @@ set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
 		// cout << "i is " << i << " key is " << bitset<3>(key) << endl;
 		// cout << "It is now " << bitset<3>(tempKey) << endl;
 
-		set<int32_t> tempSet = HammingDist(tempKey,probes-1,k,spyros+1);
+		set<int32_t> tempSet = HammingDist(tempKey,probes-1,k,count+1);
 		// for(auto i = tempSet.begin();i != tempSet.end();i++){
 		// bitset<3> temp = *i;
 		// cout << temp << " " << endl;
@@ -211,7 +211,7 @@ set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
 		result.insert(tempKey);
 		result.insert(tempSet.begin(),tempSet.end());
 
-		spyros++;
+		count++;
 	}
 
 	result.insert(key);
