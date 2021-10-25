@@ -58,7 +58,11 @@ int main(int argc,char **argv){
 		exit(-1);
 	}	
 
-	cout << "We here" << endl;
+	int w = rand()%6+2;
+
+	HyperCube *cube = new HyperCube(k,w,M,probes);
+
+	readDatasetCUBE(inputFile,cube);
 
 	return 0;
 }

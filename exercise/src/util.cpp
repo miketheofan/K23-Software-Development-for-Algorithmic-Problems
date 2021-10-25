@@ -23,7 +23,7 @@ int module(int32_t a, int32_t b){
     return (a%b + b) % b;
 }
 
-void readDataset(string fileName,Hash* hash){
+void readDatasetLSH(string fileName,Hash* hash){
 
 	ifstream fp;
 	fp.open(fileName);

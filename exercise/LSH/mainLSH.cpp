@@ -63,7 +63,7 @@ int main(int argc,char **argv){
 
 	Hash hash(k,L,w,countItems(inputFile)/4);
 
-	readDataset(inputFile,&hash);
+	readDatasetLSH(inputFile,&hash);
 
 	// hash.print();
 	answerQueries(hash,queryFile,inputFile,N,R);
