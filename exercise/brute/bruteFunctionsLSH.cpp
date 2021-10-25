@@ -1,4 +1,4 @@
-#include "../headers/bruteFunctions.h"
+#include "../headers/bruteFunctionsLSH.h"
 
 double bruteNN(item* i,string fileName){
 

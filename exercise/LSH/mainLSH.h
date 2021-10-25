@@ -7,7 +7,7 @@
 #include <fstream>
 
 #include "../headers/items.h"
-#include "../headers/util.h"
+#include "../headers/utilLSH.h"
 #include "../headers/Hash.h"
 
 using namespace std;

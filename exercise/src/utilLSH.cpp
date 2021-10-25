@@ -1,4 +1,4 @@
-#include "../headers/util.h"
+#include "../headers/utilLSH.h"
 
 /* Distance calculator function is implemented in order to be easily extendable in vector 
 spaced with other metrics. */

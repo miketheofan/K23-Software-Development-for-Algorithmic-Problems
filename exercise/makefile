@@ -7,10 +7,10 @@ STRUCTURES_FILES = ./structures/
 BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 
-LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctions.o 
+LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/utilLSH.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsLSH.o 
 CUBE_OBJS = $(CUBE_FILES)/mainCUBE.o $(SOURCE_FILES)/utilCUBE.o $(STRUCTURES_FILES)/HyperCube.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsCUBE.o
-SOURCE = $(LSH_FILES)mainLSH.cpp $(SOURCE_FILES)/util.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctions.cpp $(CUBE_FILES)/mainCUBE.cpp $(STRUCTURES_FILES)/HyperCube.cpp $(SOURCE_FILES)/utilCUBE.cpp $(BRUTE_FILES)/bruteFunctionsCUBE.cpp
-HEADER = $(LSH_FILES)mainLSH.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctions.h $(CUBE_FILES)/mainCUBE.h $(HEADER_FILES)/HyperCube.h $(HEADER_FILES)/utilCUBE.h $(HEADER_FILES)/bruteFunctionsCUBE.h
+SOURCE = $(LSH_FILES)mainLSH.cpp $(SOURCE_FILES)/utilLSH.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctionsLSH.cpp $(CUBE_FILES)/mainCUBE.cpp $(STRUCTURES_FILES)/HyperCube.cpp $(SOURCE_FILES)/utilCUBE.cpp $(BRUTE_FILES)/bruteFunctionsCUBE.cpp
+HEADER = $(LSH_FILES)mainLSH.h $(HEADER_FILES)/utilLSH.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctionsLSH.h $(CUBE_FILES)/mainCUBE.h $(HEADER_FILES)/HyperCube.h $(HEADER_FILES)/utilCUBE.h $(HEADER_FILES)/bruteFunctionsCUBE.h
 OUT1 = outLSH
 OUT2 = outCUBE 
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
@@ -25,8 +25,8 @@ all: $(LSH_OBJS) $(CUBE_OBJS)
 mainLSH.o: mainLSH.cpp
 	$(CC) $(FLAGS) $(LSH_FILES)mainLSH.cpp
 
-util.o: util.cpp
-	$(CC) $(FLAGS) $(SOURCE_FILES)util.cpp
+utilLSH.o: utilLSH.cpp
+	$(CC) $(FLAGS) $(SOURCE_FILES)utilLSH.cpp
 
 items.o: items.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)items.cpp
@@ -37,7 +37,7 @@ Hash.o: Hash.cpp
 HashTable.o: HashTable.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)HashTable.cpp	
 
-bruteFunctions.o: bruteFunctions.cpp
+bruteFunctionsLSH.o: bruteFunctionsLSH.cpp
 	$(CC) $(FLAGS) $(BRUTE_FILES)bruteFunctions.cpp
 
 mainCUBE.o: mainCUBE.cpp

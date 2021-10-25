@@ -1,11 +1,11 @@
-#ifndef BRUTEFUNCTIONS_H
-#define BRUTEFUNCTIONS_H
+#ifndef BRUTEFUNCTIONSLSH_H
+#define BRUTEFUNCTIONSLSH_H
 
 #include <iostream>
 
 using namespace std;
 
-#include "util.h"
+#include "utilLSH.h"
 #include "items.h"
 
 double bruteNN(item*,string);

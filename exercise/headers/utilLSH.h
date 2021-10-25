@@ -1,5 +1,5 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef UTILLSH_H
+#define UTILLSH_H
 
 #include <cmath>
 #include <fstream>
@@ -15,7 +15,7 @@ using namespace std::chrono;
 
 #include "items.h"
 #include "Hash.h"
-#include "bruteFunctions.h"
+#include "bruteFunctionsLSH.h"
 
 double dist(int,item,item);
 int32_t module(int,int);

@@ -1,21 +1,6 @@
 #include "./mainCUBE.h"
 int main(int argc,char **argv){
 
-	vector<double> test1,test2;
-	test1.push_back(1.2);
-	test1.push_back(2.2);
-	test1.push_back(5.2);
-	test2.push_back(1.9);
-	test2.push_back(2.7);
-	test2.push_back(5.6);
-
-	item i1("mike",test1);
-	item i2("spyros",test2);
-
-	cout << dist(2,i1,i2) << endl;
-
-	return 0;
-
 	string inputFile = "";
 	string queryFile = "";
 	int k = 14;
