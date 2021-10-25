@@ -59,7 +59,7 @@ out2:
 	@./$(OUT2) $(ARGS2)
 
 debug:
-	@valgrind ./$(OUT) $(ARGS) -ggdb 	
+	@valgrind ./$(OUT2) $(ARGS2) -ggdb 	
 
 clean:
 	@rm $(OUT1)

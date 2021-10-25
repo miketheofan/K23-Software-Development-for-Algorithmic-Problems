@@ -22,18 +22,23 @@ private:
 	int w;
 	int M;
 	int probes;
+	int dimension;
+	double t;
 	vector<item*> items;
 	vector<unordered_map<int32_t,int>> fVector;
+	vector<double> *v;
 	HashTable* cube;
 
 public:
 
-	HyperCube(int,int,int,int);
+	HyperCube(int,int,int,int,int);
 	~HyperCube();
 	void insert(item*);
 	int coinFlip();
 	int32_t hashFunction(item*);
-	pair<item*,double> findNN(item*);
+	pair<item*,double> findNN(item*,int);
+	vector<pair<double,item*>> findkNN(item*,int,int);
+	vector<pair<item*,double>> findRange(int,item*,int);
 	set<int32_t> HammingDist(int32_t , int, int,int);
 
 };

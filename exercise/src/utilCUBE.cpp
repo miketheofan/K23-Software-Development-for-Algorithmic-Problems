@@ -52,20 +52,20 @@ void readDatasetCUBE(string fileName,HyperCube* cube){
 	}
 }
 
-int32_t H(item *p,int w){
+int32_t H(item *p,int w,vector<double> * v,double t){
 
 	// p->print();
 
-	/* We use uniform distribution in order to generate a random t in range [0,w). */
-	random_device rd;
-	mt19937 generator(rd());
-	uniform_real_distribution<> distance(0,w);
+	// /* We use uniform distribution in order to generate a random t in range [0,w). */
+	// random_device rd;
+	// mt19937 generator(rd());
+	// uniform_real_distribution<> distance(0,w);
 
-	double t = distance(generator);
+	// double t = distance(generator);
 	// cout << "t is " << t << endl;
 
 	/* We use normal distribution in order to generate a random vector v. */
-	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
+	// vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
 	// cout << "v ";
 	// for(unsigned long int i=0;i<v->size();i++)
@@ -97,7 +97,7 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 }
 
-void answerQueries(HyperCube cube,string inputFile,string queryFile){
+void answerQueries(HyperCube cube,string inputFile,string queryFile,int M,int N,int R){
 
 	ifstream fp;
 	fp.open(queryFile);
@@ -126,25 +126,46 @@ void answerQueries(HyperCube cube,string inputFile,string queryFile){
 
 		item queryItem(id,words);
 
+		pair<item*,double> query = cube.findNN(&queryItem,M);
+
 		cout << "Query: " << queryItem.getID() << endl;
-		cout << "Nearest neighbor-1: " << cube.findNN(&queryItem).first->getID() << endl;
-		cout << "distanceLSH: " << cube.findNN(&queryItem).second << endl;
+		cout << "Nearest neighbor-1: " << query.first->getID() << endl;
+		cout << "distanceLSH: " << query.second << endl;
 		cout << "distanceTrue: " << bruteNN(&queryItem,inputFile) << endl;
 
-		// vector<pair<double,item*>> tempVector = hash.findkNN(N,&queryItem);
+		vector<pair<double,item*>> tempVector = cube.findkNN(&queryItem,M,N);
 		
-		// auto startLSH = high_resolution_clock::now();
+		auto startLSH = high_resolution_clock::now();
 
-		// cout << "Nearest neigbor-" << N << ":";
-		// if(tempVector.size() == (unsigned long int)N)		
-		// 	cout << tempVector.at(N-1).second->getID();
-		// cout << endl;
+		cout << "Nearest neigbor-" << N << ":";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << tempVector.at(N-1).second->getID();
+		cout << endl;
 
-		// cout << "distanceLSH: ";
-		// if(tempVector.size() == (unsigned long int)N)		
-		// 	cout << tempVector.at(N-1).first;
-		// cout << endl;
+		cout << "distanceLSH: ";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << tempVector.at(N-1).first;
+		cout << endl;
 
-		// auto endLSH = high_resolution_clock::now();
+		auto endLSH = high_resolution_clock::now();
+
+		auto startTrue = high_resolution_clock::now();
+
+		cout << "distanceTrue: ";
+		if(tempVector.size() == (unsigned long int)N)		
+			cout << brutekNN(N,&queryItem,inputFile);
+		cout << endl;
+
+		auto endTrue = high_resolution_clock::now();
+
+		cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+		cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+		cout << R << "-near neigbors: " << endl;
+		vector<pair<item*,double>> results = cube.findRange(R,&queryItem,M);
+		for(unsigned long int i=0;i<results.size();i++)
+			if(results.at(i).first != NULL)
+				cout << results.at(i).first->getID() << endl;
+
+		cout << endl;
 	}
 }
