@@ -1,5 +1,24 @@
 #include "../headers/utilCUBE.h"
 
+/* Distance calculator function is implemented in order to be easily extendable in vector 
+spaced with other metrics. */
+double dist(int distance,item x,item y){
+
+	if(x.getVector()->size() != y.getVector()->size()){
+
+		cerr << "Cannot compute Euclidean Distance between vertexes from different dimensions." << endl;
+		return 0;
+	}
+
+	unsigned long int d = x.getVector()->size();
+	double result = 0.0;
+
+	for(unsigned long int i = 0;i<d;i++)
+		result += pow((*x.getVector()).at(i)-(*y.getVector()).at(i),distance);
+	
+	return pow(result,1.0/d);
+}
+
 void readDatasetCUBE(string fileName,HyperCube* cube){
 
 	ifstream fp;
@@ -76,4 +95,56 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 	return temp;
 
+}
+
+void answerQueries(HyperCube cube,string inputFile,string queryFile){
+
+	ifstream fp;
+	fp.open(queryFile);
+
+	string line,id,word;
+	int counter =0;
+
+	while( getline(fp,line) ){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		item queryItem(id,words);
+
+		cout << "Query: " << queryItem.getID() << endl;
+		cout << "Nearest neighbor-1: " << cube.findNN(&queryItem).first->getID() << endl;
+		cout << "distanceLSH: " << cube.findNN(&queryItem).second << endl;
+		cout << "distanceTrue: " << bruteNN(&queryItem,inputFile) << endl;
+
+		// vector<pair<double,item*>> tempVector = hash.findkNN(N,&queryItem);
+		
+		// auto startLSH = high_resolution_clock::now();
+
+		// cout << "Nearest neigbor-" << N << ":";
+		// if(tempVector.size() == (unsigned long int)N)		
+		// 	cout << tempVector.at(N-1).second->getID();
+		// cout << endl;
+
+		// cout << "distanceLSH: ";
+		// if(tempVector.size() == (unsigned long int)N)		
+		// 	cout << tempVector.at(N-1).first;
+		// cout << endl;
+
+		// auto endLSH = high_resolution_clock::now();
+	}
 }

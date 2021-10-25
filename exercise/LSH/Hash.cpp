@@ -80,7 +80,6 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 	int totalItems = 0;
 
 	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
-	//cout << "G is : " << hash <<endl;
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){

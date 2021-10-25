@@ -9,9 +9,12 @@
 using namespace std;
 
 #include "HyperCube.h"
+#include "bruteFunctionsCUBE.h"
 
 void readDatasetCUBE(string,HyperCube*);
 int32_t H(item *,int);
 vector<double>* produceNdistVector(int,int,int);
+double dist(int,item,item);
+void answerQueries(HyperCube,string,string);
 
 #endif

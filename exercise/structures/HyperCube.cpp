@@ -29,61 +29,60 @@ int32_t HyperCube::hashFunction(item* it){
 		int32_t hash = H(it,this->w);
 
 
-		if(fVector.at(i).find(hash) == fVector.at(i).end()){
-
+		if(fVector.at(i).find(hash) == fVector.at(i).end())
 			fVector.at(i)[hash] = coinFlip();
-			//cout << fVector.at(i)[hash] << endl;
-		}
+
 
 		key = key << 1;
 		key = key | fVector.at(i)[hash];
 	}
-	// bitset<3> temp = key ;
-	// cout << temp << endl;
+	
 	return key;
 }
 
 pair<item*,double> HyperCube::findNN(item* queryItem){
 
-	// int minimum = numeric_limits<int>::max();
-	// pair<item*,double> b;
-	// double distance;
-	// int totalItems = 0;
+	int minimum = numeric_limits<int>::max();
+	pair<item*,double> b;
+	double distance;
 
-	// int32_t hash = hashFunction(queryItem);
-	// HashNode* tempBucket;
+	int32_t hash = this->hashFunction(queryItem);
+	HashNode* tempBucket;
 
-	// for(int i=0;i<this->L;i++){
+	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k,0);
 
-	// 	tempBucket = this->hashTables.at(i)->getBucket(hash);
+	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
-	// 	while(tempBucket != NULL){
+		// cout << "Searching for " << (bitset<3>)*i << endl;
 
-	// 		distance = dist(2,*queryItem,*tempBucket->getValue());
-	// 		if(distance < minimum){
+		tempBucket = this->cube->getBucket(*i);
 
-	// 			b = make_pair(tempBucket->getValue(),distance);
-	// 			minimum = distance;
-	// 		}
+		while(tempBucket != NULL){
+
+			// cout << "Testing item: " << tempBucket->getValue()->getID() << endl;
+
+			distance = dist(2,*queryItem,*tempBucket->getValue());
+			// cout << "Distance is " << distance << endl;
+			if(distance < minimum){
+
+				b = make_pair(tempBucket->getValue(),distance);
+				minimum = distance;
+			}
 		
-	// 		if(++totalItems > 10*this->L) return b;
+			tempBucket = tempBucket->getNext();
+		}
+	}
 
-	// 		tempBucket = tempBucket->getNext();
-	// 	}
-	// }
-
-	// return b;
+	return b;
 }
 
 set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
 
 	set<int32_t> result;
-	result.insert(key);
 	int32_t mask;
     int masked_key;
     int thebit;
-	// 000 probes =2
-	// 011  101 110 001 010 100
+	
 	if (probes == 0){
 
 		result.insert(key);
@@ -112,6 +111,7 @@ set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int spyros){
 		spyros++;
 	}
 
+	result.insert(key);
 	return result;
 }
 
