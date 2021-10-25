@@ -7,9 +7,9 @@ STRUCTURES_FILES = ./structures/
 BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 
-LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/utilLSH.o $(DATA_FILES)/items.o $(LSH_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsLSH.o 
+LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/utilLSH.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsLSH.o 
 CUBE_OBJS = $(CUBE_FILES)/mainCUBE.o $(SOURCE_FILES)/utilCUBE.o $(STRUCTURES_FILES)/HyperCube.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsCUBE.o
-SOURCE = $(LSH_FILES)mainLSH.cpp $(SOURCE_FILES)/utilLSH.cpp $(DATA_FILES)/items.cpp $(LSH_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctionsLSH.cpp $(CUBE_FILES)/mainCUBE.cpp $(STRUCTURES_FILES)/HyperCube.cpp $(SOURCE_FILES)/utilCUBE.cpp $(BRUTE_FILES)/bruteFunctionsCUBE.cpp
+SOURCE = $(LSH_FILES)mainLSH.cpp $(SOURCE_FILES)/utilLSH.cpp $(DATA_FILES)/items.cpp $(STRUCTURES_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctionsLSH.cpp $(CUBE_FILES)/mainCUBE.cpp $(STRUCTURES_FILES)/HyperCube.cpp $(SOURCE_FILES)/utilCUBE.cpp $(BRUTE_FILES)/bruteFunctionsCUBE.cpp
 HEADER = $(LSH_FILES)mainLSH.h $(HEADER_FILES)/utilLSH.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctionsLSH.h $(CUBE_FILES)/mainCUBE.h $(HEADER_FILES)/HyperCube.h $(HEADER_FILES)/utilCUBE.h $(HEADER_FILES)/bruteFunctionsCUBE.h
 OUT1 = outLSH
 OUT2 = outCUBE 
