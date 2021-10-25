@@ -5,10 +5,11 @@
 #include <cstring>
 #include <fstream>
 #include <algorithm>
+#include <bitset>
 
 using namespace std;
 
-#include "../headers/util.h"
+#include "../headers/utilCUBE.h"
 #include "../headers/HyperCube.h"
 
 #endif

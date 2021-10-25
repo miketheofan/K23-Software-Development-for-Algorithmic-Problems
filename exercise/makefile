@@ -14,7 +14,7 @@ HEADER = $(LSH_FILES)mainLSH.h $(HEADER_FILES)/util.h $(HEADER_FILES)/items.h $(
 OUT1 = outLSH
 OUT2 = outCUBE 
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
-ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
+ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 3 -M 10 -probes 2 -o output.txt -N 3 -r 500
 CC = g++ -std=c++11
 FLAGS = -g -c -Wall
 
@@ -52,7 +52,7 @@ utilCUBE.o: utilCUBE.cpp
 lsh:
 	@./$(OUT1) $(ARGS1)
 
-cube:
+out2:
 	@./$(OUT2) $(ARGS2)
 
 debug:

@@ -5,11 +5,14 @@
 #include <vector>
 #include <cmath>
 #include <unordered_map>
+#include <bitset>
+#include <set>
 
 using namespace std;
 
 #include "items.h"
 #include "HashTable.h"
+
 
 class HyperCube{
 
@@ -30,6 +33,8 @@ public:
 	void insert(item*);
 	int coinFlip();
 	int32_t hashFunction(item*);
+	pair<item*,double> findNN(item*);
+	set<int32_t> HammingDist(int32_t , int, int,int);
 
 };
 
