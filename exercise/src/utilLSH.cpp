@@ -16,10 +16,10 @@ double dist(int distance,item x,item y){
 	for(unsigned long int i = 0;i<d;i++)
 		result += pow((*x.getVector()).at(i)-(*y.getVector()).at(i),distance);
 	
-	return pow(result,1.0/d);
+	return pow(result,1.0/distance);
 }
 
-int module(int32_t a, int32_t b){
+int module(int a, int b){
     return (a%b + b) % b;
 }
 
@@ -85,20 +85,14 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 }
 
-int32_t H(item *p,int w){
+int32_t H(item *p,int w,double t,vector<double> *v){
 
 	// p->print();
 
-	/* We use uniform distribution in order to generate a random t in range [0,w). */
-	random_device rd;
-	mt19937 generator(rd());
-	uniform_real_distribution<> distance(0,w);
-
-	double t = distance(generator);
 	// cout << "t is " << t << endl;
 
-	/* We use normal distribution in order to generate a random vector v. */
-	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
+	// /* We use normal distribution in order to generate a random vector v. */
+	// vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
 	// cout << "v ";
 	// for(unsigned long int i=0;i<v->size();i++)
@@ -116,14 +110,13 @@ int32_t H(item *p,int w){
 
 }
 
-int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
+int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize,double t,vector<double> *v){
 
-    srand(time(0));
-    long int M = pow(2,32)-5;
-    //cout << "M : " << M << endl;
+    long int M = pow(2,32/k);
+    // cout << "M : " << M << endl;
 
 	// vector<uint32_t> hashFunctions;
-	int32_t result =0;
+	int result =0;
 	//int32_t temp;
 	for(int i=0;i<k;i++){
 
@@ -132,21 +125,23 @@ int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
 		// cout << "Before addition is: " << (result) << endl;
 		//temp = H(p,w);
 		//temp = module(temp,M);
-		//cout << "temp is : " << temp << endl;
-		result += module((module(H(p,w),M) * module(rVector.at(i),M)),M);
+		// cout << "temp is : " << temp << endl;
+		int temp = module(H(p,w,t,v)*rVector.at(i),M);
+		// cout << "Result is " << temp << endl;
+		result += temp;
 		// cout << "After addition is: " << (result) << endl;
 	}
 
 	// cout << "It came out as: " << result << endl;
 	//cout << "Result is : " << result;
 	result = module(result,M);
-	//cout << " and result is : " << result;
+	// cout << "After modM is " << result << endl;
 	p->setTrick(result);
 	// cout << endl << "NOw IT IS " << result << endl;
 
 	// result2 = module(result,M);
 	result = module(result,tableSize);
-	//cout << "  and " << result << endl;
+	// cout << "After mod" << tableSize << " is " << result << endl;
 	// result2 = module(result,tableSize);
 	
 	//cout << "Result is: " << result << endl;

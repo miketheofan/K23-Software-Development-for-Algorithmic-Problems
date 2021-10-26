@@ -61,7 +61,7 @@ int main(int argc,char **argv){
 
 	int w = rand()%6+2;
 
-	Hash hash(k,L,w,countItems(inputFile)/4);
+	Hash hash(k,L,w,countItems(inputFile)/4,128);
 
 	readDatasetLSH(inputFile,&hash);
 

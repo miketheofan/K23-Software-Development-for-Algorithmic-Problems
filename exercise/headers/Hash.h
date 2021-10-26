@@ -21,12 +21,15 @@ private:
 	int w;
 	vector<int32_t> rVector;
 	int size;
+	int dimension;
+	double t;
 	vector<item*> items;
 	vector<HashTable*> hashTables;
-
+	vector<double> *v;
+	
 public:
 
-	Hash(int,int,int,int);
+	Hash(int,int,int,int,int);
 	~Hash();
 	void insert(item*);
 	pair<item*,double> findNN(item*);

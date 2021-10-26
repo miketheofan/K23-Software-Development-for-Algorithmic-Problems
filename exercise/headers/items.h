@@ -11,7 +11,7 @@ class item{
 
 private:
 
-	int32_t trick;
+	int trick;
 	string itemID;
 	vector<double> coordinates;
 

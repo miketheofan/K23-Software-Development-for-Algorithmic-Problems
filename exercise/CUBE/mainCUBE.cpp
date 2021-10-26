@@ -61,6 +61,15 @@ int main(int argc,char **argv){
 
 	HyperCube *cube = new HyperCube(k,w,M,probes,128);
 
+	// set<int32_t> temp = cube->HammingDist(0110,4,4,0);
+
+	// for(auto i = temp.begin();i != temp.end();i++){
+
+	// 	cout << (bitset<4>)*i << endl;
+	// }
+
+	// return 0;
+
 	readDatasetCUBE(inputFile,cube);
 
 	answerQueries(*cube,inputFile,queryFile,M,N,R);

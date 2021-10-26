@@ -1,7 +1,7 @@
 #include "../headers/Hash.h"
 #include "../headers/utilLSH.h"
 
-Hash::Hash(int k,int L,int w,int size) : k(k), L(L), w(w), size(size) {
+Hash::Hash(int k,int L,int w,int size,int dimension) : k(k), L(L), w(w), size(size), dimension(dimension) {
 
 	for(int i=0;i<this->L;i++){
 
@@ -11,6 +11,16 @@ Hash::Hash(int k,int L,int w,int size) : k(k), L(L), w(w), size(size) {
 
 	for(int i=0;i<k;i++)
 		this->rVector.push_back((int32_t)rand());
+
+	/* We use uniform distribution in order to generate a random t in range [0,w). */
+	random_device rd;
+	mt19937 generator(rd());
+	uniform_real_distribution<> distance(0,w);
+
+	this->t = distance(generator);
+
+	/* We use normal distribution in order to generate a random vector v. */
+	this->v = produceNdistVector(this->dimension,0.0,1.0);
 
 }
 
@@ -22,12 +32,12 @@ void Hash::insert(item* newItem){
 
 	for(int i=0;i<this->L;i++){
 
-		int32_t temp = G(newItem,this->w,this->k,this->rVector,this->size);
+		int32_t temp = G(newItem,this->w,this->k,this->rVector,this->size,this->t,this->v);
 		// cout << "Hashtable " << i << " inserting " << newItem->getID() << " in " << temp << endl;
 		this->hashTables.at(i)->insert(temp , newItem );
 	}
 
-	// cout << endl;
+	cout << endl;
 }
 
 void Hash::print(){
@@ -47,7 +57,7 @@ pair<item*,double> Hash::findNN(item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
+	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size,this->t,this->v);
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){
@@ -56,12 +66,15 @@ pair<item*,double> Hash::findNN(item* queryItem){
 
 		while(tempBucket != NULL){
 
-			distance = dist(2,*queryItem,*tempBucket->getValue());
-			if(distance < minimum){
+			// if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
-				b = make_pair(tempBucket->getValue(),distance);
-				minimum = distance;
-			}
+				distance = dist(2,*queryItem,*tempBucket->getValue());
+				if(distance < minimum){
+
+					b = make_pair(tempBucket->getValue(),distance);
+					minimum = distance;
+				}
+			// }
 		
 			if(++totalItems > 10*this->L) return b;
 
@@ -79,7 +92,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
+	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size,this->t,this->v);
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){
@@ -88,7 +101,7 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 		while(tempBucket != NULL){
 
-			//if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+			// if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
 				distance = dist(2,*queryItem,*tempBucket->getValue());
 
@@ -109,9 +122,9 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
 						}else
 							queries.push_back(make_pair(distance,tempBucket->getValue()));
-				}
+					}
 
-			//}
+				// }
 			}
 		
 			if(totalItems > 10*this->L)
@@ -128,7 +141,7 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
     
     vector<pair<item*,double>> queries;
 
-    int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size);
+    int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size,this->t,this->v);
     //cout << "G is : " << G << endl;
     HashNode* tempBucket;
 

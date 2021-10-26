@@ -16,7 +16,7 @@ OUT2 = outCUBE
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
 ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
 CC = g++ -std=c++11
-FLAGS = -g -c -Wall
+FLAGS = -g -c
 
 all: $(LSH_OBJS) $(CUBE_OBJS)
 	$(CC) -g $(LSH_OBJS) -o $(OUT1)
@@ -59,7 +59,7 @@ out2:
 	@./$(OUT2) $(ARGS2)
 
 debug:
-	@valgrind ./$(OUT2) $(ARGS2) -ggdb 	
+	@valgrind ./$(OUT1) $(ARGS1)
 
 clean:
 	@rm $(OUT1)

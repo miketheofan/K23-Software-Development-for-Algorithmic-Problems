@@ -26,6 +26,7 @@ private:
 	double t;
 	vector<item*> items;
 	vector<unordered_map<int32_t,int>> fVector;
+	set<int32_t> nearVertices;
 	vector<double> *v;
 	HashTable* cube;
 
@@ -39,7 +40,7 @@ public:
 	pair<item*,double> findNN(item*,int);
 	vector<pair<double,item*>> findkNN(item*,int,int);
 	vector<pair<item*,double>> findRange(int,item*,int);
-	set<int32_t> HammingDist(int32_t , int, int,int);
+	set<int32_t> HammingDist(int32_t , int, int, int);
 
 };
 

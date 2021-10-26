@@ -16,7 +16,7 @@ double dist(int distance,item x,item y){
 	for(unsigned long int i = 0;i<d;i++)
 		result += pow((*x.getVector()).at(i)-(*y.getVector()).at(i),distance);
 	
-	return pow(result,1.0/d);
+	return pow(result,1.0/distance);
 }
 
 void readDatasetCUBE(string fileName,HyperCube* cube){
