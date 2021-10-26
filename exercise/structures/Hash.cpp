@@ -87,6 +87,7 @@ pair<item*,double> Hash::findNN(item* queryItem){
 
 vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 
+	vector<pair<double,item*>> results;
 	vector<pair<double,item*> > queries;
 	int minimum = numeric_limits<int>::max();
 	double distance;
@@ -132,9 +133,13 @@ vector<pair<double,item*> > Hash::findkNN(int k,item* queryItem){
 			
 			tempBucket = tempBucket->getNext();
 		}
+
+		results.insert(results.end(),queries.begin(),queries.end());
+		sort(results.begin(),results.end());
+		queries.clear();
 	}
 
-	return queries;
+	return results;
 }
 
 vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
