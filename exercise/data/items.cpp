@@ -34,6 +34,15 @@ int item::getDimension(){
 	return this->coordinates.size();
 }
 
+double item::getCoordinatein(int index){
+
+	for(int i=0; i<this->getDimension(); i++)
+		if(i == index)
+			return this->coordinates.at(i);
+
+	return -1;
+}
+
 void item::print(){
 
 	cout << this->itemID << " ";

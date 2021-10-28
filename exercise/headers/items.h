@@ -24,6 +24,7 @@ public:
 	void setTrick(int32_t);
 	vector<double> *getVector();
 	int getDimension();
+	double getCoordinatein(int);
 	void print();
 };
 

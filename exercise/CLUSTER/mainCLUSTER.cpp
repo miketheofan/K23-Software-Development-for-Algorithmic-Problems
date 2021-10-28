@@ -60,7 +60,9 @@ int main(int argc,char **argv){
 
 	readDatasetCLUSTER(inputFile,&clustering);
 
-	clustering.kMeans();
+	clustering.kMeansPP();
+	clustering.Assign();
+
 	clustering.print();
 
 	return 0;

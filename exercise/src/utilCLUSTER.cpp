@@ -112,12 +112,14 @@ item* getRandomItem(vector<item*> i){
 	return i.at(distance(generator));
 }
 
-void deleteByValue(item* i,vector<item*> *items){
+// void deleteByValue(item* i,vector<item*> *items){
 
-	vector<item*>::iterator pos = std::find(items->begin(), items->end(), i);
-	if(pos != items->end())
-	    items->erase(pos);
-}
+// 	for(unsigned long int j=0;j<items->size();j++)
+// 		if(items->at(j)->getID() == i->getID())
+// 	    	items->erase(items->at(j));
+// 	else
+// 		cout << "GOt here\n";
+// }
 
 double prob(vector<pair<item*,double>> D){
 

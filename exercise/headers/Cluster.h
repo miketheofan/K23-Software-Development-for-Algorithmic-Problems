@@ -11,12 +11,14 @@ private:
 
 	vector<item*> items;
 	item* centroid;
+	int dimension;
 
 public:
 
 	Cluster(item*);
 	item* getCentroid();
 	void insert(item*);
+	bool Update();
 	int print();
 };
 
@@ -36,9 +38,11 @@ private:
 public:
 
 	Clustering(int,int,int,int,int,int);
+	int noItems();
 	void insert(item*);
-	void kMeans();
+	void kMeansPP();
 	void Assign();
+	double Update();
 	void print();
 
 };

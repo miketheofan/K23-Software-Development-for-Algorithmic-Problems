@@ -76,7 +76,7 @@ cluster:
 	@./$(OUT3) $(ARGS3)
 
 debug:
-	@valgrind ./$(OUT1) $(ARGS1)
+	@valgrind ./$(OUT3) $(ARGS3)
 
 clean:
 	@rm $(OUT1)

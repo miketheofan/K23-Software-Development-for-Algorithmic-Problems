@@ -15,7 +15,7 @@ double dist(int,item,item);
 void readConf(string,int *,int *,int *,int *,int *,int *);
 void readDatasetCLUSTER(string,Clustering*);
 item* getRandomItem(vector<item*>);
-void deleteByValue(item*,vector<item*>*);
+// void deleteByValue(item*,vector<item*>*);
 double prob(vector<pair<item*,double>>);
 
 #endif

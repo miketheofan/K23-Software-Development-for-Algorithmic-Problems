@@ -4,7 +4,8 @@
 Cluster::Cluster(item* centroid){
 
 	this->centroid = centroid;
-	this->items.push_back(this->centroid);
+	this->dimension = this->centroid->getDimension();
+	this->items.push_back(new item(*centroid));
 }
 
 item* Cluster::getCentroid(){
@@ -19,24 +20,72 @@ int Cluster::print(){
 	return this->items.size();
 }
 
+bool Cluster::Update(){
+
+	bool flag = false;
+
+	double T = this->items.size();
+	double sum = 0;
+
+	vector<double> newCoordinates;
+
+	// int dimension = this->dimension;
+
+	for(int i=0; i<this->dimension; i++){
+		// cout << "Got here" << endl;
+
+		for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++)
+			sum += (*it)->getCoordinatein(i);
+	
+		double Mean = sum / T;
+
+		// cout << "Got out" << endl;
+		newCoordinates.push_back(Mean);
+
+		sum = 0;
+
+	}
+
+	if(*(this->centroid->getVector()) == newCoordinates)
+		flag = true;
+
+	delete this->centroid;
+	this->centroid = new item("newItem",newCoordinates);
+
+	// cout << "New centroid is ";
+	// this->centroid->print();cout << endl;
+
+	this->items.clear();
+
+	// cout << "Returning" << endl;
+
+	return flag;
+}
+
 Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes)
 : K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes){
 
 
 }
 
-void Clustering::insert(item* item){
+int Clustering::noItems(){
+	return this->items.size();
+}
 
+void Clustering::insert(item* item){
 	this->items.push_back(item);
 }
 
-void Clustering::kMeans(){
+void Clustering::kMeansPP(){
 
 	int t =0;
 
+	vector<item*> chosenCentroids;
+
 	item* firstCentroid = getRandomItem(this->items);
 
-	deleteByValue(firstCentroid,&this->items);
+	chosenCentroids.push_back(firstCentroid);
+	// deleteByValue(firstCentroid,&this->items);
 	this->clusters.push_back(new Cluster(firstCentroid));
 
 	t++;
@@ -71,14 +120,18 @@ void Clustering::kMeans(){
 
 		for(vector<pair<item*,double>>::iterator it3 = D.begin(); it3 != D.end(); it3++){
 
+			if(find(chosenCentroids.begin(),chosenCentroids.end(), (*it3).first) != chosenCentroids.end())
+				continue;
+
 			if( pow((*it3).second,2)/probDividor > maximum ){
 
 				maximum = (*it3).second;
 				maximumItem = (*it3).first;
 			}
 		}
-
-		deleteByValue(maximumItem,&this->items);
+ 
+		// deleteByValue(maximumItem,&this->items);
+		chosenCentroids.push_back(maximumItem);
 		this->clusters.push_back(new Cluster(maximumItem));
 
 		t++;
@@ -87,28 +140,62 @@ void Clustering::kMeans(){
 
 void Clustering::Assign(){
 
-	for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++){
+	int count = 0;
 
-		double minimum = numeric_limits<double>::max();
+	while(1){
 
-		Cluster *cluster;
+		for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++){
 
-		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+			double minimum = numeric_limits<double>::max();
 
-			int distance = dist(2,**it,*(*it2)->getCentroid());
+			Cluster *minCluster;
 
-			if( distance < minimum ){
+			for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
 
-				minimum = distance;
-				cluster = *it2;
+				int distance = dist(2,**it,*(*it2)->getCentroid());
+
+				// cout << "Distance from " << ++count << " is " << distance << endl;
+
+				// cout << "Item's " << (*it)->getID() << " distance from cluster " << count++ << " is " << distance << endl; 
+
+				if( distance < minimum ){
+
+					minimum = distance;
+					minCluster = *it2;
+				}
 			}
+
+			// cout << endl;
+
+			minCluster->insert(*it);
+
+			count =0;
 		}
 
-		cluster->insert(*it);
+		cout << "Before update ||" << endl;
+		this->print();
 
-		cluster->Update();
+		if(this->Update() == 1.0)
+			break;
+
+		cout << "After update ||" << endl;
+		this->print();
 	}
 
+}
+
+double Clustering::Update(){
+
+	double count = 0;
+
+	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+		if((*it)->Update() == true)
+			count++;
+
+	// cout << "Syspro" << endl;
+	// cout << "Size is " << this->clusters.size();
+
+	return count/this->clusters.size();	
 }
 
 void Clustering::print(){
