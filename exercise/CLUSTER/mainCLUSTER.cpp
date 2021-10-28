@@ -54,11 +54,14 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
+	int w = rand()%6+2;
+
 	readConf(configurationFile,&K,&L,&kLSH,&M,&kCUBE,&probes);
 
-	Clustering clustering(K,L,kLSH,M,kCUBE,probes);
+	Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
 
 	readDatasetCLUSTER(inputFile,&clustering);
+	//readDatasetCUBE()
 
 	clustering.kMeansPP();
 	clustering.Assign("Classic");

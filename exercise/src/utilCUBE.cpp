@@ -52,6 +52,7 @@ void readDatasetCUBE(string fileName,HyperCube* cube){
 	}
 }
 
+
 int32_t H(item *p,int w,vector<double> * v,double t){
 
 	// p->print();
@@ -96,6 +97,7 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 	return temp;
 
 }
+
 
 void answerQueries(HyperCube cube,string inputFile,string queryFile,int M,int N,int R){
 

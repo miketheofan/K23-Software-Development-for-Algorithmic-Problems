@@ -1,6 +1,7 @@
 #include "../headers/Cluster.h"
 #include "../headers/utilCLUSTER.h"
 
+
 Cluster::Cluster(item* centroid){
 
 	this->centroid = centroid;
@@ -66,8 +67,13 @@ void Cluster::clearCluster(){
 	this->items.clear();
 }
 
-Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes)
-: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes){
+int Cluster::getDimension(){
+	return this->dimension;
+}
+
+
+Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w)
+: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w){
 
 
 }
@@ -155,6 +161,7 @@ void Clustering::Assign(string assignMethod){
 		else if(assignMethod == "LSH")
 			this->LSH();
 		else if(assignMethod == "Hypercube")
+			//int w = rand()%6+2
 			this->Hypercube();	
 		else{
 
@@ -232,14 +239,38 @@ void Clustering::Lloyd(){
 	}
 }
 
-void LSH(){
+void Clustering::LSH(){
 
 
 }
 
-void Hypercube(){
 
+void Clustering::Hypercube(){
+
+	// int w = rand()%6+2;
+	int range = this->minDistCentroids()/2;
+
+	HyperCube *c = new HyperCube(this->kCUBE, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
+	this->fillCube(c);
+
+	vector<pair<item*,Cluster*>> flag;
+
+	while(1){
+		for (vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
+
+			vector<pair<item*,double>> temp = c->findRange(range,(*it)->getCentroid(),this->M);
+
+			for ( vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
+
+				// if()
+				(*it)->insert(it2->first);
+			}
+			//(*it)->Update();
+		}
+		range *= 2; 
 	
+	}
+
 }
 
 double Clustering::Update(){
@@ -266,4 +297,29 @@ void Clustering::print(){
 
 	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
 		cout << "Size: " << (*it)->print() << endl;
+}
+
+void Clustering::fillCube(HyperCube* cube){
+
+	for (vector<item*>::iterator i = items.begin() ; i!=items.end() ; i++){
+		cube->insert(*i);
+	}
+
+}
+
+double Clustering::minDistCentroids(){
+	
+	double minimum = numeric_limits<double>::max();
+
+	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+
+			double distance = dist(2,*(*it)->getCentroid(),*(*it2)->getCentroid());
+
+			if(distance < minimum)
+				minimum = distance;
+
+		}
+
+	return minimum;
 }

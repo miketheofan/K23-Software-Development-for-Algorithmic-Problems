@@ -17,5 +17,10 @@ void readDatasetCLUSTER(string,Clustering*);
 item* getRandomItem(vector<item*>);
 // void deleteByValue(item*,vector<item*>*);
 double prob(vector<pair<item*,double>>);
+int32_t H(item *,int ,vector<double> * ,double );
+vector<double>* produceNdistVector(int ,int ,int );
+
+
+
 
 #endif

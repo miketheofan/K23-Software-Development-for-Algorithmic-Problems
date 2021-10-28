@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "./items.h"
+#include "../headers/HyperCube.h"
 
 class Cluster{
 
@@ -21,6 +22,7 @@ public:
 	bool Update();
 	void clearCluster();
 	int print();
+	int getDimension();
 };
 
 class Clustering{
@@ -33,12 +35,13 @@ private:
 	int M;
 	int kCUBE;
 	int probes;
+	int w;
 	vector<item*> items;
 	vector<Cluster*> clusters;
 
 public:
 
-	Clustering(int,int,int,int,int,int);
+	Clustering(int,int,int,int,int,int,int);
 	int noItems();
 	void insert(item*);
 	void kMeansPP();
@@ -49,6 +52,8 @@ public:
 	double Update();
 	void clearClusters();
 	void print();
+	void fillCube(HyperCube*);
+	double minDistCentroids();
 
 };
 
