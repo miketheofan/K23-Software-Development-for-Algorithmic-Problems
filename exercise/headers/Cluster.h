@@ -19,6 +19,7 @@ public:
 	item* getCentroid();
 	void insert(item*);
 	bool Update();
+	void clearCluster();
 	int print();
 };
 
@@ -41,8 +42,12 @@ public:
 	int noItems();
 	void insert(item*);
 	void kMeansPP();
-	void Assign();
+	void Assign(string);
+	void Lloyd();
+	void LSH();
+	void Hypercube();
 	double Update();
+	void clearClusters();
 	void print();
 
 };

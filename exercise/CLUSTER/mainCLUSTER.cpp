@@ -61,7 +61,7 @@ int main(int argc,char **argv){
 	readDatasetCLUSTER(inputFile,&clustering);
 
 	clustering.kMeansPP();
-	clustering.Assign();
+	clustering.Assign("Classic");
 
 	clustering.print();
 
