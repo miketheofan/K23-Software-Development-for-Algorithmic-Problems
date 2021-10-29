@@ -24,7 +24,34 @@ Hash::Hash(int k,int L,int w,int size,int dimension) : k(k), L(L), w(w), size(si
 
 }
 
-Hash::~Hash(){}
+Hash::~Hash(){
+
+	// vector<item*> items;
+	// vector<HashTable*> hashTables;
+	// vector<double> *v;
+
+	// for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++)
+	// 	delete(*it);
+
+	for(vector<HashTable*>::iterator it = this->hashTables.begin(); it != this->hashTables.end(); it++)
+		if(*it != NULL)
+			delete *it;
+
+	// for(auto& ht : this->hashTables)
+	// 	delete ht;
+
+	// free(v);
+
+	// vector<item*>().swap(items);
+	// v->clear();
+	// v->shrink_to_fit();
+
+	// vector<HashTable*>().swap(hashTables);
+	// this->hashTables.clear();
+
+	delete v;
+
+}
 
 void Hash::insert(item* newItem){
 

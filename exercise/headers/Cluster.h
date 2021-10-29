@@ -18,6 +18,7 @@ private:
 public:
 
 	Cluster(item*);
+	~Cluster();
 	item* getCentroid();
 	void insert(item*);
 	bool Update();
@@ -46,6 +47,7 @@ private:
 public:
 
 	Clustering(int,int,int,int,int,int,int);
+	~Clustering();
 	int noItems();
 	void insert(item*);
 	void kMeansPP();

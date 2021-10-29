@@ -19,12 +19,12 @@ using namespace std::chrono;
 
 double dist(int,item,item);
 int32_t module(int,int);
-void readDatasetLSH(string,Hash*);
+void readDatasetLSH(string,Hash*,vector<item*>*);
 vector<double>* produceNdistVector(int,int,int);
 int32_t H(item*,int,double,vector<double> *);
 int32_t G(item*,int,int,vector<int32_t>,int,double,vector<double> *);
 int countItems(string);
-void answerQueries(Hash,string,string,int,int);
+void answerQueries(Hash*,string,string,int,int);
 
 // double mean = 0.0;
 // double stddev = 1.0;

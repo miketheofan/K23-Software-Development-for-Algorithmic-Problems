@@ -59,20 +59,16 @@ int main(int argc,char **argv){
 
 	int w = rand()%6+2;
 
-	HyperCube *cube = new HyperCube(k,w,M,probes,128);
+	HyperCube cube(k,w,M,probes,128);
 
-	// set<int32_t> temp = cube->HammingDist(0110,4,4,0);
+	vector<item*> dataset;
+	
+	readDatasetCUBE(inputFile,&cube,&dataset);
 
-	// for(auto i = temp.begin();i != temp.end();i++){
+	answerQueries(&cube,queryFile,inputFile,M,N,R);
 
-	// 	cout << (bitset<4>)*i << endl;
-	// }
-
-	// return 0;
-
-	readDatasetCUBE(inputFile,cube);
-
-	answerQueries(*cube,inputFile,queryFile,M,N,R);
+	for(unsigned long int i=0;i<dataset.size();i++)
+		delete(dataset.at(i));
 
 	return 0;
 }

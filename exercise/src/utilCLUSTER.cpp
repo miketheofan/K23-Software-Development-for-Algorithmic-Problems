@@ -69,7 +69,7 @@ void readConf(string fileName,int *K,int *L,int *kLSH,int *M,int *kCUBE,int *pro
 	}
 }
 
-void readDatasetCLUSTER(string fileName,Clustering* cluster){
+void readDatasetCLUSTER(string fileName,Clustering* cluster,vector<item*> *dataset){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -96,7 +96,10 @@ void readDatasetCLUSTER(string fileName,Clustering* cluster){
 
 		counter =0;
 
-		cluster->insert(new item(id,words));
+		item* newItem = new item(id,words);
+		dataset->push_back(newItem);
+
+		cluster->insert(newItem);
 		// item temp(id,words);
 		// temp.print();
 	}

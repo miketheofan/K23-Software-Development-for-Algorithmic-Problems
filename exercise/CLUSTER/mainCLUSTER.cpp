@@ -60,15 +60,32 @@ int main(int argc,char **argv){
 
 	Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
 
-	readDatasetCLUSTER(inputFile,&clustering);
+	vector<item*> dataset;
+
+	readDatasetCLUSTER(inputFile,&clustering,&dataset);
 	//readDatasetCUBE()
 
 	clustering.kMeansPP();
-	clustering.Assign("Classic");
+	clustering.Assign("Hypercube");
 
 	clustering.print();
 
 	pair<vector<double>,double> test = clustering.Silhouette();
+
+	cout << "Algorithm: " << endl;
+	cout << "Silhouette: [";
+
+	vector<double> result = test.first;
+
+	for(vector<double>::iterator it = result.begin(); it != result.end(); it++){
+
+		cout << (*it) << ",";
+	}
+
+	cout << test.second << "]" << endl;
+
+	for(unsigned long int i=0;i<dataset.size();i++)
+		delete(dataset.at(i));
 
 	return 0;
 }

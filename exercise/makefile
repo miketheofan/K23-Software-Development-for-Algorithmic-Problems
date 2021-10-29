@@ -20,7 +20,7 @@ ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o out
 ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
 ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m Classic
 CC = g++ -std=c++11
-FLAGS = -g -c
+FLAGS = -g -c -Ο3
 
 all: $(LSH_OBJS) $(CUBE_OBJS) $(CLUSTER_OBJS)
 	$(CC) -g $(LSH_OBJS) -o $(OUT1)
@@ -76,7 +76,7 @@ out3:
 	@./$(OUT3) $(ARGS3)
 
 debug:
-	@valgrind ./$(OUT3) $(ARGS3)
+	@valgrind  --track-origins=yes --leak-check=full ./$(OUT3) $(ARGS3)
 
 clean:
 	@rm $(OUT1)

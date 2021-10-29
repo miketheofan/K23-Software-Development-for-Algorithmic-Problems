@@ -20,6 +20,7 @@ public:
 
 	item(string,vector<double>);
 	item(const item&);
+	~item();
 	string getID();
 	int32_t getTrick();
 	void setTrick(int32_t);

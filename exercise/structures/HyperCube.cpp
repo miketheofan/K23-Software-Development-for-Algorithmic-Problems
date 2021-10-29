@@ -21,7 +21,11 @@ HyperCube::HyperCube(int k,int w,int M,int probes,int dimension) : k(k), w(w), M
 	this->t = distance(generator);
 }
 
-HyperCube::~HyperCube(){}
+HyperCube::~HyperCube(){
+
+	delete this->v;
+	delete this->cube;
+}
 
 void HyperCube::insert(item *it){
 

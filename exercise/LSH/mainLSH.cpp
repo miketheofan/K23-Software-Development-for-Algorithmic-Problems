@@ -63,32 +63,17 @@ int main(int argc,char **argv){
 
 	Hash hash(k,L,w,countItems(inputFile)/4,128);
 
-	readDatasetLSH(inputFile,&hash);
+	vector<item*> dataset;
+
+	readDatasetLSH(inputFile,&hash,&dataset);
 
 	// hash.print();
-	answerQueries(hash,queryFile,inputFile,N,R);
+	answerQueries(&hash,queryFile,inputFile,N,R);
+	
+	// hash.print();
 
-	// vector<double> testv;
-	// testv.push_back(1.2);
-	// testv.push_back(1.4);
-	// testv.push_back(1.6);
-
-	// item test("Spyros",testv);
-
-	// cout << "Entering for Spyros:" << endl;
-	// cout << G(test,2,4,10) << endl;
-
-	// cout << endl << endl << endl;
-
-	// vector<double> testv2;
-	// testv2.push_back(1.2);
-	// testv2.push_back(1.4);
-	// testv2.push_back(1.6);
-
-	// item test2("Mike",testv2);
-
-	// cout << "Entering for Mike:" << endl;
-	// cout << G(test2,2,4,10) << endl;
+	for(unsigned long int i=0;i<dataset.size();i++)
+		delete(dataset.at(i));
 
 	return 0;
 }

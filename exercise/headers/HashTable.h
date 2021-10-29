@@ -18,11 +18,11 @@ private:
 public:
 
 	HashNode(int32_t,item*);
+	~HashNode();
 	item* getValue();
 	int32_t getKey();
 	HashNode* getNext();
 	void insert(int32_t,item*);
-	void deleteList();
 	void print();
 
 };

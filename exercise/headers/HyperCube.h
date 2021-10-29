@@ -13,7 +13,6 @@ using namespace std;
 #include "items.h"
 #include "HashTable.h"
 
-
 class HyperCube{
 
 private:

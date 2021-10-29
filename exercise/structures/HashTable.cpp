@@ -11,7 +11,14 @@ HashTable::~HashTable(){
 
 	for(int i=0;i<this->tableSize;i++)
 		if(this->table[i] != NULL)
-			this->table[i]->deleteList();
+			delete this->table[i];
+
+	// for(int i=0;i<this->tableSize;i++)
+	// 	if(this->table[i] != NULL){
+
+	// 		// this->table[i]->deleteList();
+	// 		delete this->table[i];
+	// 	}
 
 	delete[] this->table;
 }
@@ -40,7 +47,6 @@ void HashTable::print(){
 	
 		cout << endl;
 	}
-
 }
 
 HashNode* HashTable::getBucket(int32_t key){
@@ -52,17 +58,17 @@ HashNode* HashTable::getBucket(int32_t key){
 	return NULL;
 }
 
-void HashNode::deleteList(){
+HashNode::~HashNode(){
 
 	if(this->next != NULL)
-		this->next->deleteList();
+		delete this->next;
 
-	delete this;
+	// if(this->value != NULL) delete this->value;
 }
 
 HashNode::HashNode(int32_t key,item* value) : key(key){
 
-	this->value = new item(*value);
+	this->value = value;
 	this->next = NULL;
 }
 

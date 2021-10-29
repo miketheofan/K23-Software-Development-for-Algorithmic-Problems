@@ -9,6 +9,10 @@ Cluster::Cluster(item* centroid){
 	this->items.push_back(centroid);
 }
 
+Cluster::~Cluster(){
+	delete this->centroid;
+}
+
 item* Cluster::getCentroid(){
 	return this->centroid;
 }
@@ -94,6 +98,12 @@ Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w)
 : K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w){
 
 
+}
+
+Clustering::~Clustering(){
+
+	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+	delete *it; 
 }
 
 int Clustering::noItems(){
@@ -375,6 +385,8 @@ void Clustering::LSH(){
 	}
 
 	this->assignRest(h->getItems());
+
+	delete h;
 }
 
 
@@ -450,7 +462,7 @@ void Clustering::Hypercube(){
 
 	this->assignRest(c->getItems());
 
-	// delete c;
+	delete c;
 
 }
 
@@ -559,8 +571,8 @@ pair<vector<double>,double> Clustering::Silhouette(){
 
 	vector<double> si;
 	double s;
-	double sum = 0;
-	double sTotal = 0;
+	double sum = 0.0;
+	double sTotal = 0.0;
 
 	for (int cluster1 =0 ; cluster1<sizeofClusters ; cluster1++){
 
@@ -585,7 +597,7 @@ pair<vector<double>,double> Clustering::Silhouette(){
 			closestClusters.push_back(minCluster);
 		}
 		// vector<double> ai,bi;
-		double a,b;
+		double a = 0.0,b = 0.0;
 		for (int i=0 ; i < sizeofItemsInCluster ; i++){
 
 			for (int j=0 ; j<sizeofItemsInCluster ; j++){

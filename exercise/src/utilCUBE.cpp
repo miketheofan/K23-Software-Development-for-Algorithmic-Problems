@@ -19,7 +19,7 @@ double dist(int distance,item x,item y){
 	return pow(result,1.0/distance);
 }
 
-void readDatasetCUBE(string fileName,HyperCube* cube){
+void readDatasetCUBE(string fileName,HyperCube* cube,vector<item*> *dataset){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -46,9 +46,10 @@ void readDatasetCUBE(string fileName,HyperCube* cube){
 
 		counter =0;
 
-		cube->insert(new item(id,words));
-		// item temp(id,words);
-		// temp.print();
+		item* newItem = new item(id,words);
+		dataset->push_back(newItem);
+
+		cube->insert(newItem);
 	}
 }
 
@@ -99,10 +100,10 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 }
 
 
-void answerQueries(HyperCube cube,string inputFile,string queryFile,int M,int N,int R){
+void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,int R){
 
 	ifstream fp;
-	fp.open(queryFile);
+	fp.open(fileName);
 
 	string line,id,word;
 	int counter =0;
@@ -128,45 +129,80 @@ void answerQueries(HyperCube cube,string inputFile,string queryFile,int M,int N,
 
 		item queryItem(id,words);
 
-		pair<item*,double> query = cube.findNN(&queryItem,M);
-
 		cout << "Query: " << queryItem.getID() << endl;
-		cout << "Nearest neighbor-1: " << query.first->getID() << endl;
-		cout << "distanceLSH: " << query.second << endl;
-		cout << "distanceTrue: " << bruteNN(&queryItem,inputFile) << endl;
 
-		vector<pair<double,item*>> tempVector = cube.findkNN(&queryItem,M,N);
+		item* nearestNeghbor = cube->findNN(&queryItem,M).first;
+
+		if(nearestNeghbor != NULL){
+			
+			cout << "Nearest neighbor-1: " << nearestNeghbor->getID() << endl;
 		
+			cout << "distanceLSH: " << cube->findNN(&queryItem,M).second << endl;
+			cout << "distanceTrue: " << bruteNN(&queryItem,dataFile) << endl;
+		}else{
+
+			cout << "Nearest neighbor-1: NULL" << endl;
+			cout << "distanceLSH: NULL" << endl;
+			cout << "distanceTrue: " << bruteNN(&queryItem,dataFile) << endl;
+		}
+
+		vector<pair<double,item*>> tempVector = cube->findkNN(&queryItem,M,N);
+
 		auto startLSH = high_resolution_clock::now();
 
 		cout << "Nearest neigbor-" << N << ":";
-		if(tempVector.size() == (unsigned long int)N)		
-			cout << tempVector.at(N-1).second->getID();
-		cout << endl;
 
-		cout << "distanceLSH: ";
-		if(tempVector.size() == (unsigned long int)N)		
-			cout << tempVector.at(N-1).first;
-		cout << endl;
+		if(!tempVector.empty()){
 
-		auto endLSH = high_resolution_clock::now();
+			if(tempVector.size() == (unsigned long int)N)		
+				cout << tempVector.at(N-1).second->getID();
+			cout << endl;
 
-		auto startTrue = high_resolution_clock::now();
+			cout << "distanceLSH: ";
+			if(tempVector.size() == (unsigned long int)N)		
+				cout << tempVector.at(N-1).first;
+			cout << endl;
 
-		cout << "distanceTrue: ";
-		if(tempVector.size() == (unsigned long int)N)		
-			cout << brutekNN(N,&queryItem,inputFile);
-		cout << endl;
+			auto endLSH = high_resolution_clock::now();
+			
+			auto startTrue = high_resolution_clock::now();
 
-		auto endTrue = high_resolution_clock::now();
+			cout << "distanceTrue: ";
+			if(tempVector.size() == (unsigned long int)N)		
+				cout << brutekNN(N,&queryItem,dataFile);
+			cout << endl;
 
-		cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
-		cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+			auto endTrue = high_resolution_clock::now();
+
+			cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+			cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+		}else{
+
+			cout << "distanceLSH: NULL";
+			cout << endl;
+
+			auto endLSH = high_resolution_clock::now();
+			
+			auto startTrue = high_resolution_clock::now();
+
+			cout << "distanceTrue: ";
+			if(tempVector.size() == (unsigned long int)N)		
+				cout << brutekNN(N,&queryItem,dataFile);
+			cout << endl;
+
+			auto endTrue = high_resolution_clock::now();
+
+			cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+			cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+		}
+
 		cout << R << "-near neigbors: " << endl;
-		vector<pair<item*,double>> results = cube.findRange(R,&queryItem,M);
-		for(unsigned long int i=0;i<results.size();i++)
-			if(results.at(i).first != NULL)
-				cout << results.at(i).first->getID() << endl;
+		vector<pair<item*,double>> results = cube->findRange(R,&queryItem,M);
+
+		if(!results.empty())
+			for(unsigned long int i=0;i<results.size();i++)
+				if(results.at(i).first != NULL)
+					cout << results.at(i).first->getID() << endl;
 
 		cout << endl;
 	}

@@ -14,6 +14,8 @@ item::item(const item &i){
 	this->coordinates = i.coordinates;
 }
 
+item::~item(){}
+
 string item::getID(){
 	return this->itemID;
 }
