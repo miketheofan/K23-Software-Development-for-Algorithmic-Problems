@@ -68,5 +68,7 @@ int main(int argc,char **argv){
 
 	clustering.print();
 
+	pair<vector<double>,double> test = clustering.Silhouette();
+
 	return 0;
 }

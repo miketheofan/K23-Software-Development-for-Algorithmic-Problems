@@ -72,7 +72,7 @@ lsh:
 out2:
 	@./$(OUT2) $(ARGS2)
 
-cluster:
+out3:
 	@./$(OUT3) $(ARGS3)
 
 debug:

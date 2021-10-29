@@ -25,6 +25,7 @@ public:
 	int print();
 	int getDimension();
 	void deleteItem(item*);
+	vector<item*> getItems();
 	bool exists(item*);
 };
 
@@ -61,6 +62,7 @@ public:
 	double minDistCentroids();
 	void assignRest(vector<item*>);
 	bool exists(item*);
+	pair<vector<double>,double> Silhouette();
 
 };
 
