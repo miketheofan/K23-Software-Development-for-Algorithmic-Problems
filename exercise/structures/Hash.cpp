@@ -37,7 +37,7 @@ void Hash::insert(item* newItem){
 		this->hashTables.at(i)->insert(temp , newItem );
 	}
 
-	cout << endl;
+	// cout << endl;
 }
 
 void Hash::print(){
@@ -185,4 +185,8 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
     }
 
     return queries;
+}
+
+vector<item*> Hash::getItems(){
+	return this->items;
 }

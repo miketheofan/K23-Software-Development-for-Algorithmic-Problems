@@ -4,9 +4,9 @@
 
 Cluster::Cluster(item* centroid){
 
-	this->centroid = centroid;
+	this->centroid = new item(*centroid);
 	this->dimension = this->centroid->getDimension();
-	this->items.push_back(new item(*centroid));
+	this->items.push_back(centroid);
 }
 
 item* Cluster::getCentroid(){
@@ -71,6 +71,20 @@ int Cluster::getDimension(){
 	return this->dimension;
 }
 
+void Cluster::deleteItem(item *i){
+
+	vector<item*>::iterator toDelete = find(this->items.begin(),this->items.end(),i);
+	this->items.erase(toDelete);
+}
+
+bool Cluster::exists(item *i){
+
+	for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++)
+		if((i->getID() == (*it)->getID()))
+			return true;
+
+	return false;
+}
 
 Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w)
 : K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w){
@@ -161,13 +175,14 @@ void Clustering::Assign(string assignMethod){
 		else if(assignMethod == "LSH")
 			this->LSH();
 		else if(assignMethod == "Hypercube")
-			//int w = rand()%6+2
 			this->Hypercube();	
 		else{
 
 			cerr << "Not valid assignment method given." << endl;
 			return;
 		}
+
+		// this->print();
 
 		// for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++){
 
@@ -202,6 +217,9 @@ void Clustering::Assign(string assignMethod){
 
 		if(this->Update() == 1.0)
 			break;
+
+		// this->Update();
+			// break;
 
 		// cout << "After update ||" << endl;
 		// this->print();
@@ -239,38 +257,231 @@ void Clustering::Lloyd(){
 	}
 }
 
+// void Clustering::Lloyd(vector<pair<item*,double>> vec){
+
+// 	int pos = 0;
+
+// 	for(vector<pair<item*,double> >::iterator it = vec.begin(); it != vec.end(); it++ ){
+
+// 			cout << "Found item " << (*it).first->getID() << " with flag " << (*it).first->getFlag() << endl;
+
+
+// 		if((*it).first->getFlag() != -1)
+// 			continue;
+
+// 		double minimum = numeric_limits<double>::max();
+
+// 		Cluster *minCluster;
+
+// 		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+
+// 			int distance = dist(2,*(*it).first,*(*it2)->getCentroid());
+
+// 			// cout << "Distance from " << ++count << " is " << distance << endl;
+
+// 			// cout << "Item's " << (*it)->getID() << " distance from cluster " << count++ << " is " << distance << endl; 
+
+// 			if( distance < minimum ){
+
+// 				minimum = distance;
+// 				minCluster = *it2;
+// 			}
+// 		}
+
+// 		// cout << endl;
+
+// 		minCluster->insert((*it).first);
+// 		(*it).first->setFlag(pos);
+
+// 		if( (long unsigned int)(++pos) == this->clusters.size())
+// 				pos = 0;
+
+// 	}
+
+// }
+
 void Clustering::LSH(){
 
+	double range = this->minDistCentroids()/2;
+	// cout << "Range is " << range << endl;
 
+	Hash *h = new Hash(this->kLSH, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
+	this->fillHash(h);
+
+	int pos = 0;
+
+	int endCond = -1;
+	// int totalItems = this->items.size();
+
+	vector<pair<item*,double>> temp;
+
+	while(endCond){
+
+		// cout << "Range is " << range << endl;
+		// cout << "Got here" << " with endCond " << endCond << endl;
+
+		endCond = 0;
+
+		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
+
+			temp = h->findRange(range,(*it)->getCentroid());
+
+			// cout << "Returned items: " << temp.size() << endl;
+
+			for(vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
+				
+				// cout << "Entered here" << endl;
+
+				if( (*it2).first->getFlag() == -1 ){
+					
+					// cout << "Inserting " << (*it2).first->getID() << " in cluster " << pos << endl;
+
+					(*it)->insert(it2->first);
+					(*it2).first->setFlag(pos);
+					endCond++;
+
+				}else{
+
+					item *newCentroid = (*it)->getCentroid();
+					item *oldCentroid = this->clusters.at((*it2).first->getFlag())->getCentroid();
+
+					double distanceNew = dist(2,*(*it2).first,*newCentroid);
+					double distanceOld = dist(2,*(*it2).first,*oldCentroid);
+
+					if( distanceNew < distanceOld ){
+
+						// cout << "Inserting " << (*it2).first->getID() << " in cluster " << pos << endl;
+						
+						(this->clusters.at((*it2).first->getFlag())->deleteItem((*it2).first));
+						(*it)->insert(it2->first);
+						(*it2).first->setFlag(pos);
+
+						endCond++;
+					}
+				}
+			}
+
+			if( (long unsigned int)(++pos) == this->clusters.size())
+				pos = 0;
+			
+		}
+
+		range *= 2; 
+	
+	}
+
+	this->assignRest(h->getItems());
 }
 
 
 void Clustering::Hypercube(){
 
-	// int w = rand()%6+2;
-	int range = this->minDistCentroids()/2;
+	double range = this->minDistCentroids()/2;
+	// cout << "Range is " << range << endl;
 
 	HyperCube *c = new HyperCube(this->kCUBE, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
 	this->fillCube(c);
 
-	vector<pair<item*,Cluster*>> flag;
+	int pos = 0;
 
-	while(1){
-		for (vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
+	int endCond = -1;
+	// int totalItems = this->items.size();
 
-			vector<pair<item*,double>> temp = c->findRange(range,(*it)->getCentroid(),this->M);
+	vector<pair<item*,double>> temp;
 
-			for ( vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
+	while(endCond){
 
-				// if()
-				(*it)->insert(it2->first);
+		// cout << "Range is " << range << endl;
+		// cout << "Got here" << " with endCond " << endCond << endl;
+
+		endCond = 0;
+
+		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
+
+			temp = c->findRange(range,(*it)->getCentroid(),this->M);
+
+			// cout << "Returned items: " << temp.size() << endl;
+
+			for(vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
+				
+				// cout << "Entered here" << endl;
+
+				if( (*it2).first->getFlag() == -1 ){
+					
+					// cout << "Inserting " << (*it2).first->getID() << " in cluster " << pos << endl;
+
+					(*it)->insert(it2->first);
+					(*it2).first->setFlag(pos);
+					endCond++;
+
+				}else{
+
+					item *newCentroid = (*it)->getCentroid();
+					item *oldCentroid = this->clusters.at((*it2).first->getFlag())->getCentroid();
+
+					double distanceNew = dist(2,*(*it2).first,*newCentroid);
+					double distanceOld = dist(2,*(*it2).first,*oldCentroid);
+
+					if( distanceNew < distanceOld ){
+
+						// cout << "Inserting " << (*it2).first->getID() << " in cluster " << pos << endl;
+						
+						(this->clusters.at((*it2).first->getFlag())->deleteItem((*it2).first));
+						(*it)->insert(it2->first);
+						(*it2).first->setFlag(pos);
+
+						endCond++;
+					}
+				}
 			}
-			//(*it)->Update();
+
+			if( (long unsigned int)(++pos) == this->clusters.size())
+				pos = 0;
+			
 		}
+
 		range *= 2; 
 	
 	}
 
+	this->assignRest(c->getItems());
+
+	// delete c;
+
+}
+
+void Clustering::assignRest(vector<item*> items){
+
+	for(vector<item*>::iterator it = items.begin(); it != items.end(); it++){
+
+		// if((*it)->getFlag() != -1) continue;
+
+		if(this->exists(*it)) continue;
+
+		double minimum = numeric_limits<double>::max();
+
+		Cluster *minCluster;
+
+		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+
+			int distance = dist(2,**it,*(*it2)->getCentroid());
+
+			// cout << "Distance from " << ++count << " is " << distance << endl;
+
+			// cout << "Item's " << (*it)->getID() << " distance from cluster " << count++ << " is " << distance << endl; 
+
+			if( distance < minimum ){
+
+				minimum = distance;
+				minCluster = *it2;
+			}
+		}
+
+		// cout << endl;
+
+		// cout << "Inserting item " << (*it)->getID() << " with flag " << (*it)->getFlag() << endl;
+		minCluster->insert(*it);
+	}
 }
 
 double Clustering::Update(){
@@ -301,20 +512,31 @@ void Clustering::print(){
 
 void Clustering::fillCube(HyperCube* cube){
 
-	for (vector<item*>::iterator i = items.begin() ; i!=items.end() ; i++){
+	for (vector<item*>::iterator i = items.begin() ; i!=items.end() ; i++)
 		cube->insert(*i);
-	}
+}
 
+void Clustering::fillHash(Hash* hash){
+
+	for (vector<item*>::iterator i = items.begin() ; i!=items.end() ; i++)
+		hash->insert(*i);
 }
 
 double Clustering::minDistCentroids(){
 	
 	double minimum = numeric_limits<double>::max();
 
-	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
-		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+	for(unsigned long int i=0; i < this->clusters.size(); i++)
+		for(unsigned long int j=0; j < this->clusters.size(); j++){
 
-			double distance = dist(2,*(*it)->getCentroid(),*(*it2)->getCentroid());
+			if( i == j ) continue;
+
+			// cout << "Comparing centroid: ";
+			// this->clusters.at(i)->getCentroid()->print();
+			// cout << endl << " with centroid: ";
+			// this->clusters.at(j)->getCentroid()->print();cout << endl;
+
+			double distance = dist(2,*this->clusters.at(i)->getCentroid(),*this->clusters.at(j)->getCentroid());
 
 			if(distance < minimum)
 				minimum = distance;
@@ -322,4 +544,13 @@ double Clustering::minDistCentroids(){
 		}
 
 	return minimum;
+}
+
+bool Clustering::exists(item* i){
+
+	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+		if( (*it)->exists(i) )
+			return true;
+
+	return false;	
 }

@@ -5,6 +5,7 @@ using namespace std;
 
 #include "./items.h"
 #include "../headers/HyperCube.h"
+#include "../headers/Hash.h"
 
 class Cluster{
 
@@ -23,6 +24,8 @@ public:
 	void clearCluster();
 	int print();
 	int getDimension();
+	void deleteItem(item*);
+	bool exists(item*);
 };
 
 class Clustering{
@@ -47,13 +50,17 @@ public:
 	void kMeansPP();
 	void Assign(string);
 	void Lloyd();
+	// void Lloyd(vector<pair<item*,double>>);
 	void LSH();
 	void Hypercube();
 	double Update();
 	void clearClusters();
 	void print();
 	void fillCube(HyperCube*);
+	void fillHash(Hash*);
 	double minDistCentroids();
+	void assignRest(vector<item*>);
+	bool exists(item*);
 
 };
 

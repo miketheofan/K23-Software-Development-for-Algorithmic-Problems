@@ -162,6 +162,50 @@ int32_t H(item *p,int w,vector<double> * v,double t){
 
 }
 
+int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize,double t,vector<double> *v){
+
+    long int M = pow(2,32/k);
+    // cout << "M : " << M << endl;
+
+	// vector<uint32_t> hashFunctions;
+	int result =0;
+	//int32_t temp;
+	for(int i=0;i<k;i++){
+
+		// int32_t r = rand();
+
+		// cout << "Before addition is: " << (result) << endl;
+		//temp = H(p,w);
+		//temp = module(temp,M);
+		// cout << "temp is : " << temp << endl;
+		int temp = module(H(p,w,v,t)*rVector.at(i),M);
+		// cout << "Result is " << temp << endl;
+		result += temp;
+		// cout << "After addition is: " << (result) << endl;
+	}
+
+	// cout << "It came out as: " << result << endl;
+	//cout << "Result is : " << result;
+	result = module(result,M);
+	// cout << "After modM is " << result << endl;
+	p->setTrick(result);
+	// cout << endl << "NOw IT IS " << result << endl;
+
+	// result2 = module(result,M);
+	result = module(result,tableSize);
+	// cout << "After mod" << tableSize << " is " << result << endl;
+	// result2 = module(result,tableSize);
+	
+	//cout << "Result is: " << result << endl;
+
+	return result;
+
+}
+
+int module(int a, int b){
+    return (a%b + b) % b;
+}
+
 vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 	default_random_engine generator(random_device{}());

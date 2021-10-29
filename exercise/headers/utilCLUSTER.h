@@ -19,8 +19,7 @@ item* getRandomItem(vector<item*>);
 double prob(vector<pair<item*,double>>);
 int32_t H(item *,int ,vector<double> * ,double );
 vector<double>* produceNdistVector(int ,int ,int );
-
-
-
+int module(int,int);
+int32_t G(item*,int,int,vector<int32_t>,int,double,vector<double> *);
 
 #endif

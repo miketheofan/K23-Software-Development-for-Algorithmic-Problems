@@ -14,6 +14,7 @@ private:
 	int trick;
 	string itemID;
 	vector<double> coordinates;
+	int flag = -1;
 
 public:
 
@@ -26,6 +27,8 @@ public:
 	int getDimension();
 	double getCoordinatein(int);
 	void print();
+	void setFlag(int);
+	int getFlag();
 };
 
 #endif

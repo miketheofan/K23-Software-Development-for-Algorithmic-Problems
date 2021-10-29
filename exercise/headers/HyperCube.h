@@ -41,6 +41,7 @@ public:
 	vector<pair<double,item*>> findkNN(item*,int,int);
 	vector<pair<item*,double>> findRange(int,item*,int);
 	set<int32_t> HammingDist(int32_t , int, int, int);
+	vector<item*> getItems();
 
 };
 

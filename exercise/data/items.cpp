@@ -52,3 +52,11 @@ void item::print(){
 
 	cout << endl;
 }
+
+void item::setFlag(int flag){
+	this->flag = flag;
+}
+
+int item::getFlag(){
+	return this->flag;
+}

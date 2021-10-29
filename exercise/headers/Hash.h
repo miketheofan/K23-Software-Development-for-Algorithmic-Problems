@@ -36,6 +36,7 @@ public:
 	vector<pair<double,item*> > findkNN(int,item*);
     vector<pair<item*,double>> findRange(int,item*);
 	void print();
+	vector<item*> getItems();
 
 };
 

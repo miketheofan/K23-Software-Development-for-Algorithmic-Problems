@@ -26,6 +26,7 @@ HyperCube::~HyperCube(){}
 void HyperCube::insert(item *it){
 
 	this->items.push_back(it);
+
 	this->cube->insert(this->hashFunction(it),it);
 }
 
@@ -150,7 +151,6 @@ vector<pair<item*,double>> HyperCube::findRange(int r,item* queryItem,int M){
 	vector<pair<item*,double>> queries;
 
 	int32_t hash = this->hashFunction(queryItem);
-    //cout << "G is : " << G << endl;
     HashNode* tempBucket;
 
     int flag = 0;
@@ -226,4 +226,8 @@ int HyperCube::coinFlip(){
 	uniform_real_distribution<> distance(0.01,1.99);
 
 	return (int)distance(generator);
+}
+
+vector<item*> HyperCube::getItems(){
+	return this->items;
 }
