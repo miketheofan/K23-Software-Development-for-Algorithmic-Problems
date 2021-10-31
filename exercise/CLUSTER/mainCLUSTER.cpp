@@ -12,6 +12,7 @@ int main(int argc,char **argv){
 	int M = 10;
 	int kCUBE = 3;
 	int probes = 2;
+	bool complete = false;
 
 	/* Get the data we need from argv. */
 	for(int i=0;i<argc;i++)
@@ -23,6 +24,8 @@ int main(int argc,char **argv){
 			outputFile = argv[++i];
 		else if(!strcmp(argv[i],"-m"))
 			method = argv[++i];
+		else if(!strcmp(argv[i],"-complete"))
+			complete = true;
 
 	if(inputFile == ""){
 
@@ -54,38 +57,43 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
-	int w = rand()%6+2;
+	ofstream file(outputFile);
+	file.close();
+
+	int w = calculateW(inputFile,200);
 
 	readConf(configurationFile,&K,&L,&kLSH,&M,&kCUBE,&probes);
 
-	Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
+	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete);
 
-	vector<item*> dataset;
+	// Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
 
-	readDatasetCLUSTER(inputFile,&clustering,&dataset);
-	//readDatasetCUBE()
+	// vector<item*> dataset;
 
-	clustering.kMeansPP();
-	clustering.Assign("Hypercube");
+	// readDatasetCLUSTER(inputFile,&clustering,&dataset);
+	// //readDatasetCUBE()
 
-	clustering.print();
+	// clustering.kMeansPP();
+	// clustering.Assign("Hypercube");
 
-	pair<vector<double>,double> test = clustering.Silhouette();
+	// clustering.print();
 
-	cout << "Algorithm: " << endl;
-	cout << "Silhouette: [";
+	// pair<vector<double>,double> test = clustering.Silhouette();
 
-	vector<double> result = test.first;
+	// cout << "Algorithm: " << endl;
+	// cout << "Silhouette: [";
 
-	for(vector<double>::iterator it = result.begin(); it != result.end(); it++){
+	// vector<double> result = test.first;
 
-		cout << (*it) << ",";
-	}
+	// for(vector<double>::iterator it = result.begin(); it != result.end(); it++){
 
-	cout << test.second << "]" << endl;
+	// 	cout << (*it) << ",";
+	// }
 
-	for(unsigned long int i=0;i<dataset.size();i++)
-		delete(dataset.at(i));
+	// cout << test.second << "]" << endl;
+
+	// for(unsigned long int i=0;i<dataset.size();i++)
+	// 	delete(dataset.at(i));
 
 	return 0;
 }

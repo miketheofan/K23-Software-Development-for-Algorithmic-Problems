@@ -73,10 +73,10 @@ out2:
 	@./$(OUT2) $(ARGS2)
 
 out3:
-	@./$(OUT3) $(ARGS3)
+	time ./$(OUT3) $(ARGS3)
 
 debug:
-	@valgrind  --track-origins=yes --leak-check=full ./$(OUT3) $(ARGS3)
+	@valgrind  --track-origins=yes --leak-check=full ./$(OUT2) $(ARGS2)
 
 clean:
 	@rm $(OUT1)

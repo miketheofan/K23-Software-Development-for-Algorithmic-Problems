@@ -28,6 +28,7 @@ public:
 	void deleteItem(item*);
 	vector<item*> getItems();
 	bool exists(item*);
+	pair<string,vector<string>> getCompleteCluster();	
 };
 
 class Clustering{
@@ -50,10 +51,12 @@ public:
 	~Clustering();
 	int noItems();
 	void insert(item*);
+	vector<Cluster*> getClusters();
 	void kMeansPP();
 	void Assign(string);
 	void Lloyd();
-	// void Lloyd(vector<pair<item*,double>>);
+	pair<int,item*> getClusterat(int);
+	pair<string,vector<string>> getCompleteClusterat(int);
 	void LSH();
 	void Hypercube();
 	double Update();

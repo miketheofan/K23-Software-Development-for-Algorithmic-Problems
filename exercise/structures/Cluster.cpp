@@ -25,6 +25,16 @@ int Cluster::print(){
 	return this->items.size();
 }
 
+pair<string,vector<string>> Cluster::getCompleteCluster(){
+
+	vector<string> ids;
+
+	for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++)
+		ids.push_back((*it)->getID());
+
+	return make_pair(this->centroid->getID(),ids);
+}
+
 bool Cluster::Update(){
 
 	bool flag = false;
@@ -113,6 +123,24 @@ int Clustering::noItems(){
 void Clustering::insert(item* item){
 	this->items.push_back(item);
 }
+
+vector<Cluster*> Clustering::getClusters(){
+	return this->clusters;
+}
+
+pair<int,item*> Clustering::getClusterat(int index){
+
+	Cluster *tmp = this->clusters.at(index);
+	int size = tmp->getItems().size();
+	item *centoid = tmp->getCentroid();
+
+	return make_pair(size,centoid);
+}
+
+pair<string,vector<string>> Clustering::getCompleteClusterat(int index){
+	return this->clusters.at(index)->getCompleteCluster();
+}
+
 
 void Clustering::kMeansPP(){
 

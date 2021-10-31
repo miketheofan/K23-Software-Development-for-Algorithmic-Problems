@@ -67,7 +67,7 @@ pair<item*,double> HyperCube::findNN(item* queryItem,int M){
 	// cout << "hash returned: " << (bitset<14>)hash << endl;
 	HashNode* tempBucket;
 
-	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k,0);
+	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k);
 
 	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
@@ -110,7 +110,7 @@ vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 
 	HashNode* tempBucket;
 
-	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k,0);
+	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k);
 
 	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
@@ -161,7 +161,7 @@ vector<pair<item*,double>> HyperCube::findRange(int r,item* queryItem,int M){
 
     double distance;
 
-    set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k,0);
+    set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k);
 
 	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
@@ -183,42 +183,53 @@ vector<pair<item*,double>> HyperCube::findRange(int r,item* queryItem,int M){
     return queries;
 }
 
-set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k,int count){
+set<int32_t> HyperCube::HammingDist(int32_t key , int probes ,int k){
+
+	queue<pair<int32_t,int>> q;
+
+	int32_t tempKey = key;
 
 	set<int32_t> result;
 	int32_t mask;
-    int masked_key;
-    int thebit;
+    
+    int flag = pow(2,k);
+    int count = 1;
+
+    int startingPoint = 0;
 	
-	if (probes == 0){
+    if(probes == 0) return result;
 
-		result.insert(key);
-		return result;	
+ 	result.insert(key);
+   
+	if(probes == 1) return result;	
+
+	while(++count != flag){
+
+		for (int i=startingPoint ; i<k ; i++){
+
+			mask = pow(2,i);
+			int32_t newKey = tempKey^mask;
+			
+			q.push(make_pair(newKey,i+1));
+
+			result.insert(newKey);
+
+			if(result.size() == (unsigned long int)probes)
+				return result;
+
+			cout << endl;
+
+		}
+
+		tempKey = q.front().first;
+		startingPoint = q.front().second;
+		// cout << "tempKey became " << bitset<3>(tempKey) << endl;
+	
+		q.pop();
+
 	}
 
-	for (int i=count ; i<k ; i++){
-
-		mask = 1 << i;
-		masked_key = key & mask;
-		thebit = masked_key >> i;
-
-		int32_t tempKey = key ^ mask;
-		
-		// cout << "i is " << i << " key is " << bitset<3>(key) << endl;
-		// cout << "It is now " << bitset<3>(tempKey) << endl;
-
-		set<int32_t> tempSet = HammingDist(tempKey,probes-1,k,count+1);
-		// for(auto i = tempSet.begin();i != tempSet.end();i++){
-		// bitset<3> temp = *i;
-		// cout << temp << " " << endl;
-		//}
-		result.insert(tempKey);
-		result.insert(tempSet.begin(),tempSet.end());
-
-		count++;
-	}
-
-	result.insert(key);
+	// result.insert(key);
 	return result;
 }
 
