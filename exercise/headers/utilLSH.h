@@ -22,11 +22,11 @@ int32_t module(int,int);
 void readDatasetLSH(string,Hash*,vector<item*>*);
 vector<double>* produceNdistVector(int,int,int);
 int32_t H(item*,int,double,vector<double> *);
-int32_t G(item*,int,int,vector<int32_t>,int,double,vector<double> *);
+int32_t G(item*,int,int,vector<int32_t>,int/*,double,vector<double> **/);
 int countItems(string);
-void answerQueries(Hash*,string,string,int,int);
-
-// double mean = 0.0;
-// double stddev = 1.0;
+void answerQueries(Hash*,string,string,int,int,string);
+int calculateW(string,int);
+int getDimension(string);
+void writeToFile(string,string);
 
 #endif

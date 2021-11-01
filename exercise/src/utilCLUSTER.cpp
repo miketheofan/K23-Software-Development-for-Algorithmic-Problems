@@ -171,7 +171,17 @@ int32_t H(item *p,int w,vector<double> * v,double t){
 
 }
 
-int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize,double t,vector<double> *v){
+int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize){
+
+	/* We use uniform distribution in order to generate a random t in range [0,w). */
+	random_device rd;
+	mt19937 generator(rd());
+	uniform_real_distribution<> distance(0,w);
+
+	double t = distance(generator);
+
+	/* We use normal distribution in order to generate a random vector v. */
+	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
     long int M = pow(2,32/k);
     // cout << "M : " << M << endl;
@@ -342,11 +352,11 @@ int calculateW(string fileName,int flag){
 	return 0;
 }
 
-void functionality(string inputFile,string outputFile,int K, int L, int kLSH, int M, int kCUBE, int probes, int w, bool complete){
+void functionality(string inputFile,string outputFile,int K, int L, int kLSH, int M, int kCUBE, int probes, int w, bool complete, int totalItems){
 
 /*******************LLOYD*****************************/
 
-	Clustering clustering1(K,L,kLSH,M,kCUBE,probes,w);
+	Clustering clustering1(K,L,kLSH,M,kCUBE,probes,w,totalItems);
 
 	vector<item*> dataset;
 
@@ -383,7 +393,8 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	pair<vector<double>,double> test1 = clustering1.Silhouette();
+	pair<vector<double>,double> test1;
+	// clustering1.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 	// cout << "Silhouette: [";
@@ -419,7 +430,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 /*************************LSH************************/
 
-	Clustering clustering2(K,L,kLSH,M,kCUBE,probes,w);
+	Clustering clustering2(K,L,kLSH,M,kCUBE,probes,w,totalItems);
 
 	readDatasetCLUSTER(inputFile,&clustering2,&dataset);
 
@@ -451,7 +462,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	test1 = clustering2.Silhouette();
+	// test1 = clustering2.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 	// cout << "Silhouette: [";
@@ -487,7 +498,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 /********************HYPERCUBE***************/
 
-	Clustering clustering3(K,L,kLSH,M,kCUBE,probes,w);
+	Clustering clustering3(K,L,kLSH,M,kCUBE,probes,w,totalItems);
 
 	readDatasetCLUSTER(inputFile,&clustering3,&dataset);
 
@@ -519,7 +530,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	test1 = clustering3.Silhouette();
+	// test1 = clustering3.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 
@@ -549,4 +560,19 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 	}
 
 	writeToFile(outputFile,"\n");
+}
+
+int countItems(string fileName){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line;
+	int n =0;
+
+	while( getline(fp,line) )
+		n++;
+
+	return n;
+
 }

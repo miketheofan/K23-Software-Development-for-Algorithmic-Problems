@@ -42,12 +42,13 @@ private:
 	int kCUBE;
 	int probes;
 	int w;
+	int totalItems;
 	vector<item*> items;
 	vector<Cluster*> clusters;
 
 public:
 
-	Clustering(int,int,int,int,int,int,int);
+	Clustering(int,int,int,int,int,int,int,int);
 	~Clustering();
 	int noItems();
 	void insert(item*);
@@ -57,8 +58,8 @@ public:
 	void Lloyd();
 	pair<int,item*> getClusterat(int);
 	pair<string,vector<string>> getCompleteClusterat(int);
-	void LSH();
-	void Hypercube();
+	void LSH(Hash*);
+	void Hypercube(HyperCube*);
 	double Update();
 	void clearClusters();
 	void print();

@@ -60,11 +60,13 @@ int main(int argc,char **argv){
 	ofstream file(outputFile);
 	file.close();
 
-	int w = calculateW(inputFile,200);
+	int totalItems = countItems(inputFile);
+
+	int w = rand()%6+2;
 
 	readConf(configurationFile,&K,&L,&kLSH,&M,&kCUBE,&probes);
 
-	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete);
+	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete,totalItems);
 
 	// Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
 

@@ -104,8 +104,8 @@ vector<item*> Cluster::getItems(){
 	return this->items;
 }
 
-Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w)
-: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w){
+Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w, int totalItems)
+: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w), totalItems(totalItems) {
 
 
 }
@@ -208,6 +208,12 @@ void Clustering::Assign(string assignMethod){
 
 	// int count = 0;
 
+	Hash *h = new Hash(this->kLSH, this->L, this->w, this->totalItems/4,this->clusters.at(0)->getDimension());
+	this->fillHash(h);
+
+	HyperCube *c = new HyperCube(this->kCUBE, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
+	this->fillCube(c);
+
 	while(1){
 
 		this->clearClusters();
@@ -215,9 +221,9 @@ void Clustering::Assign(string assignMethod){
 		if(assignMethod == "Classic")
 			this->Lloyd();
 		else if(assignMethod == "LSH")
-			this->LSH();
+			this->LSH(h);
 		else if(assignMethod == "Hypercube")
-			this->Hypercube();	
+			this->Hypercube(c);	
 		else{
 
 			cerr << "Not valid assignment method given." << endl;
@@ -257,7 +263,7 @@ void Clustering::Assign(string assignMethod){
 		// cout << "Before update ||" << endl;
 		// this->print();
 
-		if(this->Update() == 1.0)
+		if(this->Update() >= 0.8)
 			break;
 
 		// this->Update();
@@ -267,6 +273,8 @@ void Clustering::Assign(string assignMethod){
 		// this->print();
 	}
 
+	delete h;
+	delete c;
 }
 
 void Clustering::Lloyd(){
@@ -299,69 +307,27 @@ void Clustering::Lloyd(){
 	}
 }
 
-// void Clustering::Lloyd(vector<pair<item*,double>> vec){
-
-// 	int pos = 0;
-
-// 	for(vector<pair<item*,double> >::iterator it = vec.begin(); it != vec.end(); it++ ){
-
-// 			cout << "Found item " << (*it).first->getID() << " with flag " << (*it).first->getFlag() << endl;
-
-
-// 		if((*it).first->getFlag() != -1)
-// 			continue;
-
-// 		double minimum = numeric_limits<double>::max();
-
-// 		Cluster *minCluster;
-
-// 		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
-
-// 			int distance = dist(2,*(*it).first,*(*it2)->getCentroid());
-
-// 			// cout << "Distance from " << ++count << " is " << distance << endl;
-
-// 			// cout << "Item's " << (*it)->getID() << " distance from cluster " << count++ << " is " << distance << endl; 
-
-// 			if( distance < minimum ){
-
-// 				minimum = distance;
-// 				minCluster = *it2;
-// 			}
-// 		}
-
-// 		// cout << endl;
-
-// 		minCluster->insert((*it).first);
-// 		(*it).first->setFlag(pos);
-
-// 		if( (long unsigned int)(++pos) == this->clusters.size())
-// 				pos = 0;
-
-// 	}
-
-// }
-
-void Clustering::LSH(){
+void Clustering::LSH(Hash *h){
 
 	double range = this->minDistCentroids()/2;
 	// cout << "Range is " << range << endl;
 
-	Hash *h = new Hash(this->kLSH, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
-	this->fillHash(h);
+	// Hash *h = new Hash(this->kLSH, this->L, this->w, this->totalItems/4,this->clusters.at(0)->getDimension());
+	// this->fillHash(h);
+
+	int totalItems = h->getItems().size();
 
 	int pos = 0;
 
 	int endCond = -1;
+	int lastendCond = 0;
 	// int totalItems = this->items.size();
 
 	vector<pair<item*,double>> temp;
 
-	while(endCond){
+	while(endCond != lastendCond){
 
-		// cout << "Range is " << range << endl;
-		// cout << "Got here" << " with endCond " << endCond << endl;
-
+		lastendCond = endCond;
 		endCond = 0;
 
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
@@ -414,30 +380,33 @@ void Clustering::LSH(){
 
 	this->assignRest(h->getItems());
 
-	delete h;
+	// delete h;
 }
 
-
-void Clustering::Hypercube(){
+void Clustering::Hypercube(HyperCube *c){
 
 	double range = this->minDistCentroids()/2;
 	// cout << "Range is " << range << endl;
 
-	HyperCube *c = new HyperCube(this->kCUBE, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
-	this->fillCube(c);
+	// HyperCube *c = new HyperCube(this->kCUBE, this->w,this->M,this->probes,this->clusters.at(0)->getDimension());
+	// this->fillCube(c);
+
+	// int totalItems = c->getItems().size();
 
 	int pos = 0;
 
 	int endCond = -1;
+	int lastendCond = 0;
 	// int totalItems = this->items.size();
 
 	vector<pair<item*,double>> temp;
 
-	while(endCond){
+	while(endCond != lastendCond){
 
 		// cout << "Range is " << range << endl;
 		// cout << "Got here" << " with endCond " << endCond << endl;
 
+		lastendCond = endCond;
 		endCond = 0;
 
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
@@ -490,7 +459,7 @@ void Clustering::Hypercube(){
 
 	this->assignRest(c->getItems());
 
-	delete c;
+	// delete c;
 
 }
 

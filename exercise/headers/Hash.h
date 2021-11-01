@@ -23,10 +23,10 @@ private:
 	vector<int32_t> rVector;
 	int size;
 	int dimension;
-	double t;
+	// double t;
 	vector<item*> items;
 	vector<HashTable*> hashTables;
-	vector<double> *v;
+	// vector<double> *v;
 	
 public:
 

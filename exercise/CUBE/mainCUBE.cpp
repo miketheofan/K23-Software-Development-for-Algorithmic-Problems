@@ -50,7 +50,7 @@ int main(int argc,char **argv){
 
 	int dimension = getDimension(inputFile);
 
-	int w = calculateW(inputFile,200);
+	int w = rand()%6+2;
 
 	string check;
 

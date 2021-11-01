@@ -31,49 +31,92 @@ int main(int argc,char **argv){
 
 	if(inputFile == ""){
 
-		cerr << "Input file not given." << endl;
-		exit(-1);
-	}
-	if(queryFile == ""){
+		bool flag = true;
 
-		cerr << "Query file not given." << endl;
-		exit(-1);
-	}
-	if(outputFile == ""){
+		do{
 
-		cerr << "Output file not given." << endl;
-		exit(-1);
-	}
+			cout << "Give me the path of the dataset file: " << endl;
+			cin >> inputFile;
 
-	ifstream file1(inputFile);
-	if(!file1){
+			ifstream file1(inputFile);
+			if(!file1){
 
-		cerr << "Input file does not exist." << endl;
-		exit(-1);
+				cerr << "inputFile does not exist.";
+				flag = false;
+			}
+
+		}while(flag == false);
+	
 	}
 
-	ifstream file2(queryFile);
-	if(!file2){
-
-		cerr << "Query file does not exist." << endl;
-		exit(-1);
-	}
+	int dimension = getDimension(inputFile);
 
 	int w = rand()%6+2;
 
-	Hash hash(k,L,w,countItems(inputFile)/4,128);
+	string check;
 
-	vector<item*> dataset;
+	do{
 
-	readDatasetLSH(inputFile,&hash,&dataset);
+		Hash hash(k,L,w,countItems(inputFile)/4,128);
 
-	// hash.print();
-	answerQueries(&hash,queryFile,inputFile,N,R);
-	
-	// hash.print();
+		vector<item*> dataset;
 
-	for(unsigned long int i=0;i<dataset.size();i++)
-		delete(dataset.at(i));
+		readDatasetLSH(inputFile,&hash,&dataset);
+
+		if(queryFile == ""){
+
+			bool flag = true;
+
+			do{
+
+				cout << "Give me the path of the query file: " << endl;
+				cin >> queryFile;
+
+				ifstream file1(queryFile);
+				if(!file1){
+
+					cerr << "queryFile does not exist.";
+					flag = false;
+				}
+
+			}while(flag == false);
+
+		}
+
+		if(outputFile == ""){
+
+			bool flag = true;
+
+			do{
+
+				cout << "Give me the path of the output file: " << endl;
+				cin >> outputFile;
+
+				ifstream file1(outputFile);
+				if(!file1){
+
+					cerr << "outputFile does not exist.";
+					flag = false;
+				}
+
+			}while(flag == false);
+
+		}
+
+		ofstream file(outputFile);
+		file.close();
+
+		// hash.print();
+		answerQueries(&hash,queryFile,inputFile,N,R,outputFile);
+		
+		string inputFile = "";
+		string queryFile = "";
+		string outputFile = "";
+
+		for(unsigned long int i=0;i<dataset.size();i++)
+			delete(dataset.at(i));
+
+	}while(check == "Y");
 
 	return 0;
 }
