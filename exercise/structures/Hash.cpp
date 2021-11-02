@@ -6,11 +6,13 @@ Hash::Hash(int k,int L,int w,int size,int dimension) : k(k), L(L), w(w), size(si
 	for(int i=0;i<this->L;i++){
 
 		HashTable *tempMap = new HashTable(size);
-		hashTables.push_back(tempMap);
+		this->hashTables.push_back(tempMap);
+
+		this->gVector.push_back(new Gi(k,dimension,w));
 	}
 
-	for(int i=0;i<k;i++)
-		this->rVector.push_back((int32_t)rand());
+	// for(int i=0;i<k;i++)
+	// 	this->rVector.push_back((int32_t)rand());
 
 	// /* We use uniform distribution in order to generate a random t in range [0,w). */
 	// random_device rd;
@@ -59,7 +61,9 @@ void Hash::insert(item* newItem){
 
 	for(int i=0;i<this->L;i++){
 
-		int32_t temp = G(newItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+		// int32_t temp = G(newItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+		int32_t temp = this->gVector.at(i)->Hashi(newItem,this->size);
+
 		// cout << "Hashtable " << i << " inserting " << newItem->getID() << " in " << temp << endl;
 		this->hashTables.at(i)->insert(temp , newItem );
 	}
@@ -84,11 +88,12 @@ pair<item*,double> Hash::findNN(item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+	// int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){
 
+		int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
 		tempBucket = this->hashTables.at(i)->getBucket(hash);
 
 		while(tempBucket != NULL){
@@ -122,11 +127,12 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+	// int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
 	HashNode* tempBucket;	
 
 	for(int i=0;i<this->L;i++){
 
+		int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
 		tempBucket = this->hashTables.at(i)->getBucket(hash);
 
 		while(tempBucket != NULL){
@@ -175,7 +181,8 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
     
     vector<pair<item*,double>> queries;
 
-    int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+    // int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+	// int32_t hash = this->gVector.at(i)->Hash(newItem,this->size);
     //cout << "G is : " << G << endl;
     HashNode* tempBucket;
 
@@ -185,7 +192,8 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
 
     for (int i=0 ; i<this->L ; i++){
 
-        tempBucket = this->hashTables.at(i)->getBucket(hash);
+ 		int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
+       	tempBucket = this->hashTables.at(i)->getBucket(hash);
         
         while (tempBucket != NULL){
             

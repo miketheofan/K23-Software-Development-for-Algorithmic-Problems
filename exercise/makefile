@@ -8,9 +8,9 @@ BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 CLUSTER_FILES = ./CLUSTER/
 
-LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/utilLSH.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsLSH.o 
-CUBE_OBJS = $(CUBE_FILES)/mainCUBE.o $(SOURCE_FILES)/utilCUBE.o $(STRUCTURES_FILES)/HyperCube.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsCUBE.o
-CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.o $(SOURCE_FILES)/utilCLUSTER.o $(STRUCTURES_FILES)/Cluster.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HyperCube.o  $(STRUCTURES_FILES)/HashTable.o $(STRUCTURES_FILES)/Hash.o
+LSH_OBJS = $(LSH_FILES)/mainLSH.o $(SOURCE_FILES)/utilLSH.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsLSH.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o
+CUBE_OBJS = $(CUBE_FILES)/mainCUBE.o $(SOURCE_FILES)/utilCUBE.o $(STRUCTURES_FILES)/HyperCube.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/bruteFunctionsCUBE.o $(STRUCTURES_FILES)/H.o
+CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.o $(SOURCE_FILES)/utilCLUSTER.o $(STRUCTURES_FILES)/Cluster.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/HyperCube.o  $(STRUCTURES_FILES)/HashTable.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o
 SOURCE = $(LSH_FILES)mainLSH.cpp $(SOURCE_FILES)/utilLSH.cpp $(DATA_FILES)/items.cpp $(STRUCTURES_FILES)/Hash.cpp $(STRUCTURES_FILES)/HashTable.cpp $(BRUTE_FILES)/bruteFunctionsLSH.cpp $(CUBE_FILES)/mainCUBE.cpp $(STRUCTURES_FILES)/HyperCube.cpp $(SOURCE_FILES)/utilCUBE.cpp $(BRUTE_FILES)/bruteFunctionsCUBE.cpp $(CLUSTER_FILES)/mainCLUSTER.cpp $(SOURCE_FILES)/utilCLUSTER.cpp $(STRUCTURES_FILES)/Cluster.cpp
 HEADER = $(LSH_FILES)mainLSH.h $(HEADER_FILES)/utilLSH.h $(HEADER_FILES)/items.h $(HEADER_FILES)/HashTable.o $(HEADER_FILES)/bruteFunctionsLSH.h $(CUBE_FILES)/mainCUBE.h $(HEADER_FILES)/HyperCube.h $(HEADER_FILES)/utilCUBE.h $(HEADER_FILES)/bruteFunctionsCUBE.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/utilCLUSTER.h $(HEADER_FILES)/Cluster.h
 OUT1 = outLSH
@@ -24,8 +24,8 @@ FLAGS = -g -c -Ο3
 
 all: $(LSH_OBJS) $(CUBE_OBJS) $(CLUSTER_OBJS)
 	$(CC) -g $(LSH_OBJS) -o $(OUT1)
-	$(CC) -g $(CUBE_OBJS) -o $(OUT2)
-	$(CC) -g $(CLUSTER_OBJS) -o $(OUT3)
+# 	$(CC) -g $(CUBE_OBJS) -o $(OUT2)
+# 	$(CC) -g $(CLUSTER_OBJS) -o $(OUT3)
 
 mainLSH.o: mainLSH.cpp
 	$(CC) $(FLAGS) $(LSH_FILES)mainLSH.cpp
@@ -64,9 +64,15 @@ utilCLUSTER.o: utilCLUSTER.cpp
 	$(CC) $(FLAGS) $(SOURCE_FILES)utilCLUSTER.cpp	
 
 Cluster.o: Cluster.cpp
-	$(CC) $(FLAGS) $(SOURCE_FILES)Cluster.cpp	
+	$(CC) $(FLAGS) $(SOURCE_FILES)Cluster.cpp
 
-lsh:
+G.o: G.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)G.cpp	
+
+H.o: H.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)H.cpp		
+
+out1:
 	@./$(OUT1) $(ARGS1)
 
 out2:

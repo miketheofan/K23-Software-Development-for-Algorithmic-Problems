@@ -10,8 +10,9 @@
 
 using namespace std;
 
-#include "items.h"
-#include "HashTable.h"
+#include "./items.h"
+#include "./HashTable.h"
+#include "./G.h"
 
 class Hash{
 
@@ -20,12 +21,13 @@ private:
 	int k;
 	int L;
 	int w;
-	vector<int32_t> rVector;
+	// vector<int32_t> rVector;
 	int size;
 	int dimension;
 	// double t;
 	vector<item*> items;
 	vector<HashTable*> hashTables;
+	vector<Gi*> gVector;
 	// vector<double> *v;
 	
 public:

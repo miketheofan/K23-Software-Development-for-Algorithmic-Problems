@@ -88,65 +88,65 @@ vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
 }
 
-int32_t H(item *p,int w,double t,vector<double> *v){
+// int32_t H(item *p,int w,double t,vector<double> *v){
 
-	/* We calculate the scaler product between vectors p and (randomly generated) v. */
-	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),v->begin(),0.0);
+// 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
+// 	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),v->begin(),0.0);
 
-	return (int32_t)floor( (scalerProduct + t) / (double)w );
+// 	return (int32_t)floor( (scalerProduct + t) / (double)w );
 
-}
+// }
 
-int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize/*,double t,vector<double> *v*/){
+// int32_t G(item* p,int w,int k,vector<int32_t> rVector,int tableSize/*,double t,vector<double> *v*/){
 
-	/* We use uniform distribution in order to generate a random t in range [0,w). */
-	random_device rd;
-	mt19937 generator(rd());
-	uniform_real_distribution<> distance(0,w);
+// 	/* We use uniform distribution in order to generate a random t in range [0,w). */
+// 	random_device rd;
+// 	mt19937 generator(rd());
+// 	uniform_real_distribution<> distance(0,w);
 
-	double t = distance(generator);
+// 	double t = distance(generator);
 
-	/* We use normal distribution in order to generate a random vector v. */
-	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
+// 	/* We use normal distribution in order to generate a random vector v. */
+// 	vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
-    long int M = pow(2,32/k);
-    // cout << "M : " << M << endl;
+//     long int M = pow(2,32/k);
+//     // cout << "M : " << M << endl;
 
-	// vector<uint32_t> hashFunctions;
-	int result =0;
-	//int32_t temp;
-	for(int i=0;i<k;i++){
+// 	// vector<uint32_t> hashFunctions;
+// 	int result =0;
+// 	//int32_t temp;
+// 	for(int i=0;i<k;i++){
 
-		// int32_t r = rand();
+// 		// int32_t r = rand();
 
-		// cout << "Before addition is: " << (result) << endl;
-		//temp = H(p,w);
-		//temp = module(temp,M);
-		// cout << "temp is : " << temp << endl;
-		int temp = module(H(p,w,t,v)*rVector.at(i),M);
-		// cout << "Result is " << temp << endl;
-		result += temp;
-		// cout << "After addition is: " << (result) << endl;
-	}
+// 		// cout << "Before addition is: " << (result) << endl;
+// 		//temp = H(p,w);
+// 		//temp = module(temp,M);
+// 		// cout << "temp is : " << temp << endl;
+// 		int temp = module(H(p,w,t,v)*rVector.at(i),M);
+// 		// cout << "Result is " << temp << endl;
+// 		result += temp;
+// 		// cout << "After addition is: " << (result) << endl;
+// 	}
 
-	// cout << "It came out as: " << result << endl;
-	//cout << "Result is : " << result;
-	result = module(result,M);
-	// cout << "After modM is " << result << endl;
-	p->setTrick(result);
-	// cout << endl << "NOw IT IS " << result << endl;
+// 	// cout << "It came out as: " << result << endl;
+// 	//cout << "Result is : " << result;
+// 	result = module(result,M);
+// 	// cout << "After modM is " << result << endl;
+// 	p->setTrick(result);
+// 	// cout << endl << "NOw IT IS " << result << endl;
 
-	// result2 = module(result,M);
-	result = module(result,tableSize);
-	// cout << "After mod" << tableSize << " is " << result << endl;
-	// result2 = module(result,tableSize);
+// 	// result2 = module(result,M);
+// 	result = module(result,tableSize);
+// 	// cout << "After mod" << tableSize << " is " << result << endl;
+// 	// result2 = module(result,tableSize);
 	
-	//cout << "Result is: " << result << endl;
+// 	//cout << "Result is: " << result << endl;
 
-	delete v;
-	return result;
+// 	delete v;
+// 	return result;
 
-}
+// }
 
 void answerQueries(Hash *hash,string fileName,string dataFile,int N,int R,string outputFile){
 
