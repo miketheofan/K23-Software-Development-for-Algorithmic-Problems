@@ -393,8 +393,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	pair<vector<double>,double> test1;
-	// clustering1.Silhouette();
+	pair<vector<double>,double> test1 = clustering1.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 	// cout << "Silhouette: [";
@@ -462,7 +461,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	// test1 = clustering2.Silhouette();
+	test1 = clustering2.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 	// cout << "Silhouette: [";
@@ -530,7 +529,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 	writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-	// test1 = clustering3.Silhouette();
+	test1 = clustering3.Silhouette();
 
 	writeToFile(outputFile,"Silhouette: [");
 

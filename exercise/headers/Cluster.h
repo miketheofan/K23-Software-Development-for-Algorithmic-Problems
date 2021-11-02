@@ -1,11 +1,15 @@
 #ifndef CLUSTER_H
 #define CLUSTER_H
 
+#include <algorithm>
+
 using namespace std;
 
 #include "./items.h"
 #include "../headers/HyperCube.h"
 #include "../headers/Hash.h"
+
+
 
 class Cluster{
 

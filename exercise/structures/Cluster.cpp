@@ -148,6 +148,8 @@ void Clustering::kMeansPP(){
 
 	vector<item*> chosenCentroids;
 
+	//vector<pair<item*,double> > array;
+
 	item* firstCentroid = getRandomItem(this->items);
 
 	chosenCentroids.push_back(firstCentroid);
@@ -159,46 +161,76 @@ void Clustering::kMeansPP(){
 	double minimum = numeric_limits<double>::max();
 	item *minCentroid = NULL;
 
-	vector<pair<item*,double>> D;
+	vector<pair<double,item*>> P;
 
 	while(t < this->K){
 
 		for(vector<item*>::iterator it = this->items.begin(); it != this->items.end(); it++){
 
+			// for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
+
+			// 	double distance = dist(2,**it,*(*it2)->getCentroid());
+
+			// 	if( distance < minimum ){
+
+			// 		minimum = distance;
+			// 		minCentroid = (*it2)->getCentroid();
+			// 	}
+			// }
+
+			// D.push_back(make_pair(*it,minimum));
+
+			double sum =0;
+
 			for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
 
 				double distance = dist(2,**it,*(*it2)->getCentroid());
-
-				if( distance < minimum ){
-
-					minimum = distance;
-					minCentroid = (*it2)->getCentroid();
-				}
+				distance = pow(distance,2);
+				
+				sum += distance;
 			}
 
-			D.push_back(make_pair(*it,minimum));
+			P.push_back(make_pair(sum,*it));
+
 		}
+		sort(P.begin(),P.end());
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_real_distribution<> dis(0,P.at(P.size()).first);
 
-		double maximum = numeric_limits<double>::min();
-		item *maximumItem = NULL;
+		double temp = dis(gen);
+		vector<pair<double,item*>>::iterator it3;
+		for (it3 = P.begin() ; it3 != P.end() ; it3++){
 
-		double probDividor = prob(D);
-
-		for(vector<pair<item*,double>>::iterator it3 = D.begin(); it3 != D.end(); it3++){
-
-			if(find(chosenCentroids.begin(),chosenCentroids.end(), (*it3).first) != chosenCentroids.end())
-				continue;
-
-			if( pow((*it3).second,2)/probDividor > maximum ){
-
-				maximum = (*it3).second;
-				maximumItem = (*it3).first;
+			if ((*it3).first >= temp){
+				break;
 			}
+
 		}
- 
-		// deleteByValue(maximumItem,&this->items);
-		chosenCentroids.push_back(maximumItem);
-		this->clusters.push_back(new Cluster(maximumItem));
+
+
+		// double maximum = numeric_limits<double>::min();
+		// item *maximumItem = NULL;
+
+		// double probDividor = prob(D);
+
+		// for(vector<pair<item*,double>>::iterator it3 = D.begin(); it3 != D.end(); it3++){
+
+		// 	if(find(chosenCentroids.begin(),chosenCentroids.end(), (*it3).first) != chosenCentroids.end())
+		// 		continue;
+
+		// 	array.push_back(make_pair((*it3).first , pow((*it3).second,2)/probDividor));
+
+		// 	// if( pow((*it3).second,2)/probDividor > maximum ){
+
+		// 	// 	maximum = (*it3).second;
+		// 	// 	maximumItem = (*it3).first;
+		// 	// }
+		// }
+ 	// 	float x = 
+		// // deleteByValue(maximumItem,&this->items);
+		// chosenCentroids.push_back(maximumItem);
+		this->clusters.push_back(new Cluster((*it3).second));
 
 		t++;
 	}
