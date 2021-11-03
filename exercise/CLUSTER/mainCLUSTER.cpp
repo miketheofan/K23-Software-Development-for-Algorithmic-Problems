@@ -66,7 +66,7 @@ int main(int argc,char **argv){
 
 	readConf(configurationFile,&K,&L,&kLSH,&M,&kCUBE,&probes);
 
-	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete,totalItems);
+	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete,totalItems,method);
 
 	// Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
 

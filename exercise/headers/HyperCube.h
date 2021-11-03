@@ -11,8 +11,9 @@
 
 using namespace std;
 
-#include "items.h"
-#include "HashTable.h"
+#include "./items.h"
+#include "./HashTable.h"
+#include "./H.h"
 
 class HyperCube{
 
@@ -23,12 +24,13 @@ private:
 	int M;
 	int probes;
 	int dimension;
-	double t;
+	// double t;
 	vector<item*> items;
 	vector<unordered_map<int32_t,int>> fVector;
 	set<int32_t> nearVertices;
-	vector<double> *v;
+	// vector<double> *v;
 	HashTable* cube;
+	vector<Hi*> hVector;
 
 public:
 

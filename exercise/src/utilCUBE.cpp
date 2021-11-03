@@ -54,36 +54,36 @@ void readDatasetCUBE(string fileName,HyperCube* cube,vector<item*> *dataset){
 }
 
 
-int32_t H(item *p,int w,vector<double> * v,double t){
+// int32_t H(item *p,int w,vector<double> * v,double t){
 
-	// p->print();
+// 	// p->print();
 
-	// /* We use uniform distribution in order to generate a random t in range [0,w). */
-	// random_device rd;
-	// mt19937 generator(rd());
-	// uniform_real_distribution<> distance(0,w);
+// 	// /* We use uniform distribution in order to generate a random t in range [0,w). */
+// 	// random_device rd;
+// 	// mt19937 generator(rd());
+// 	// uniform_real_distribution<> distance(0,w);
 
-	// double t = distance(generator);
-	// cout << "t is " << t << endl;
+// 	// double t = distance(generator);
+// 	// cout << "t is " << t << endl;
 
-	/* We use normal distribution in order to generate a random vector v. */
-	// vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
+// 	/* We use normal distribution in order to generate a random vector v. */
+// 	// vector<double> *v = produceNdistVector(p->getDimension(),0.0,1.0);
 
-	// cout << "v ";
-	// for(unsigned long int i=0;i<v->size();i++)
-	// 	cout << (*v)[i] << " "; 
-	// cout << endl;
+// 	// cout << "v ";
+// 	// for(unsigned long int i=0;i<v->size();i++)
+// 	// 	cout << (*v)[i] << " "; 
+// 	// cout << endl;
 
-	/* We calculate the scaler product between vectors p and (randomly generated) v. */
-	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),v->begin(),0.0);
+// 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
+// 	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),v->begin(),0.0);
 
-	// double scalerProduct = 0.0;
+// 	// double scalerProduct = 0.0;
 
-	// cout << "Scaler product is " << scalerProduct << endl;
+// 	// cout << "Scaler product is " << scalerProduct << endl;
 
-	return (int32_t)floor( (scalerProduct + t) / (double)w );
+// 	return (int32_t)floor( (scalerProduct + t) / (double)w );
 
-}
+// }
 
 vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
@@ -153,6 +153,8 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 
 		vector<pair<double,item*>> tempVector = cube->findkNN(&queryItem,M,N);
 
+		writeToFile(outputFile,"size is " + to_string(tempVector.size()) + "\n");
+
 		double totalHypercube =0;
 		double totalTrue =0;
 
@@ -163,16 +165,16 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 			writeToFile(outputFile,"Nearest neigbor-" + to_string(i) + ":");
 			// cout << "Nearest neigbor-" << N << ":";
 
-			if(!tempVector.empty()){
+			if(tempVector.size() >= (unsigned long int)i){
 
-				if(tempVector.size() == (unsigned long int)N)		
-					writeToFile(outputFile,tempVector.at(i-1).second->getID() + "\n");
+				// if(tempVector.size() == (unsigned long int)N)		
+				writeToFile(outputFile,tempVector.at(i-1).second->getID() + "\n");
 					// cout << tempVector.at(N-1).second->getID();
 				// cout << endl;
 
 				writeToFile(outputFile,"distanceHypercube: ");
 				// cout << "distanceLSH: ";
-				if(tempVector.size() == (unsigned long int)N)		
+				// if(tempVector.size() == (unsigned long int)N)		
 					writeToFile(outputFile,to_string(tempVector.at(i-1).first));
 					// cout << tempVector.at(N-1).first;
 				
@@ -184,7 +186,7 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 
 				writeToFile(outputFile,"distanceTrue: ");
 				// cout << "distanceTrue: ";
-				if(tempVector.size() == (unsigned long int)N)		
+				// if(tempVector.size() == (unsigned long int)N)		
 					writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
 					// cout << brutekNN(N,&queryItem,dataFile);
 				// cout << endl;
@@ -201,6 +203,7 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 				// cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
 			}else{
 
+				writeToFile(outputFile,"\n");
 				writeToFile(outputFile,"distanceHypercube: NULL\n");
 				// cout << "distanceLSH: NULL";
 				// cout << endl;
@@ -211,7 +214,7 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 
 				writeToFile(outputFile,"distanceTrue: ");
 				// cout << "distanceTrue: ";
-				if(tempVector.size() == (unsigned long int)N)		
+				// if(tempVector.size() == (unsigned long int)N)		
 					writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
 				// 	cout << brutekNN(N,&queryItem,dataFile);
 				// cout << endl;
@@ -248,6 +251,127 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 		// cout << endl;
 		writeToFile(outputFile,"\n");
 	}
+
+	// 	writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
+	// 	// cout << "Query: " << queryItem.getID() << endl;
+
+	// 	item* nearestNeghbor = cube->findNN(&queryItem,M).first;
+
+	// 	if(nearestNeghbor != NULL){
+			
+	// 		writeToFile(outputFile,"Nearest neighbor-1: " + nearestNeghbor->getID() + "\n");
+	// 		// cout << "Nearest neighbor-1: " << nearestNeghbor->getID() << endl;		
+	// 		writeToFile(outputFile,"distanceHypercube: " + to_string(cube->findNN(&queryItem,M).second) + "\n");
+	// 		// cout << "distanceLSH: " << cube->findNN(&queryItem,M).second << endl;
+	// 		writeToFile(outputFile,"distanceTrue: " + to_string(bruteNN(&queryItem,dataFile)) + "\n");
+	// 		// cout << "distanceTrue: " << bruteNN(&queryItem,dataFile) << endl;
+	// 	}else{
+
+	// 		writeToFile(outputFile,"Nearest neighbor-1: NULL\n");
+	// 		// cout << "Nearest neighbor-1: NULL" << endl;
+	// 		writeToFile(outputFile,"distanceHypercube: NULL\n");
+	// 		// cout << "distanceHypercube: NULL" << endl;
+	// 		writeToFile(outputFile,"distanceTrue: " + to_string(bruteNN(&queryItem,dataFile)) + "\n");
+	// 		// cout << "distanceTrue: " << bruteNN(&queryItem,dataFile) << endl;
+	// 	}
+
+	// 	vector<pair<double,item*>> tempVector = cube->findkNN(&queryItem,M,N);
+
+	// 	double totalHypercube =0;
+	// 	double totalTrue =0;
+
+	// 	auto startHypercube = high_resolution_clock::now();
+
+	// 	for(int i=2;i<=N;i++){
+
+	// 		writeToFile(outputFile,"Nearest neigbor-" + to_string(i) + ":");
+	// 		// cout << "Nearest neigbor-" << N << ":";
+
+	// 		if(!tempVector.empty()){
+
+	// 			if(tempVector.size() == (unsigned long int)N)		
+	// 				writeToFile(outputFile,tempVector.at(i-1).second->getID() + "\n");
+	// 				// cout << tempVector.at(N-1).second->getID();
+	// 			// cout << endl;
+
+	// 			writeToFile(outputFile,"distanceHypercube: ");
+	// 			// cout << "distanceLSH: ";
+	// 			if(tempVector.size() == (unsigned long int)N)		
+	// 				writeToFile(outputFile,to_string(tempVector.at(i-1).first));
+	// 				// cout << tempVector.at(N-1).first;
+				
+	// 			writeToFile(outputFile,"\n");
+
+	// 			auto endHupercube = high_resolution_clock::now();
+				
+	// 			auto startTrue = high_resolution_clock::now();
+
+	// 			writeToFile(outputFile,"distanceTrue: ");
+	// 			// cout << "distanceTrue: ";
+	// 			if(tempVector.size() == (unsigned long int)N)		
+	// 				writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
+	// 				// cout << brutekNN(N,&queryItem,dataFile);
+	// 			// cout << endl;
+
+	// 			writeToFile(outputFile,"\n");
+
+	// 			auto endTrue = high_resolution_clock::now();
+
+	// 			totalHypercube += (double)duration_cast<milliseconds>(endHupercube - startHypercube).count();
+	// 			// writeToFile(outputFile,"tHypercube: " + to_string((double)duration_cast<milliseconds>(endHupercube - startHypercube).count()) + "\n");
+	// 			// cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+	// 			totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
+	// 			// writeToFile(outputFile,"tTrue: " + to_string((double)duration_cast<milliseconds>(endTrue - startTrue).count()) + "\n");
+	// 			// cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+	// 		}else{
+
+	// 			writeToFile(outputFile,"distanceHypercube: NULL\n");
+	// 			// cout << "distanceLSH: NULL";
+	// 			// cout << endl;
+
+	// 			auto endHupercube = high_resolution_clock::now();
+				
+	// 			auto startTrue = high_resolution_clock::now();
+
+	// 			writeToFile(outputFile,"distanceTrue: ");
+	// 			// cout << "distanceTrue: ";
+	// 			if(tempVector.size() == (unsigned long int)N)		
+	// 				writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
+	// 			// 	cout << brutekNN(N,&queryItem,dataFile);
+	// 			// cout << endl;
+
+	// 			writeToFile(outputFile,"\n");
+
+	// 			auto endTrue = high_resolution_clock::now();
+				
+	// 			totalHypercube += (double)duration_cast<milliseconds>(endHupercube - startHypercube).count();
+	// 			// writeToFile(outputFile,"tHypercube: " + to_string((double)duration_cast<milliseconds>(endHupercube - startHypercube).count()) + "\n");
+	// 			// cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+	// 			totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
+	// 			// writeToFile(outputFile,"tTrue: " + to_string((double)duration_cast<milliseconds>(endTrue - startTrue).count()) + "\n");
+	// 			// cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+
+	// 			// cout << "tLSH: " << (double)duration_cast<milliseconds>(endLSH - startLSH).count() << endl;
+	// 			// cout << "tTrue: " << (double)duration_cast<milliseconds>(endTrue - startTrue).count() << endl;
+	// 		}
+	// 	}
+
+	// 	writeToFile(outputFile,"tHypercube: " + to_string(totalHypercube) + "\n");
+	// 	writeToFile(outputFile,"tTrue: " + to_string(totalTrue) + "\n");
+
+	// 	writeToFile(outputFile,to_string(R) + "-near neigbors: \n");
+	// 	// cout << R << "-near neigbors: " << endl;
+	// 	vector<pair<item*,double>> results = cube->findRange(R,&queryItem,M);
+
+	// 	if(!results.empty())
+	// 		for(unsigned long int i=0;i<results.size();i++)
+	// 			if(results.at(i).first != NULL)
+	// 				writeToFile(outputFile,results.at(i).first->getID() + "\n");
+	// 				// cout << results.at(i).first->getID() << endl;
+
+	// 	// cout << endl;
+	// 	writeToFile(outputFile,"\n");
+	// }
 }
 
 int calculateW(string fileName,int flag){

@@ -18,14 +18,14 @@ OUT2 = outCUBE
 OUT3 = outCLUSTER
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
 ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
-ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m Classic
+ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m LSH
 CC = g++ -std=c++11
 FLAGS = -g -c -Ο3
 
 all: $(LSH_OBJS) $(CUBE_OBJS) $(CLUSTER_OBJS)
 	$(CC) -g $(LSH_OBJS) -o $(OUT1)
-# 	$(CC) -g $(CUBE_OBJS) -o $(OUT2)
-# 	$(CC) -g $(CLUSTER_OBJS) -o $(OUT3)
+	$(CC) -g $(CUBE_OBJS) -o $(OUT2)
+	$(CC) -g $(CLUSTER_OBJS) -o $(OUT3)
 
 mainLSH.o: mainLSH.cpp
 	$(CC) $(FLAGS) $(LSH_FILES)mainLSH.cpp

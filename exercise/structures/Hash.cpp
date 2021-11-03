@@ -39,6 +39,9 @@ Hash::~Hash(){
 		if(*it != NULL)
 			delete *it;
 
+	for(vector<Gi*>::iterator it = this->gVector.begin(); it != this->gVector.end(); it++)
+		delete *it;
+
 	// for(auto& ht : this->hashTables)
 	// 	delete ht;
 

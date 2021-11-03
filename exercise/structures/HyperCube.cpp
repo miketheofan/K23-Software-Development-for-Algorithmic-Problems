@@ -11,19 +11,25 @@ HyperCube::HyperCube(int k,int w,int M,int probes,int dimension) : k(k), w(w), M
 		this->fVector.push_back(temp);
 	}
 
-	this->v = produceNdistVector(this->dimension,0.0,1.0);
+	for(int i=0;i<this->k;i++)
+		this->hVector.push_back(new Hi(dimension,w));
 
-	/* We use uniform distribution in order to generate a random t in range [0,w). */
-	random_device rd;
-	mt19937 generator(rd());
-	uniform_real_distribution<> distance(0,this->w);
+	// this->v = produceNdistVector(this->dimension,0.0,1.0);
 
-	this->t = distance(generator);
+	// /* We use uniform distribution in order to generate a random t in range [0,w). */
+	// random_device rd;
+	// mt19937 generator(rd());
+	// uniform_real_distribution<> distance(0,this->w);
+
+	// this->t = distance(generator);
 }
 
 HyperCube::~HyperCube(){
 
-	delete this->v;
+	for(vector<Hi*>::iterator it = this->hVector.begin(); it != this->hVector.end(); it++)
+		delete *it;
+
+	// delete this->v;
 	delete this->cube;
 }
 
@@ -40,13 +46,13 @@ int32_t HyperCube::hashFunction(item* it){
 
 	for(int i=0;i<this->k;i++){
 
-		int32_t hash = H(it,this->w,this->v,this->t);
+		// int32_t hash = H(it,this->w,this->v,this->t);
+		int32_t hash = this->hVector.at(i)->Hashi(it);
 
 		// cout << "hash returned " << hash << endl;
 
 		if(fVector.at(i).find(hash) == fVector.at(i).end())
 			fVector.at(i)[hash] = coinFlip();
-
 
 		key = key << 1;
 		key = key | fVector.at(i)[hash];
@@ -56,6 +62,8 @@ int32_t HyperCube::hashFunction(item* it){
 }
 
 pair<item*,double> HyperCube::findNN(item* queryItem,int M){
+
+	// cout << "Starting findNN with item " << queryItem->getID() << endl;
 
 	double minimum = numeric_limits<int>::max();
 	pair<item*,double> b;
@@ -71,7 +79,7 @@ pair<item*,double> HyperCube::findNN(item* queryItem,int M){
 
 	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
-		// cout << "Searching for " << (bitset<3>)*i << endl;
+		// cout << "Entered for vertice " << *i << endl;
 
 		tempBucket = this->cube->getBucket(*i);
 
@@ -95,10 +103,13 @@ pair<item*,double> HyperCube::findNN(item* queryItem,int M){
 		}
 	}
 
+	cout << endl;
 	return b;
 }
 
 vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
+
+	// cout << "Starting findkNN with item " << queryItem->getID() << endl;
 
 	double minimum = numeric_limits<int>::max();
 
@@ -114,8 +125,12 @@ vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 
 	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
 
+		// cout << "Entered for vertice " << *i << endl;
+
 		tempBucket = this->cube->getBucket(*i);
 		while(tempBucket != NULL){
+
+			// cout << "Now we are cheking item " << tempBucket->getValue()->getID() << endl;
 
 			flag++;
 
@@ -126,6 +141,8 @@ vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 
 				if((int)results.size() == k){
 
+					// cout << "It is full so removing " << results.at(results.size()-1).second->getID() << endl;
+
 					results.pop_back();
 					results.push_back(make_pair(distance,tempBucket->getValue()));
 
@@ -134,6 +151,8 @@ vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 					minimum	= results.at(results.size()-1).first;
 
 				}else{
+
+					// cout << "Not full so inserting " << tempBucket->getValue()->getID() << endl;
 
 					results.push_back(make_pair(distance,tempBucket->getValue()));
 					sort(results.begin(),results.end());
@@ -147,6 +166,7 @@ vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 		}
 	}
 
+	// cout << "Returing vector with size " << results.size() << endl << endl;
 	return results;
 }
 
