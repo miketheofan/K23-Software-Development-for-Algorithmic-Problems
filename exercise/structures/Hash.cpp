@@ -91,31 +91,67 @@ pair<item*,double> Hash::findNN(item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	// int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+	bool flag = true;
+
 	HashNode* tempBucket;	
 
-	for(int i=0;i<this->L;i++){
+	while(1){
 
-		int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
-		tempBucket = this->hashTables.at(i)->getBucket(hash);
+		if(flag == true){
 
-		while(tempBucket != NULL){
+			for(int i=0;i<this->L;i++){
 
-			if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+				int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
+				tempBucket = this->hashTables.at(i)->getBucket(hash);
 
-				distance = dist(2,*queryItem,*tempBucket->getValue());
-				if(distance < minimum){
+				while(tempBucket != NULL){
 
-					b = make_pair(tempBucket->getValue(),distance);
-					minimum = distance;
+					if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+
+						distance = dist(2,*queryItem,*tempBucket->getValue());
+						if(distance < minimum){
+
+							b = make_pair(tempBucket->getValue(),distance);
+							minimum = distance;
+						
+							totalItems++;
+						}
+					}
 				
-					totalItems++;
+					if(totalItems > 10*this->L) return b;
+
+					tempBucket = tempBucket->getNext();
+				}
+
+				if(b.first == NULL) flag = false;
+				else return b;
+
+			}
+		}else{
+
+			for(int i=0;i<this->L;i++){
+
+				int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
+				tempBucket = this->hashTables.at(i)->getBucket(hash);
+
+				while(tempBucket != NULL){
+
+					distance = dist(2,*queryItem,*tempBucket->getValue());
+					if(distance < minimum){
+
+						b = make_pair(tempBucket->getValue(),distance);
+						minimum = distance;
+					
+						totalItems++;
+					}
+				
+					if(totalItems > 10*this->L) return b;
+
+					tempBucket = tempBucket->getNext();
 				}
 			}
-		
-			if(totalItems > 10*this->L) return b;
 
-			tempBucket = tempBucket->getNext();
+			return b;
 		}
 	}
 
@@ -130,51 +166,107 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 	double distance;
 	int totalItems = 0;
 
-	// int32_t hash = G(queryItem,this->w,this->k,this->rVector,this->size/*,this->t,this->v*/);
+	bool flag = true;
+
 	HashNode* tempBucket;	
 
-	for(int i=0;i<this->L;i++){
+	while(1){
 
-		int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
-		tempBucket = this->hashTables.at(i)->getBucket(hash);
+		if(flag == true){
 
-		while(tempBucket != NULL){
+			for(int i=0;i<this->L;i++){
 
-			if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
+				int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
+				tempBucket = this->hashTables.at(i)->getBucket(hash);
 
-				distance = dist(2,*queryItem,*tempBucket->getValue());
+				while(tempBucket != NULL){
 
-				if(distance < minimum){
+					if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
-					if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
+						distance = dist(2,*queryItem,*tempBucket->getValue());
 
-						totalItems++;
+						if(distance < minimum){
 
-						if((int)queries.size() == k){
+							if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
 
-							queries.pop_back();
-							queries.push_back(make_pair(distance,tempBucket->getValue()));
+								totalItems++;
 
-							sort(queries.begin(),queries.end());
-							
-							minimum	= distance;
+								if((int)queries.size() == k){
 
-						}else
-							queries.push_back(make_pair(distance,tempBucket->getValue()));
+									queries.pop_back();
+									queries.push_back(make_pair(distance,tempBucket->getValue()));
+
+									sort(queries.begin(),queries.end());
+									
+									minimum	= distance;
+
+								}else
+									queries.push_back(make_pair(distance,tempBucket->getValue()));
+							}
+
+						}
 					}
-
+				
+					if(totalItems > 10*this->L)
+						return queries;
+					
+					tempBucket = tempBucket->getNext();
 				}
-			}
-		
-			if(totalItems > 10*this->L)
-				return queries;
-			
-			tempBucket = tempBucket->getNext();
-		}
 
-		results.insert(results.end(),queries.begin(),queries.end());
-		sort(results.begin(),results.end());
-		queries.clear();
+				results.insert(results.end(),queries.begin(),queries.end());
+				sort(results.begin(),results.end());
+				queries.clear();
+			}
+
+			if(results.size() < (unsigned long)k) flag = false;
+			else return results;
+
+		}else{
+
+			for(int i=0;i<this->L;i++){
+
+				int32_t hash = this->gVector.at(i)->Hashi(queryItem,this->size);
+				tempBucket = this->hashTables.at(i)->getBucket(hash);
+
+				while(tempBucket != NULL){
+
+					distance = dist(2,*queryItem,*tempBucket->getValue());
+
+					if(distance < minimum){
+
+						if(!any_of(queries.begin(), queries.end(),[&queryItem](const pair<double, item*>& p){ return p.second == queryItem; })){
+
+							totalItems++;
+
+							if((int)queries.size() == k){
+
+								queries.pop_back();
+								queries.push_back(make_pair(distance,tempBucket->getValue()));
+
+								sort(queries.begin(),queries.end());
+								
+								minimum	= distance;
+
+							}else
+								queries.push_back(make_pair(distance,tempBucket->getValue()));
+						}
+
+					}
+				
+					if(totalItems > 10*this->L)
+						return results;
+					
+					tempBucket = tempBucket->getNext();
+				}
+
+				results.insert(results.end(),queries.begin(),queries.end());
+				sort(results.begin(),results.end());
+				queries.clear();
+			}
+
+			return results;
+
+		}
 	}
 
 	return results;

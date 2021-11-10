@@ -18,8 +18,8 @@ OUT2 = outCUBE
 OUT3 = outCLUSTER
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
 ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
-ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m LSH
-CC = g++ -std=c++11
+ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m Classic
+CC = g++ -O2 -std=c++11
 FLAGS = -g -c -Ο3
 
 all: $(LSH_OBJS) $(CUBE_OBJS) $(CLUSTER_OBJS)

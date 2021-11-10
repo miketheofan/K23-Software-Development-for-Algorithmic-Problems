@@ -103,7 +103,7 @@ pair<item*,double> HyperCube::findNN(item* queryItem,int M){
 		}
 	}
 
-	cout << endl;
+	// cout << endl;
 	return b;
 }
 

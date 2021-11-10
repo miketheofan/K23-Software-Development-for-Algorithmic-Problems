@@ -544,7 +544,6 @@ pair<vector<double>,double> Clustering::Silhouette(){
 
 	int sizeofClusters = this->clusters.size();
 
-	vector<int> closestClusters;
 	int minCluster;
 
 	vector<double> si;
@@ -552,7 +551,9 @@ pair<vector<double>,double> Clustering::Silhouette(){
 	double sum = 0.0;
 	double sTotal = 0.0;
 
-	for (int cluster1 =0 ; cluster1<sizeofClusters ; cluster1++){
+	for(int cluster1 =0; cluster1<sizeofClusters; cluster1++){
+
+		vector<int> closestClusters;
 
 		s = 0.0;
 
@@ -560,27 +561,27 @@ pair<vector<double>,double> Clustering::Silhouette(){
 		int sizeofItemsInCluster = itemsInCluster.size();
 
 		double min = numeric_limits<double>::max();
-		for (int i=0 ; i < sizeofItemsInCluster ; i++){
+		for(int i=0; i < sizeofItemsInCluster; i++){
 
-			for (int cluster2=0 ; cluster2 < sizeofClusters ; cluster2++){
-				if (cluster1 == cluster2)
+			for(int cluster2=0; cluster2 < sizeofClusters; cluster2++){
+				if(cluster1 == cluster2)
 					continue;
 
 				double distance = dist(2,*(itemsInCluster.at(i)) , *(this->clusters.at(cluster2)->getCentroid()));
-				if (distance < min){
+				if(distance < min){
 					min = distance;
 					minCluster = cluster2;
 				}
 			}
 			closestClusters.push_back(minCluster);
 		}
-		// vector<double> ai,bi;
+		
 		double a = 0.0,b = 0.0;
-		for (int i=0 ; i < sizeofItemsInCluster ; i++){
+		for(int i=0; i < sizeofItemsInCluster; i++){
 
-			for (int j=0 ; j<sizeofItemsInCluster ; j++){
+			for(int j=0; j<sizeofItemsInCluster; j++){
 
-				if (i == j)
+				if(i == j)
 					continue;
 
 				a += dist(2,*(itemsInCluster.at(i)) , *(itemsInCluster.at(j)));

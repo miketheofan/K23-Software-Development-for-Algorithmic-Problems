@@ -315,19 +315,19 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 		writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-		// pair<vector<double>,double> test1 = clustering1.Silhouette();
+		pair<vector<double>,double> test1 = clustering1.Silhouette();
 
-		// writeToFile(outputFile,"Silhouette: [");
-		// // cout << "Silhouette: [";
+		writeToFile(outputFile,"Silhouette: [");
+		// cout << "Silhouette: [";
 
-		// vector<double> result = test1.first;
+		vector<double> result = test1.first;
 
-		// for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
-		// 	writeToFile(outputFile,to_string(*it) + ",");
-		// 	// cout << (*it) << ",";
+		for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
+			writeToFile(outputFile,to_string(*it) + ",");
+			// cout << (*it) << ",";
 
-		// writeToFile(outputFile,to_string(test1.second) + "]\n");
-		// // cout << test.second << "]" << endl;
+		writeToFile(outputFile,to_string(test1.second) + "]\n");
+		// cout << test.second << "]" << endl;
 
 		if(complete){
 
@@ -385,19 +385,19 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 		writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-		// pair<vector<double>,double> test1 = clustering2.Silhouette();
+		pair<vector<double>,double> test1 = clustering2.Silhouette();
 
-		// writeToFile(outputFile,"Silhouette: [");
-		// // cout << "Silhouette: [";
+		writeToFile(outputFile,"Silhouette: [");
+		// cout << "Silhouette: [";
 
-		// vector<double> result = test1.first;
+		vector<double> result = test1.first;
 
-		// for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
-		// 	writeToFile(outputFile,to_string(*it) + ",");
-		// 	// cout << (*it) << ",";
+		for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
+			writeToFile(outputFile,to_string(*it) + ",");
+			// cout << (*it) << ",";
 
-		// writeToFile(outputFile,to_string(test1.second) + "]\n");
-		// // cout << test1.second << "]" << endl;
+		writeToFile(outputFile,to_string(test1.second) + "]\n");
+		// cout << test1.second << "]" << endl;
 
 		if(complete){
 
@@ -456,16 +456,16 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 		writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
 
-		// pair<vector<double>,double> test1 = clustering3.Silhouette();
+		pair<vector<double>,double> test1 = clustering3.Silhouette();
 
-		// writeToFile(outputFile,"Silhouette: [");
+		writeToFile(outputFile,"Silhouette: [");
 
-		// vector<double> result = test1.first;
+		vector<double> result = test1.first;
 
-		// for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
-		// 	writeToFile(outputFile,to_string(*it) + ",");
+		for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
+			writeToFile(outputFile,to_string(*it) + ",");
 
-		// writeToFile(outputFile,to_string(test1.second) + "]\n");
+		writeToFile(outputFile,to_string(test1.second) + "]\n");
 
 		if(complete){
 

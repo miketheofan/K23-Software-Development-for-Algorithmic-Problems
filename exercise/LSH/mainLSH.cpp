@@ -116,6 +116,9 @@ int main(int argc,char **argv){
 		for(unsigned long int i=0;i<dataset.size();i++)
 			delete(dataset.at(i));
 
+		cout << "Do you want to run the program with different data and queries(Y/N): ";
+		cin >> check;
+
 	}while(check == "Y");
 
 	return 0;
