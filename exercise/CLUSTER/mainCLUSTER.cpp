@@ -27,22 +27,28 @@ int main(int argc,char **argv){
 		else if(!strcmp(argv[i],"-complete"))
 			complete = true;
 
+	/* If input file not given then exit program. */
 	if(inputFile == ""){
 
 		cerr << "Input file not given." << endl;
 		exit(-1);
 	}
+
+	/* If configuration file not given then exit program. */
 	if(configurationFile == ""){
 
 		cerr << "Configuration file not given." << endl;
 		exit(-1);
 	}
+
+	/* If output file not given then exit program. */
 	if(outputFile == ""){
 
 		cerr << "Output file not given." << endl;
 		exit(-1);
 	}
 
+	/* If input file does not exist then exit program. */
 	ifstream file1(inputFile);
 	if(!file1){
 
@@ -50,6 +56,7 @@ int main(int argc,char **argv){
 		exit(-1);
 	}
 
+	/* If configuration file does not exist then exit program. */
 	ifstream file2(configurationFile);
 	if(!file2){
 
@@ -62,40 +69,15 @@ int main(int argc,char **argv){
 
 	int totalItems = countItems(inputFile);
 
+	/* We initialize w as a random number between 2 and 6, as was suggested in the paper. */
 	int w = rand()%6+2;
 
+	/* We use readConf function in order to read the parameters we need for the execution of the program, from
+	the configuration file. */
 	readConf(configurationFile,&K,&L,&kLSH,&M,&kCUBE,&probes);
 
+	/* We start the main functionality of the program. */
 	functionality(inputFile,outputFile,K, L, kLSH, M, kCUBE, probes, w, complete,totalItems,method);
-
-	// Clustering clustering(K,L,kLSH,M,kCUBE,probes,w);
-
-	// vector<item*> dataset;
-
-	// readDatasetCLUSTER(inputFile,&clustering,&dataset);
-	// //readDatasetCUBE()
-
-	// clustering.kMeansPP();
-	// clustering.Assign("Hypercube");
-
-	// clustering.print();
-
-	// pair<vector<double>,double> test = clustering.Silhouette();
-
-	// cout << "Algorithm: " << endl;
-	// cout << "Silhouette: [";
-
-	// vector<double> result = test.first;
-
-	// for(vector<double>::iterator it = result.begin(); it != result.end(); it++){
-
-	// 	cout << (*it) << ",";
-	// }
-
-	// cout << test.second << "]" << endl;
-
-	// for(unsigned long int i=0;i<dataset.size();i++)
-	// 	delete(dataset.at(i));
 
 	return 0;
 }

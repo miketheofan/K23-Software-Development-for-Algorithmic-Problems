@@ -1,348 +1,861 @@
 Query: 1
-Nearest neighbor-1: 81
-distanceLSH: 544.927518
+Nearest neighbor-1: 9846
+distanceLSH: 650.913205
+distanceTrue: 276.781502
+Nearest neigbor-2:181
+distanceLSH: 611.582374
+distanceTrue: 282.315426
+Nearest neigbor-3:33
+distanceLSH: 638.600814
 distanceTrue: 292.936853
-Nearest neigbor-2:109
-distanceLSH: 390.906638
-distanceTrue: 326.528712
-Nearest neigbor-3:121
-distanceLSH: 416.558519
-distanceTrue: 326.807283
-tLSH: 8.000000
-tTrue: 16.000000
+tLSH: 209.000000
+tTrue: 415.000000
 500-near neigbors: 
-48
-250
-109
-152
-340
-350
-38
-316
-121
+780
+1446
+1774
+2097
+2255
+2331
+2352
+2806
+3886
+4468
+5724
+8027
+8087
+9190
+9693
+9808
+9992
+128
+131
+289
+364
+404
+840
+850
+1069
+1842
+2070
+2130
+2369
+2665
+3653
+3968
+4327
+6692
+7071
+7839
+8596
+9207
+9447
+9755
+9791
 
 Query: 2
-Nearest neighbor-1: 350
-distanceLSH: 301.834392
-distanceTrue: 278.204960
-Nearest neigbor-2:121
-distanceLSH: 333.198139
-distanceTrue: 296.738943
-Nearest neigbor-3:39
-distanceLSH: 511.119360
-distanceTrue: 325.289102
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 5564
+distanceLSH: 443.218908
+distanceTrue: 256.852098
+Nearest neigbor-2:2849
+distanceLSH: 356.997199
+distanceTrue: 262.895416
+Nearest neigbor-3:2820
+distanceLSH: 388.610345
+distanceTrue: 262.925845
+tLSH: 206.000000
+tTrue: 418.000000
 500-near neigbors: 
-121
-210
-232
-311
-319
-249
-304
-331
-103
-329
-350
-37
+245
+398
+761
+1155
+2902
+3795
+3834
+4147
+5564
+6949
+7319
+7847
+8009
+8971
+9284
+9658
+129
+545
+627
+1843
+2019
+2798
+2971
+3916
+4141
+7453
+7651
+8165
+1267
+1772
+1832
+2418
+3010
+3084
+3154
+3298
+6837
 
 Query: 3
-Nearest neighbor-1: 332
-distanceLSH: 425.532607
-distanceTrue: 271.260023
-Nearest neigbor-2:86
-distanceLSH: 357.612919
-distanceTrue: 291.412079
-Nearest neigbor-3:295
-distanceLSH: 399.135315
-distanceTrue: 316.235672
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 3228
+distanceLSH: 612.347940
+distanceTrue: 206.736547
+Nearest neigbor-2:5237
+distanceLSH: 292.817349
+distanceTrue: 222.551118
+Nearest neigbor-3:4872
+distanceLSH: 305.032785
+distanceTrue: 261.143639
+tLSH: 208.000000
+tTrue: 416.000000
 500-near neigbors: 
-335
-58
-278
-332
-86
-181
-295
-242
+234
+1424
+1702
+3053
+3505
+3581
+4152
+4634
+4741
+6439
+7545
+9106
+9306
+9696
+9798
+9821
+9922
+563
+956
+1858
+3039
+3937
+4211
+4648
+4819
+5026
+5154
+5670
+6756
+6887
+7310
+7423
+7494
+7599
+8037
+9153
+9588
+444
+683
+1049
+1303
+1421
+1718
+1756
+2071
 
 Query: 4
-Nearest neighbor-1: 209
-distanceLSH: 645.679487
-distanceTrue: 260.702896
-Nearest neigbor-2:172
-distanceLSH: 362.582404
-distanceTrue: 265.633206
-Nearest neigbor-3:329
-distanceLSH: 439.103632
-distanceTrue: 276.983754
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 6025
+distanceLSH: 682.033724
+distanceTrue: 215.176672
+Nearest neigbor-2:1934
+distanceLSH: 391.553317
+distanceTrue: 216.843261
+Nearest neigbor-3:276
+distanceLSH: 398.756818
+distanceTrue: 236.137672
+tLSH: 211.000000
+tTrue: 425.000000
 500-near neigbors: 
-329
-82
-128
-172
-276
-310
-226
-317
-157
+277
+486
+1185
+1220
+2002
+2383
+2771
+2808
+3448
+3491
+3639
+3983
+4265
+6065
+6808
+6979
+9065
+155
+2066
+2212
+2310
+2966
+3842
+5410
+6258
+6376
+8604
+8659
+9126
+9212
+9726
+156
+770
+989
+1694
+2030
+2154
+2635
+3060
+3153
+3245
 
 Query: 5
-Nearest neighbor-1: 257
-distanceLSH: 379.163553
-distanceTrue: 299.663144
-Nearest neigbor-2:247
-distanceLSH: 319.032914
-distanceTrue: 350.508202
-Nearest neigbor-3:162
-distanceLSH: 360.709024
-distanceTrue: 357.277203
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 750
+distanceLSH: 355.218243
+distanceTrue: 250.509481
+Nearest neigbor-2:6117
+distanceLSH: 380.201262
+distanceTrue: 265.067916
+Nearest neigbor-3:765
+distanceLSH: 396.690055
+distanceTrue: 267.277010
+tLSH: 215.000000
+tTrue: 436.000000
 500-near neigbors: 
-162
-74
-76
-64
-270
-247
-258
-3
-5
-257
+621
+1270
+1357
+1443
+1549
+1555
+1693
+1746
+1915
+4784
+5024
+6605
+6684
+6959
+9939
+296
+557
+723
+1301
+1375
+1543
+1932
+2404
+2557
+2594
+3598
+3727
+4345
+4716
+4849
+5093
+5495
+6046
+8444
+9287
+9301
+778
+976
+2249
 
 Query: 6
-Nearest neighbor-1: 304
-distanceLSH: 388.395417
-distanceTrue: 342.146168
-Nearest neigbor-2:334
-distanceLSH: 605.077681
-distanceTrue: 347.703897
-Nearest neigbor-3:236
-distanceLSH: 621.569787
-distanceTrue: 349.244900
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 680
+distanceLSH: 379.014512
+distanceTrue: 275.150868
+Nearest neigbor-2:198
+distanceLSH: 418.963006
+distanceTrue: 304.816338
+Nearest neigbor-3:87
+distanceLSH: 580.384355
+distanceTrue: 319.598185
+tLSH: 247.000000
+tTrue: 469.000000
 500-near neigbors: 
-128
-84
-173
-94
-304
+429
+744
+801
+1006
+1434
+1683
+2370
+4011
+4188
+5600
+5882
+6385
+6651
+8194
+8386
+140
+478
+1493
+1936
+4112
+5119
+5127
+6225
+6427
+6765
+8652
+9002
+9057
+9090
+9486
+9532
+218
+736
+1954
+1967
+2405
+2782
+3247
+3290
+3530
 
 Query: 7
-Nearest neighbor-1: 101
-distanceLSH: 620.297509
-distanceTrue: 298.856153
-Nearest neigbor-2:110
-distanceLSH: 351.933232
-distanceTrue: 300.489600
-Nearest neigbor-3:299
-distanceLSH: 352.910754
-distanceTrue: 326.554743
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 9600
+distanceLSH: 319.954684
+distanceTrue: 246.609002
+Nearest neigbor-2:6783
+distanceLSH: 358.180122
+distanceTrue: 255.804613
+Nearest neigbor-3:2651
+distanceLSH: 365.172562
+distanceTrue: 266.724577
+tLSH: 213.000000
+tTrue: 427.000000
 500-near neigbors: 
-125
-340
-95
-287
-49
-50
-110
 239
-299
-69
-130
-36
-191
+578
+612
+1974
+2319
+2717
+2887
+2973
+3205
+3679
+4065
+4515
+6296
+6358
+6970
+7039
+7705
+7814
+8876
+8953
+9341
+9516
+9615
+9621
+9867
+1296
+1310
+2120
+3943
+4422
+5110
+6374
+6458
+7012
+8871
+9077
+598
+1846
+1999
+2229
+2355
+2651
+4003
+4171
+4467
+5359
+5473
+6116
 
 Query: 8
-Nearest neighbor-1: 33
-distanceLSH: 653.001531
-distanceTrue: 253.860198
-Nearest neigbor-2:35
-distanceLSH: 338.641403
-distanceTrue: 338.641403
-Nearest neigbor-3:283
-distanceLSH: 397.699635
-distanceTrue: 374.643831
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 4090
+distanceLSH: 311.682531
+distanceTrue: 173.948268
+Nearest neigbor-2:3002
+distanceLSH: 430.788811
+distanceTrue: 196.402648
+Nearest neigbor-3:1269
+distanceLSH: 434.535384
+distanceTrue: 211.641206
+tLSH: 216.000000
+tTrue: 422.000000
 500-near neigbors: 
-49
-178
-283
-35
+526
+748
+988
+1070
+1449
+2330
+3561
+3857
+3891
+6623
+7534
+8162
+8317
+8494
+8666
+9442
+9490
+1183
+1626
+4324
+7391
+8241
+8583
+9557
+9636
+9684
+9957
+328
+1401
+1403
+3030
+3078
+6467
 
 Query: 9
-Nearest neighbor-1: 191
-distanceLSH: 621.321978
-distanceTrue: 270.964942
-Nearest neigbor-2:164
-distanceLSH: 340.486417
-distanceTrue: 306.737673
-Nearest neigbor-3:163
-distanceLSH: 349.884267
-distanceTrue: 322.487209
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 4733
+distanceLSH: 619.998387
+distanceTrue: 248.473339
+Nearest neigbor-2:2018
+distanceLSH: 336.520430
+distanceTrue: 256.214754
+Nearest neigbor-3:1394
+distanceLSH: 368.237695
+distanceTrue: 259.137029
+tLSH: 214.000000
+tTrue: 423.000000
 500-near neigbors: 
-118
-154
-163
-17
-164
-187
-11
-76
-101
+79
+462
+828
+829
+1703
+3750
+4236
+4626
+4837
+4927
+5409
+6378
+7523
+7932
+7950
+9254
+9327
+9349
+474
+972
+1780
+3353
+4590
+4822
+4903
+5312
+5389
+5415
+5615
+5944
+7156
+7740
+7821
+8340
+9147
+34
+868
+909
+2325
+2340
+2600
+3532
 
 Query: 10
-Nearest neighbor-1: 115
-distanceLSH: 335.678418
-distanceTrue: 298.363872
-Nearest neigbor-2:243
-distanceLSH: 358.087978
-distanceTrue: 320.560447
-Nearest neigbor-3:336
-distanceLSH: 362.859477
-distanceTrue: 323.224380
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 3389
+distanceLSH: 472.712386
+distanceTrue: 250.014000
+Nearest neigbor-2:2874
+distanceLSH: 320.886273
+distanceTrue: 251.722069
+Nearest neigbor-3:1969
+distanceLSH: 366.769682
+distanceTrue: 263.374258
+tLSH: 215.000000
+tTrue: 423.000000
 500-near neigbors: 
-51
-115
-280
-164
-169
-204
-64
-270
-24
-243
-336
+197
+798
+893
+1660
+2207
+2210
+3239
+3389
+3572
+4916
+4952
+6877
+6994
+8634
+9789
+986
+1457
+1527
+1911
+2135
+2932
+3486
+3548
+3988
+4637
+5436
+5808
+6262
+7700
+8459
+8763
+9048
+9399
+1622
+2143
+2988
+3040
+3140
+3761
+3960
+5047
+5322
+5701
+6597
+6802
 
 Query: 11
-Nearest neighbor-1: 152
-distanceLSH: 383.950518
-distanceTrue: 316.777524
-Nearest neigbor-2:136
-distanceLSH: 379.548416
-distanceTrue: 325.395144
-Nearest neigbor-3:301
-distanceLSH: 383.712132
-distanceTrue: 337.376644
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 1207
+distanceLSH: 609.786028
+distanceTrue: 293.882630
+Nearest neigbor-2:1708
+distanceLSH: 371.591173
+distanceTrue: 308.914228
+Nearest neigbor-3:1202
+distanceLSH: 382.116474
+distanceTrue: 312.784271
+tLSH: 213.000000
+tTrue: 423.000000
 500-near neigbors: 
-299
-301
-44
-81
-138
-193
-239
-293
-97
-170
-98
-136
-152
+674
+885
+1032
+1619
+2498
+3582
+3869
+3943
+5662
+5723
+6523
+6654
+7537
+8318
+9250
+1963
+2229
+2489
+3157
+3458
+4254
+4273
+4293
+4387
+5475
+6003
+6856
+7375
+8070
+9735
+337
+673
+801
+1461
+1816
+1922
+2851
+2960
+2986
+3872
+3966
+4073
+4131
+4373
+7342
+7855
+8154
+9935
+645
 
 Query: 12
-Nearest neighbor-1: 48
-distanceLSH: 653.491392
+Nearest neighbor-1: 4652
+distanceLSH: 341.445457
+distanceTrue: 172.162714
+Nearest neigbor-2:4652
+distanceLSH: 341.445457
+distanceTrue: 227.398329
+Nearest neigbor-3:1530
+distanceLSH: 418.829321
 distanceTrue: 241.646436
-Nearest neigbor-2:57
-distanceLSH: 278.427729
-distanceTrue: 256.452725
-Nearest neigbor-3:63
-distanceLSH: 279.528174
-distanceTrue: 272.079033
-tLSH: 8.000000
-tTrue: 16.000000
+tLSH: 217.000000
+tTrue: 424.000000
 500-near neigbors: 
-118
-154
-163
-22
-257
-75
-93
-166
-247
-258
-57
-63
-222
+4
+575
+900
+1104
+1457
+1682
+2712
+3822
+3845
+5457
+5459
+6383
+6782
+6811
+7036
+7726
+7945
+8101
+8342
+8745
+9041
+9174
+9320
+9397
+9399
+19
+326
+1336
+2835
+3090
+3255
+3435
+4260
+4640
+5010
+5402
+5873
+6202
+6308
+6492
+7594
+8132
+8734
+9243
+9842
+535
+651
+1040
+1048
+2132
+3542
+3648
+3668
+4491
 
 Query: 13
-Nearest neighbor-1: 140
-distanceLSH: 324.675222
+Nearest neighbor-1: 9836
+distanceLSH: 348.555591
+distanceTrue: 238.549785
+Nearest neigbor-2:1513
+distanceLSH: 370.459175
 distanceTrue: 250.071990
-Nearest neigbor-2:198
-distanceLSH: 339.169574
+Nearest neigbor-3:568
+distanceLSH: 399.387030
 distanceTrue: 252.566823
-Nearest neigbor-3:192
-distanceLSH: 349.754199
-distanceTrue: 258.414396
-tLSH: 8.000000
-tTrue: 16.000000
+tLSH: 219.000000
+tTrue: 435.000000
 500-near neigbors: 
-337
-192
-198
-140
-189
-82
-84
-103
-128
+95
+328
+788
+840
+1894
+2959
+2969
+3085
+3150
+3588
+3683
+3754
+4446
+4517
+6229
+6483
+6486
+6653
+7289
+8529
+8845
+9168
+9194
+9262
+9409
+9739
+9836
+682
+818
+1075
+1679
+2080
+2568
+3066
+3481
+4050
+4062
+4498
+5175
+5797
+5844
+7934
+225
+349
+361
+897
+1230
+1492
+1633
+2274
+2398
+2554
+2811
 
 Query: 14
-Nearest neighbor-1: 42
-distanceLSH: 551.064425
-distanceTrue: 291.912658
-Nearest neigbor-2:264
-distanceLSH: 388.409578
-distanceTrue: 300.166620
-Nearest neigbor-3:38
-distanceLSH: 522.879527
-distanceTrue: 313.340071
-tLSH: 8.000000
-tTrue: 16.000000
+Nearest neighbor-1: 7000
+distanceLSH: 605.071070
+distanceTrue: 244.677339
+Nearest neigbor-2:1287
+distanceLSH: 379.448284
+distanceTrue: 262.133554
+Nearest neigbor-3:740
+distanceLSH: 411.810636
+distanceTrue: 270.584552
+tLSH: 217.000000
+tTrue: 444.000000
 500-near neigbors: 
-88
-210
-264
+232
+601
+1051
+1142
+2026
+2107
+2506
+2531
+3507
+6863
+7524
+9702
+9745
+9958
+887
+1581
+2161
+2242
+2421
+2649
+3614
+3852
+3921
+4944
+4980
+6158
+7196
+7379
+8128
+8586
+9269
+1842
+1939
+1998
+2181
+2608
+2924
+3688
+4377
+5392
+5656
+5688
 
 Query: 15
-Nearest neighbor-1: 80
-distanceLSH: 372.841790
+Nearest neighbor-1: 6243
+distanceLSH: 515.284387
+distanceTrue: 273.316666
+Nearest neigbor-2:4961
+distanceLSH: 389.515083
+distanceTrue: 278.307384
+Nearest neigbor-3:3768
+distanceLSH: 400.629505
 distanceTrue: 282.740163
-Nearest neigbor-2:158
-distanceLSH: 460.707065
-distanceTrue: 347.670821
-Nearest neigbor-3:178
-distanceLSH: 601.450746
-distanceTrue: 352.413110
-tLSH: 8.000000
-tTrue: 16.000000
+tLSH: 220.000000
+tTrue: 432.000000
 500-near neigbors: 
-214
-268
-101
-154
-72
-203
-24
-243
-80
-158
+1009
+1722
+1882
+2564
+2790
+2994
+3257
+3704
+3731
+3828
+4087
+4316
+4368
+4665
+4728
+4744
+4819
+5052
+5503
+6236
+6528
+6529
+6736
+7937
+9186
+1225
+1547
+1920
+1924
+2318
+3652
+4311
+4314
+4532
+4855
+4916
+5125
+9347
+113
+405
+1169
+2833
 

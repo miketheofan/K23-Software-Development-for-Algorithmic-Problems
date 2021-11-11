@@ -13,13 +13,6 @@ HashTable::~HashTable(){
 		if(this->table[i] != NULL)
 			delete this->table[i];
 
-	// for(int i=0;i<this->tableSize;i++)
-	// 	if(this->table[i] != NULL){
-
-	// 		// this->table[i]->deleteList();
-	// 		delete this->table[i];
-	// 	}
-
 	delete[] this->table;
 }
 
@@ -27,9 +20,8 @@ int HashTable::HashFunction(int32_t key){
 	return key % this->tableSize;
 }
 
+/* The following function inserts an item in hash table. */
 void HashTable::insert(int32_t key,item* value){
-
-	// int hash = HashFunction(key); /* Calculate in which position of Hash Table this id given must be inserted.
 
 	if( table[key] == NULL )/*If this position is empty , insert it in the position,othterwise find the end of the list and insert it at the end.*/
 		table[key] = new HashNode(key,value);
@@ -49,6 +41,7 @@ void HashTable::print(){
 	}
 }
 
+/* The following function returns a bucket that corresponds to the hash key given. */
 HashNode* HashTable::getBucket(int32_t key){
 
 	for(int i=0;i<this->tableSize;i++)
@@ -62,8 +55,6 @@ HashNode::~HashNode(){
 
 	if(this->next != NULL)
 		delete this->next;
-
-	// if(this->value != NULL) delete this->value;
 }
 
 HashNode::HashNode(int32_t key,item* value) : key(key){
@@ -95,6 +86,5 @@ void HashNode::insert(int32_t key,item* value){
 void HashNode::print(){
 
 	cout << this->value->getID() << " ";
-
 	if(this->next != NULL) this->next->print();
 }

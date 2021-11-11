@@ -28,10 +28,12 @@ int main(int argc,char **argv){
 		else if(!strcmp(argv[i],"-r"))
 			R = stoi(argv[++i]);
 
+	/* First we check if inputFile was given by the user. */
 	if(inputFile == ""){
 
 		bool flag = true;
 
+		/* If it was not given, ask him for the path of the file, and do this until path given actually exists. */
 		do{
 
 			cout << "Give me the path of the dataset file: " << endl;
@@ -50,22 +52,29 @@ int main(int argc,char **argv){
 
 	int dimension = getDimension(inputFile);
 
+	/* We initialize w as a random number between 2 and 6, as was suggested in the paper. */
 	int w = rand()%6+2;
 
 	string check;
 
 	do{
 
+		/* We initialize the hyper cube structure that will be used to answer the queries. */
 		HyperCube cube(k,w,M,probes,128);
 
+		/* We initialize a vector where items read from inputFile will be inserted. This is added for easier memory management. Every item
+		we read will be allocated only once in memory and every other structure that may need to use or store this certain item will get it
+		as a pointer to the item's memory. */
 		vector<item*> dataset;
 		
 		readDatasetCUBE(inputFile,&cube,&dataset);
 
+		/* We check if queryFile was given by the user. */
 		if(queryFile == ""){
 
 			bool flag = true;
 
+			/* If it was not given, ask him for the path of the file, and do this until path given actually exists. */
 			do{
 
 				cout << "Give me the path of the query file: " << endl;
@@ -82,10 +91,12 @@ int main(int argc,char **argv){
 
 		}
 
+		/* We check if outputFile was given by the user. */
 		if(outputFile == ""){
 
 			bool flag = true;
 
+			/* If it was not given, ask him for the path of the file, and do this until path given actually exists. */
 			do{
 
 				cout << "Give me the path of the output file: " << endl;
@@ -105,6 +116,7 @@ int main(int argc,char **argv){
 		ofstream file(outputFile);
 		file.close();
 
+		/* This is the function that implements the answer of the queries read from the queryFile. */
 		answerQueries(&cube,queryFile,inputFile,M,N,R,outputFile);
 
 		string inputFile = "";
