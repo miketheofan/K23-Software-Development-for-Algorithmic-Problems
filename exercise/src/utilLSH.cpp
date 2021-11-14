@@ -130,30 +130,15 @@ void answerQueries(Hash *hash,string fileName,string dataFile,int N,int R,string
 		We use writeToFile function in order to write output in output.txt file. */
 		writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
 
-		item* nearestNeghbor = hash->findNN(&queryItem).first;
-
-		if(nearestNeghbor != NULL){
-			
-			writeToFile(outputFile,"Nearest neighbor-1: " + nearestNeghbor->getID() + "\n");
-			writeToFile(outputFile,"distanceLSH: " + to_string(hash->findNN(&queryItem).second) + "\n");
-			writeToFile(outputFile,"distanceTrue: " + to_string(bruteNN(&queryItem,dataFile)) + "\n");
-
-		}else{
-
-			writeToFile(outputFile,"Nearest neighbor-1: NULL\n");
-			writeToFile(outputFile,"distanceLSH: NULL\n");
-			writeToFile(outputFile,"distanceTrue: " + to_string(bruteNN(&queryItem,dataFile)) + "\n");
-
-		}
-
+		auto startLSH = high_resolution_clock::now();
 		vector<pair<double,item*>> tempVector = hash->findkNN(N,&queryItem);
+		auto endLSH = high_resolution_clock::now();
 
-		double totalHypercube =0;
-		double totalTrue =0;
+		auto startTrue = high_resolution_clock::now();		
+		vector<pair<double,item*>> trueResults = brutekNN(N,&queryItem,dataFile);
+		auto endTrue = high_resolution_clock::now();
 
-		auto startHypercube = high_resolution_clock::now();
-
-		for(int i=2;i<=N;i++){
+		for(int i=1;i<=N;i++){
 
 			writeToFile(outputFile,"Nearest neigbor-" + to_string(i) + ":");
 
@@ -163,43 +148,25 @@ void answerQueries(Hash *hash,string fileName,string dataFile,int N,int R,string
 				writeToFile(outputFile,"distanceLSH: ");
 				writeToFile(outputFile,to_string(tempVector.at(i-1).first));				
 				writeToFile(outputFile,"\n");
-
-				auto endHupercube = high_resolution_clock::now();
 				
-				auto startTrue = high_resolution_clock::now();
-
 				writeToFile(outputFile,"distanceTrue: ");
-				writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
+				writeToFile(outputFile,to_string(trueResults.at(i-1).first));
 				writeToFile(outputFile,"\n");
-
-				auto endTrue = high_resolution_clock::now();
-
-				totalHypercube += (double)duration_cast<milliseconds>(endHupercube - startHypercube).count();
-				totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
 				
 			}else{
 
 				writeToFile(outputFile,"\n");
 				writeToFile(outputFile,"distanceLSH: NULL\n");
 
-				auto endHupercube = high_resolution_clock::now();
-				
-				auto startTrue = high_resolution_clock::now();
-
 				writeToFile(outputFile,"distanceTrue: ");		
-				writeToFile(outputFile,to_string(brutekNN(i,&queryItem,dataFile)));
+				writeToFile(outputFile,to_string(trueResults.at(i-1).first));
 				writeToFile(outputFile,"\n");
 
-				auto endTrue = high_resolution_clock::now();
-				
-				totalHypercube += (double)duration_cast<milliseconds>(endHupercube - startHypercube).count();
-				totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
-			
 			}
 		}
 
-		writeToFile(outputFile,"tLSH: " + to_string(totalHypercube) + "\n");
-		writeToFile(outputFile,"tTrue: " + to_string(totalTrue) + "\n");
+		writeToFile(outputFile,"tLSH: " + to_string((double)duration_cast<milliseconds>(endLSH - startLSH).count()) + "\n");
+		writeToFile(outputFile,"tTrue: " + to_string((double)duration_cast<milliseconds>(endTrue - startTrue).count()) + "\n");
 
 		writeToFile(outputFile,to_string(R) + "-near neigbors: \n");
 		vector<pair<item*,double>> results = hash->findRange(R,&queryItem);

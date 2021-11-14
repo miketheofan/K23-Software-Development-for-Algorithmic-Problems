@@ -6,6 +6,7 @@ Cluster::Cluster(item* centroid){
 	/* First we store item given as this current cluster's centroid. */
 	this->centroid = new item(*centroid);
 	this->dimension = this->centroid->getDimension();
+	
 	/* We also insert the centroid in the item's vector. That is because the 'random' centroid with 
 	which every cluster will be initialized will be replaced later with random ones so we must not lose
 	him from the items vector. */

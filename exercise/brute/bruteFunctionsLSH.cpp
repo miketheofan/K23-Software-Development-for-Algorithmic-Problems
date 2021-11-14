@@ -42,7 +42,7 @@ double bruteNN(item* i,string fileName){
 	return minimum;
 }
 
-double brutekNN(int k,item* i,string fileName){
+vector<pair<double,item*>> brutekNN(int k,item* i,string fileName){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -96,6 +96,6 @@ double brutekNN(int k,item* i,string fileName){
 
 	}
 
-	return queries.at(k-1).first;
+	return queries;
 
 }

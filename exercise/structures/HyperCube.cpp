@@ -55,49 +55,6 @@ int32_t HyperCube::hashFunction(item* it){
 	return key;
 }
 
-/* The following is our implementation for the find Nearest Neigbour function. */
-pair<item*,double> HyperCube::findNN(item* queryItem,int M){
-
-	double minimum = numeric_limits<int>::max();
-	pair<item*,double> b;
-	double distance;
-
-	int flag =0;
-
-	/* We hash the query item. */
-	int32_t hash = this->hashFunction(queryItem);
-	HashNode* tempBucket;
-
-	/* Then we get the bucket that corresponds to the hash key produced and also the probes-closest buckets. */
-	set<int32_t> nearVertices = this->HammingDist(hash,this->probes,this->k);
-
-	/* For every bucket */
-	for(auto i = nearVertices.begin();i != nearVertices.end();i++){
-
-		tempBucket = this->cube->getBucket(*i);
-
-		/* We iterate through all items in bucket */
-		while(tempBucket != NULL){
-
-			distance = dist(2,*queryItem,*tempBucket->getValue());
-			
-			/* And find the one with the closest distance. */
-			if(isgreater(minimum,distance)){
-
-				b = make_pair(tempBucket->getValue(),distance);
-				minimum = distance;
-			}
-		
-			tempBucket = tempBucket->getNext();
-		
-			/* Statement that was given in the paper in order to reduce the execution time of the program. */
-			if(++flag == M) return b;
-		}
-	}
-
-	return b;
-}
-
 /* The following is our implementation for the k-Nearest Neigbours function. */
 vector<pair<double,item*>> HyperCube::findkNN(item* queryItem,int M,int k){
 

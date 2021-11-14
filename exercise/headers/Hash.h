@@ -21,21 +21,17 @@ private:
 	int k;
 	int L;
 	int w;
-	// vector<int32_t> rVector;
 	int size;
 	int dimension;
-	// double t;
 	vector<item*> items;
 	vector<HashTable*> hashTables;
 	vector<Gi*> gVector;
-	// vector<double> *v;
 	
 public:
 
 	Hash(int,int,int,int,int);
 	~Hash();
 	void insert(item*);
-	pair<item*,double> findNN(item*);
 	vector<pair<double,item*> > findkNN(int,item*);
     vector<pair<item*,double>> findRange(int,item*);
 	void print();

@@ -61,7 +61,7 @@ int main(int argc,char **argv){
 	do{
 
 		/* We initialize the hash structure that will be used to answer the queries. */
-		Hash hash(k,L,w,countItems(inputFile)/4,128);
+		Hash hash(k,L,w,countItems(inputFile)/4,dimension);
 
 		/* We initialize a vector where items read from inputFile will be inserted. This is added for easier memory management. Every item
 		we read will be allocated only once in memory and every other structure that may need to use or store this certain item will get it

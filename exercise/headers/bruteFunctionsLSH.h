@@ -9,6 +9,6 @@ using namespace std;
 #include "items.h"
 
 double bruteNN(item*,string);
-double brutekNN(int,item*,string);
+vector<pair<double,item*>> brutekNN(int,item*,string);
 
 #endif

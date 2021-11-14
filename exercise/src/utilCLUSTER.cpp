@@ -1,7 +1,5 @@
 #include "../headers/utilCLUSTER.h"
 
-#include "../headers/utilCLUSTER.h"
-
 /* Distance calculator function is implemented in order to be easily extendable in vector 
 spaced with other metrics. */
 double dist(int distance,item x,item y){

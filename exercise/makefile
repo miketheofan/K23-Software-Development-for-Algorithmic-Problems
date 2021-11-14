@@ -18,7 +18,7 @@ OUT2 = outCUBE
 OUT3 = outCLUSTER
 ARGS1 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 4 -L 5 -o output.txt -N 3 -r 500
 ARGS2 = -i $(TESTS_FILES)dataset.txt -q $(TESTS_FILES)query.txt -k 14 -M 10 -probes 2 -o output.txt -N 3 -r 500
-ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -m Classic
+ARGS3 = -i $(TESTS_FILES)dataset.txt -c $(TESTS_FILES)cluster.conf -o output.txt -complete -m Classic
 CC = g++ -O2 -std=c++11
 FLAGS = -g -c -Ο3
 
@@ -94,3 +94,4 @@ clean:
 	@rm $(STRUCTURES_FILES)*.o
 	@rm $(CUBE_FILES)*.o
 	@rm $(CLUSTER_FILES)*.o
+	@rm $(BRUTE_FILES)*.o
