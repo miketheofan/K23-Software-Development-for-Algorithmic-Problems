@@ -41,17 +41,20 @@ int main(int argc,char** argv){
 
 	vector<item*> dataset;
 
+	Hash* hash;
+	HyperCube* cube;
+
 	if(algorithm == "LSH"){
 
 		k = 4;
-		Hash hash(k,L,w,countItems(inputFile)/4,getDimension(inputFile));
-		readDatasetLSH(inputFile,&hash,&dataset);		
+		hash = new Hash(k,L,w,countItems(inputFile)/4,getDimension(inputFile));
+		readDataset(inputFile,hash,&dataset);		
 	
 	}else if(algorithm == "Hypercube"){ 
 
 		k = 14;		
-		HyperCube cube(k,w,M,probes,getDimension(inputFile));
-		readDatasetCUBE(inputFile,&cube,&dataset);
+		cube = new HyperCube(k,w,M,probes,getDimension(inputFile));
+		readDataset(inputFile,cube,&dataset);
 
 	}else if(algorithm != "Fretchet"){
 
@@ -131,10 +134,22 @@ int main(int argc,char** argv){
 
 		ofstream file(outputFile);
 		file.close();
+
+		if(algorithm == "LSH") 
+			answerQueries(hash,queryFile,inputFile,1,outputFile);
+		else if(algorithm == "Hypercube")
+			answerQueries(cube,queryFile,inputFile,1,outputFile);
 	
 		string inputFile = "";
 		string queryFile = "";
 		string outputFile = "";
+
+		/* We delete every memory that was allocated for every item read from the inputFile. */
+		for(unsigned long int i=0;i<dataset.size();i++)
+			delete(dataset.at(i));
+
+		delete hash;
+		delete cube;
 
 		cout << "Do you want to run the program with different data and queries(Y/N): ";
 		cin >> check;

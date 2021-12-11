@@ -1,5 +1,5 @@
 #include "../headers/Hash.h"
-#include "../headers/utilLSH.h"
+#include "../headers/util.h"
 
 Hash::Hash(int k,int L,int w,int size,int dimension) : k(k), L(L), w(w), size(size), dimension(dimension) {
 

@@ -12,7 +12,7 @@ SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/
 CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.cpp
 HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/util.h $(HEADER_FILES)/Curve.H
 OUT1 = outSEARCH
-ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.txt -k 4 -L 5 -M 10 -probes 2 -o output.txt -algorithm LSH -metric discrete -delta 2.5
+ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 5 -M 10 -probes 2 -o output.txt -algorithm LSH -metric discrete -delta 2.5
 CC = g++ -O2 -std=c++11
 FLAGS = -g -c -Ο3
 
@@ -46,4 +46,9 @@ out1:
 
 clean:
 	@rm $(OUT1)
+	@rm $(SOURCE_FILES)*.o
+	@rm $(DATA_FILES)*.o
 	@rm $(SEARCH_FILES)*.o
+	@rm $(STRUCTURES_FILES)*.o
+# 	@rm $(CLUSTER_FILES)*.o
+	@rm $(BRUTE_FILES)*.o

@@ -1,5 +1,5 @@
 #include "../headers/G.h"
-#include "../headers/utilLSH.h"
+#include "../headers/util.h"
 
 Gi::Gi(int k,int dimension,int w) : k(k) , w(w) {
 

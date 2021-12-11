@@ -1,5 +1,5 @@
 #include "../headers/H.h"
-#include "../headers/utilLSH.h"
+#include "../headers/util.h"
 
 Hi::Hi(int dimension,int w) : w(w){
 

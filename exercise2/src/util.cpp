@@ -21,7 +21,7 @@ double dist(int distance,item x,item y){
 
 /* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
 item in HyperCube structure. */
-void readDatasetCUBE(string fileName,HyperCube* cube,vector<item*> *dataset){
+void readDataset(string fileName,HyperCube* cube,vector<item*> *dataset){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -61,7 +61,7 @@ void readDatasetCUBE(string fileName,HyperCube* cube,vector<item*> *dataset){
 
 /* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
 item in HyperCube structure. */
-void readDatasetLSH(string fileName,Hash* hash,vector<item*> *dataset){
+void readDataset(string fileName,Hash* hash,vector<item*> *dataset){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -135,13 +135,17 @@ int countItems(string fileName){
 }
 
 /* The following function implements the main functionality of answering the queries. */
-void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,int R,string outputFile){
+void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
 
 	ifstream fp;
 	fp.open(fileName);
 
 	string line,id,word;
 	int counter =0;
+
+	double totalApproximate =0;
+	double totalTrue =0;
+	double totalItems =0;
 
 	/* We get every line (query) of the file given. */
 	while(getline(fp,line)){
@@ -171,53 +175,110 @@ void answerQueries(HyperCube *cube,string fileName,string dataFile,int M,int N,i
 		writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
 
 		auto startHypercube = high_resolution_clock::now();
-		vector<pair<double,item*>> tempVector = cube->findkNN(&queryItem,M,N);
+		vector<pair<double,item*>> tempVector = cube->findkNN(&queryItem,M,1);
 		auto endHypercube = high_resolution_clock::now();
 
 		auto startTrue = high_resolution_clock::now();
-		vector<pair<double,item*>> trueResults = brutekNN(N,&queryItem,dataFile);
+		vector<pair<double,item*>> trueResults = brutekNN(1,&queryItem,dataFile);
 		auto endTrue = high_resolution_clock::now();
 
-		for(int i=1;i<=N;i++){
+		writeToFile(outputFile,"Approximate Nearest neigbor: ");
+		writeToFile(outputFile,tempVector.at(0).second->getID() + "\n");
+		writeToFile(outputFile,"True Nearest neigbor: ");
+		writeToFile(outputFile,trueResults.at(0).second->getID());
+		writeToFile(outputFile,"\n");
+			
+		writeToFile(outputFile,"distanceApproximate: ");
+		writeToFile(outputFile,to_string(tempVector.at(0).first));
+		writeToFile(outputFile,"\n");
 
-			writeToFile(outputFile,"Nearest neigbor-" + to_string(i) + ":");
+		writeToFile(outputFile,"distanceTrue: ");
+		writeToFile(outputFile,to_string(trueResults.at(0).first));
+		writeToFile(outputFile,"\n");
 
-			if(tempVector.size() >= (unsigned long int)i){
+		totalItems++;
+		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
+		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
+		
+		writeToFile(outputFile,"\n");
 
-				writeToFile(outputFile,tempVector.at(i-1).second->getID() + "\n");
-				writeToFile(outputFile,"distanceHypercube: ");
-				writeToFile(outputFile,to_string(tempVector.at(i-1).first));
-				writeToFile(outputFile,"\n");
+	}
 
-				writeToFile(outputFile,"distanceTrue: ");
-				writeToFile(outputFile,to_string(trueResults.at(i-1).first));
-				writeToFile(outputFile,"\n");
+	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
+	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+}
 
-			}else{
+/* The following function implements the main functionality of answering the queries. */
+void answerQueries(Hash* hash,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
 
-				writeToFile(outputFile,"\n");
-				writeToFile(outputFile,"distanceHypercube: NULL\n");
+	ifstream fp;
+	fp.open(fileName);
 
-				writeToFile(outputFile,"distanceTrue: ");
-				writeToFile(outputFile,to_string(trueResults.at(i-1).first));
-				writeToFile(outputFile,"\n");
+	string line,id,word;
+	int counter =0;
 
+	double totalApproximate =0;
+	double totalTrue =0;
+	double totalItems =0;
+
+	/* We get every line (query) of the file given. */
+	while(getline(fp,line)){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
 			}
+
+			words.push_back(stod(word));
+
 		}
 
-		writeToFile(outputFile,"tHypercube: " + to_string((double)duration_cast<milliseconds>(endHypercube - startHypercube).count()) + "\n");
-		writeToFile(outputFile,"tTrue: " + to_string((double)duration_cast<milliseconds>(endTrue - startTrue).count()) + "\n");
+		counter =0;
 
-		writeToFile(outputFile,to_string(R) + "-near neigbors: \n");
-		vector<pair<item*,double>> results = cube->findRange(R,&queryItem,M);
+		/* Statically create query item. */
+		item queryItem(id,words);
 
-		if(!results.empty())
-			for(unsigned long int i=0;i<results.size();i++)
-				if(results.at(i).first != NULL)
-					writeToFile(outputFile,results.at(i).first->getID() + "\n");
+		/* And produce the output that was given in the paper of the project. 
+		We use writeToFile function in order to write output in output.txt file. */
+		writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
+
+		auto startHypercube = high_resolution_clock::now();
+		vector<pair<double,item*>> tempVector = hash->findkNN(1,&queryItem);
+		auto endHypercube = high_resolution_clock::now();
+
+		auto startTrue = high_resolution_clock::now();
+		vector<pair<double,item*>> trueResults = brutekNN(1,&queryItem,dataFile);
+		auto endTrue = high_resolution_clock::now();
+
+		writeToFile(outputFile,"Approximate Nearest neigbor: ");
+		writeToFile(outputFile,tempVector.at(0).second->getID() + "\n");
+		writeToFile(outputFile,"True Nearest neigbor: ");
+		writeToFile(outputFile,trueResults.at(0).second->getID());
+		writeToFile(outputFile,"\n");
+			
+		writeToFile(outputFile,"distanceApproximate: ");
+		writeToFile(outputFile,to_string(tempVector.at(0).first));
+		writeToFile(outputFile,"\n");
+
+		writeToFile(outputFile,"distanceTrue: ");
+		writeToFile(outputFile,to_string(trueResults.at(0).first));
+		writeToFile(outputFile,"\n");
+
+		totalItems++;
+		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
+		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
 
 		writeToFile(outputFile,"\n");
 	}
+
+	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
+	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
 }
 
 /* The following function returns the dimension in which items from inputFile are. */

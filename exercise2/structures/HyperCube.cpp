@@ -1,5 +1,5 @@
 #include "../headers/HyperCube.h"
-#include "../headers/utilCUBE.h"
+#include "../headers/util.h"
 
 HyperCube::HyperCube(int k,int w,int M,int probes,int dimension) : k(k), w(w), M(M), probes(probes), dimension(dimension) {
 
