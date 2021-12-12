@@ -13,9 +13,11 @@ using namespace std::chrono;
 #include "./HyperCube.h"
 #include "./Hash.h"
 #include "./brute.h"
+#include "./DiscreteLSH.h"
 
 void readDataset(string,HyperCube*,vector<item*>*);
 void readDataset(string,Hash*,vector<item*>*);
+void readDataset(string,Discrete*,vector<item*>*);
 vector<double>* produceNdistVector(int,int,int);
 int module(int,int);
 int countItems(string);

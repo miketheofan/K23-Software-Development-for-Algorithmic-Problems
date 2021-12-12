@@ -43,6 +43,7 @@ int main(int argc,char** argv){
 
 	Hash* hash;
 	HyperCube* cube;
+	Discrete* disc;
 
 	if(algorithm == "LSH"){
 
@@ -56,7 +57,16 @@ int main(int argc,char** argv){
 		cube = new HyperCube(k,w,M,probes,getDimension(inputFile));
 		readDataset(inputFile,cube,&dataset);
 
-	}else if(algorithm != "Fretchet"){
+	}else if(algorithm == "Frechet"){
+
+		k = 4;
+		if(metric == "discrete"){
+
+			disc = new Discrete(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta);
+			readDataset(inputFile,disc,&dataset);
+		}
+
+	}else{
 
 		cerr << "Wrong algorithm given as parameter." << endl;
 		return -1;

@@ -60,7 +60,7 @@ void readDataset(string fileName,HyperCube* cube,vector<item*> *dataset){
 }
 
 /* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
-item in HyperCube structure. */
+item in Hash structure. */
 void readDataset(string fileName,Hash* hash,vector<item*> *dataset){
 
 	ifstream fp;
@@ -96,6 +96,44 @@ void readDataset(string fileName,Hash* hash,vector<item*> *dataset){
 
 		/* And then insert pointer to HyperCube. */
 		hash->insert(newItem);
+	}
+}
+
+void readDataset(string fileName,Discrete* disc,vector<item*> *dataset){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line,id,word;
+	int counter =0;
+
+	/* We read the file line by line. */
+	while( getline(fp,line) ){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		/* We read every word of each line. */
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		/* We create an item *only once* and insert in dataset. */
+		item* newItem = new item(id,words);
+		dataset->push_back(newItem);
+
+		/* And then insert pointer to LSH for Discrete Frechet. */
+		disc->insert(newItem);
 	}
 }
 

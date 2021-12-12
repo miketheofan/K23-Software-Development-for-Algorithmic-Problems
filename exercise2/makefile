@@ -8,11 +8,11 @@ STRUCTURES_FILES = ./structures/
 BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 
-SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/brute.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o
+SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(DATA_FILES)/Curve.o $(DATA_FILES)/Grid.o  $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/brute.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o $(STRUCTURES_FILES)/DiscreteLSH.o
 CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.cpp
 HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/util.h $(HEADER_FILES)/Curve.H
 OUT1 = outSEARCH
-ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 5 -M 10 -probes 2 -o output.txt -algorithm LSH -metric discrete -delta 2.5
+ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 5 -M 10 -probes 2 -o output.txt -algorithm Frechet -metric discrete -delta 2.5
 CC = g++ -O2 -std=c++11
 FLAGS = -g -c -Ο3
 
@@ -41,8 +41,20 @@ brute.o: brute.cpp
 HyperCube.o: HyperCube.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)HyperCube.cpp	
 
+DiscreteLSH.o: DiscreteLSH.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)DiscreteLSH.cpp	
+
+Grid.o: Grid.cpp
+	$(CC) $(FLAGS) $(DATA_FILES)Grid.cpp
+
+Curve.o: Curve.cpp
+	$(CC) $(FLAGS) $(DATA_FILES)Curve.cpp
+
 out1:
 	@./$(OUT1) $(ARGS1)
+
+debug:
+	@valgrind ./$(OUT1) $(ARGS1)
 
 clean:
 	@rm $(OUT1)

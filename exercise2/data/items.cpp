@@ -12,6 +12,10 @@ item::item(const item &i){
 
 item::~item(){}
 
+void item::addCoordinate(double c){
+	this->coordinates.push_back(c);
+}
+
 string item::getID(){
 	return this->itemID;
 }

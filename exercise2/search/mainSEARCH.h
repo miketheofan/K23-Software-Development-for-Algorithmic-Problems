@@ -9,5 +9,6 @@ using namespace std;
 
 #include "../headers/util.h"
 #include "../headers/items.h"
+#include "../headers/DiscreteLSH.h"
 
 #endif 

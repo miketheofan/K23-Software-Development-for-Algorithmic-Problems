@@ -21,6 +21,7 @@ public:
 	item(string,vector<double>);
 	item(const item&);
 	~item();
+	void addCoordinate(double);
 	string getID();
 	int32_t getTrick();
 	void setTrick(int32_t);
