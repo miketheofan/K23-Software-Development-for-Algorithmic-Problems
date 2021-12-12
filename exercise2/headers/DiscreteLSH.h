@@ -19,20 +19,22 @@ private:
 	int delta;
 	int L;
 	long double M;
+	string algorithm;
 	vector<Curve*> items;
 	vector<Grid*> grids;
-	// vector<vector<pair<int,double>>> polygCurves;
 	vector<Hash*> LSH;
 
 public:
 
-	Discrete(int,int,int,int,int,int);
+	Discrete(int,int,int,int,int,int,string);
 	void insert(item*);
+	item* hashCurve(item*,int);
 	Curve* Polygonization(item*);
 	Curve* Snapping(Curve*,int);
-	void DuplicatesRemoval();
+	// Curve* DuplicatesRemoval(Curve*);
 	item* Vectorization(Curve*,item*);
-	void Padding(item*);
+	item* Padding(item*,Curve*);
+	pair<double,Curve*> findNN(item*);
 
 };
 

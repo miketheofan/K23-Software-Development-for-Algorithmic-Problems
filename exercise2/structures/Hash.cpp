@@ -1,7 +1,7 @@
 #include "../headers/Hash.h"
 #include "../headers/util.h"
 
-Hash::Hash(int k,int L,int w,int size,int dimension) : k(k), L(L), w(w), size(size), dimension(dimension) {
+Hash::Hash(int k,int L,int w,int size,int dimension,string algorithm) : k(k), L(L), w(w), size(size), dimension(dimension), algorithm(algorithm) {
 
 	/* We create L hashTables inside the constructor and also L Gi which are the g functions that will be used
 	for items hashing. */
@@ -80,8 +80,11 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 					/* If they have the same ID */
 					if(queryItem->getTrick() == tempBucket->getValue()->getTrick()){
 
-						/* Calculate its' distance with query item. */
-						distance = dist(2,*queryItem,*tempBucket->getValue());
+						if(this->algorithm == "L2")
+							/* Calculate its' distance with query item. */
+							distance = dist(2,*queryItem,*tempBucket->getValue());
+						else
+							distance = distFrechet(queryItem,tempBucket->getValue());
 
 						/* If it is lower than the previous minimum distance. */
 						if(distance < minimum){
@@ -139,7 +142,10 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 
 				while(tempBucket != NULL){
 
-					distance = dist(2,*queryItem,*tempBucket->getValue());
+					if(algorithm == "L2")
+						distance = dist(2,*queryItem,*tempBucket->getValue());
+					else
+						distance = distFrechet(queryItem,tempBucket->getValue());
 
 					if(distance < minimum){
 
@@ -208,8 +214,11 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
           	
 				totalItems++;
 
-				/* Calculate query's item distance with this item */
-              	distance = dist(2,*queryItem,*tempBucket->getValue());
+				if(this->algorithm == "L2")
+					/* Calculate query's item distance with this item */
+	              	distance = dist(2,*queryItem,*tempBucket->getValue());
+	            else
+	            	distance = distFrechet(queryItem,tempBucket->getValue());  
                 
                 /* And if it is in range add it to the vector. */
                 if(distance < r)

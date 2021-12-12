@@ -62,7 +62,7 @@ int main(int argc,char** argv){
 		k = 4;
 		if(metric == "discrete"){
 
-			disc = new Discrete(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta);
+			disc = new Discrete(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta,metric);
 			readDataset(inputFile,disc,&dataset);
 		}
 
@@ -149,6 +149,11 @@ int main(int argc,char** argv){
 			answerQueries(hash,queryFile,inputFile,1,outputFile);
 		else if(algorithm == "Hypercube")
 			answerQueries(cube,queryFile,inputFile,1,outputFile);
+		else{
+
+			if(metric == "discrete")
+				answerQueries(disc,queryFile,inputFile,1,outputFile);
+		}
 	
 		string inputFile = "";
 		string queryFile = "";

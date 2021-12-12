@@ -2,6 +2,8 @@
 
 item::item(string itemID,vector<double> coordinates) : itemID(itemID){
 	this->coordinates = coordinates;
+	this->trueItem = NULL;
+	this->originCurve = NULL;
 }
 
 item::item(const item &i){
@@ -26,6 +28,18 @@ int32_t item::getTrick(){
 
 void item::setTrick(int32_t trick){
 	this->trick = trick;
+}
+
+void item::setTrue(item* i){
+	this->trueItem = i;
+}
+
+void item::setCurve(Curve* curve){
+	this->originCurve = curve;
+}
+
+Curve* item::getCurve(){
+	return this->originCurve;
 }
 
 vector<double> *item::getVector(){

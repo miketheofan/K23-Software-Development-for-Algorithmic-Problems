@@ -26,13 +26,14 @@ private:
 	vector<item*> items;
 	vector<HashTable*> hashTables;
 	vector<Gi*> gVector;
+	string algorithm;
 	
 public:
 
-	Hash(int,int,int,int,int);
+	Hash(int,int,int,int,int,string = "L2");
 	~Hash();
 	void insert(item*);
-	vector<pair<double,item*> > findkNN(int,item*);
+	vector<pair<double,item*>> findkNN(int,item*);
     vector<pair<item*,double>> findRange(int,item*);
 	void print();
 	vector<item*> getItems();

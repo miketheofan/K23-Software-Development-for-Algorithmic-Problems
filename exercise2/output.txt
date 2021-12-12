@@ -1,0 +1,8 @@
+Query: 1
+Approximate Nearest neigbor: 15
+True Nearest neigbor: 1
+distanceApproximate: 0.000000
+distanceTrue: 361.678034
+
+tApproximateAverage: 4366.000000
+tTrueAverage: 1.000000

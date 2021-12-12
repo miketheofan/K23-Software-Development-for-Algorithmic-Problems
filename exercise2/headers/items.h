@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class Curve;
+
 class item{
 
 private:
@@ -15,6 +17,8 @@ private:
 	string itemID;
 	vector<double> coordinates;
 	int flag = -1;
+	item* trueItem;
+	Curve* originCurve;
 
 public:
 
@@ -25,6 +29,9 @@ public:
 	string getID();
 	int32_t getTrick();
 	void setTrick(int32_t);
+	void setTrue(item*);
+	Curve* getCurve();
+	void setCurve(Curve*);
 	vector<double> *getVector();
 	int getDimension();
 	double getCoordinatein(int);

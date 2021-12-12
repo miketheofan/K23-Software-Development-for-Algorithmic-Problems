@@ -3,11 +3,19 @@
 Curve::Curve(string id): id(id){}
 
 void Curve::addCoordinate(item* i){
+
+	// cout << "Inserting in curve " << this->id;
+	// i->print();
+
 	this->coordinates.push_back(i);
 }
 
 vector<item*>* Curve::getCoordinates(){
 	return &this->coordinates;
+}
+
+string Curve::getID(){
+	return this->id;
 }
 
 void Curve::print(){
@@ -19,4 +27,12 @@ void Curve::print(){
 		(*it)->print();
 		cout << endl;
 	}
+}
+
+int Curve::getSize(){
+	return this->coordinates.size();
+}
+
+item* Curve::getCoordinateat(int index){
+	return this->coordinates.at(index);
 }

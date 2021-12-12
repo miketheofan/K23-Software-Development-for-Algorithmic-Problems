@@ -19,7 +19,10 @@ public:
 
 	Curve(string);
 	void addCoordinate(item*);
+	string getID();
+	int getSize();
 	vector<item*>* getCoordinates();
+	item* getCoordinateat(int);
 	void print();
 };
 
