@@ -8,7 +8,7 @@ STRUCTURES_FILES = ./structures/
 BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 
-SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(DATA_FILES)/Curve.o $(DATA_FILES)/Grid.o  $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/brute.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o $(STRUCTURES_FILES)/DiscreteLSH.o
+SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(DATA_FILES)/Curve.o $(DATA_FILES)/Grid.o $(DATA_FILES)/GridContinuous.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/brute.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o $(STRUCTURES_FILES)/DiscreteLSH.o $(STRUCTURES_FILES)/ContinuousLSH.o
 CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.cpp
 HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/util.h $(HEADER_FILES)/Curve.H
 OUT1 = outSEARCH
@@ -44,8 +44,14 @@ HyperCube.o: HyperCube.cpp
 DiscreteLSH.o: DiscreteLSH.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)DiscreteLSH.cpp	
 
+ContinuousLSH.o: ContinuousLSH.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)ContinuousLSH.cpp	
+
 Grid.o: Grid.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)Grid.cpp
+
+GridContinuous.o: GridContinuous.cpp
+	$(CC) $(FLAGS) $(DATA_FILES)GridContinuous.cpp
 
 Curve.o: Curve.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)Curve.cpp

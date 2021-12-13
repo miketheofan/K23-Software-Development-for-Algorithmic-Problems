@@ -44,6 +44,7 @@ int main(int argc,char** argv){
 	Hash* hash;
 	HyperCube* cube;
 	Discrete* disc;
+	Continuous* cont;
 
 	if(algorithm == "LSH"){
 
@@ -64,6 +65,10 @@ int main(int argc,char** argv){
 
 			disc = new Discrete(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta,metric);
 			readDataset(inputFile,disc,&dataset);
+		}else if(metric == "continuous"){
+
+			cont = new Continuous(k,w,countItems(inputFile)/4,getDimension(inputFile),delta,metric);
+			readDataset(inputFile,cont,&dataset);
 		}
 
 	}else{

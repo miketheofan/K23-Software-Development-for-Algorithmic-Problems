@@ -283,6 +283,44 @@ void readDataset(string fileName,Discrete* disc,vector<item*> *dataset){
 	}
 }
 
+void readDataset(string fileName,Continuous* cont,vector<item*> *dataset){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line,id,word;
+	int counter =0;
+
+	/* We read the file line by line. */
+	while( getline(fp,line) ){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		/* We read every word of each line. */
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		/* We create an item *only once* and insert in dataset. */
+		item* newItem = new item(id,words);
+		dataset->push_back(newItem);
+
+		/* And then insert pointer to LSH for Continuous Frechet. */
+		cont->insert(newItem);
+	}
+}
+
 /* The following function is used to produce ν vector. */
 vector<double>* produceNdistVector(int dimension,int mean,int stddev){
 
