@@ -1,8 +1,92 @@
 Query: 1
-Approximate Nearest neigbor: 15
-True Nearest neigbor: 1
-distanceApproximate: 0.000000
-distanceTrue: 361.678034
+Approximate Nearest neigbor: 55
+True Nearest neigbor: 74
+distanceApproximate: 163.526756
+distanceTrue: 159.000000
 
-tApproximateAverage: 4366.000000
-tTrueAverage: 1.000000
+Query: 2
+Approximate Nearest neigbor: 17
+True Nearest neigbor: 10
+distanceApproximate: 151.433154
+distanceTrue: 144.000000
+
+Query: 3
+Approximate Nearest neigbor: 11
+True Nearest neigbor: 74
+distanceApproximate: 161.743624
+distanceTrue: 159.000000
+
+Query: 4
+Approximate Nearest neigbor: 30
+True Nearest neigbor: 10
+distanceApproximate: 162.659153
+distanceTrue: 156.000000
+
+Query: 5
+Approximate Nearest neigbor: 75
+True Nearest neigbor: 10
+distanceApproximate: 168.439900
+distanceTrue: 166.000000
+
+Query: 6
+Approximate Nearest neigbor: 29
+True Nearest neigbor: 10
+distanceApproximate: 156.160174
+distanceTrue: 146.000000
+
+Query: 7
+Approximate Nearest neigbor: 21
+True Nearest neigbor: 74
+distanceApproximate: 160.527256
+distanceTrue: 158.000000
+
+Query: 8
+Approximate Nearest neigbor: 28
+True Nearest neigbor: 9
+distanceApproximate: 167.836230
+distanceTrue: 165.000000
+
+Query: 9
+Approximate Nearest neigbor: 22
+True Nearest neigbor: 10
+distanceApproximate: 148.394744
+distanceTrue: 148.000000
+
+Query: 10
+Approximate Nearest neigbor: 14
+True Nearest neigbor: 53
+distanceApproximate: 169.177422
+distanceTrue: 165.000000
+
+Query: 11
+Approximate Nearest neigbor: 3
+True Nearest neigbor: 17
+distanceApproximate: 157.699081
+distanceTrue: 152.000000
+
+Query: 12
+Approximate Nearest neigbor: 24
+True Nearest neigbor: 74
+distanceApproximate: 163.379925
+distanceTrue: 159.000000
+
+Query: 13
+Approximate Nearest neigbor: 28
+True Nearest neigbor: 21
+distanceApproximate: 156.974520
+distanceTrue: 155.000000
+
+Query: 14
+Approximate Nearest neigbor: 74
+True Nearest neigbor: 10
+distanceApproximate: 157.762480
+distanceTrue: 155.000000
+
+Query: 15
+Approximate Nearest neigbor: 22
+True Nearest neigbor: 74
+distanceApproximate: 166.883193
+distanceTrue: 162.000000
+
+tApproximateAverage: 93.866667
+tTrueAverage: 569.600000

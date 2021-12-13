@@ -2,6 +2,12 @@
 
 Curve::Curve(string id): id(id){}
 
+Curve::Curve(const Curve &c){
+
+	this->id = c.id;
+	this->coordinates = c.coordinates;
+}
+
 void Curve::addCoordinate(item* i){
 
 	// cout << "Inserting in curve " << this->id;

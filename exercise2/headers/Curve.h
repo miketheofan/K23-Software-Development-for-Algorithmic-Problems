@@ -14,10 +14,12 @@ private:
 
 	string id;
 	vector<item*> coordinates;
+	item* originalItem;
 
 public:
 
 	Curve(string);
+	Curve(const Curve &);
 	void addCoordinate(item*);
 	string getID();
 	int getSize();

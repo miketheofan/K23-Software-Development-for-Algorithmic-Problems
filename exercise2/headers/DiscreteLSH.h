@@ -28,13 +28,14 @@ public:
 
 	Discrete(int,int,int,int,int,int,string);
 	void insert(item*);
-	item* hashCurve(item*,int);
+	item* hashCurve(item*,int,bool);
 	Curve* Polygonization(item*);
 	Curve* Snapping(Curve*,int);
 	// Curve* DuplicatesRemoval(Curve*);
 	item* Vectorization(Curve*,item*);
 	item* Padding(item*,Curve*);
 	pair<double,Curve*> findNN(item*);
+	pair<double,Curve*> findNNbrute(item*);
 
 };
 

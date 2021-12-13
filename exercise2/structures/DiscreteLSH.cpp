@@ -1,4 +1,5 @@
 #include "../headers/DiscreteLSH.h"
+#include "../headers/util.h"
 
 Discrete::Discrete(int k,int w,int L,int size,int dimension,int delta,string algorithm) : dimension(dimension), delta(delta), L(L), algorithm(algorithm) {
 
@@ -32,7 +33,7 @@ void Discrete::insert(item* i){
 		// newItem = this->Vectorization(newCurve,i);
 		// this->Padding(newItem,newCurve);
 
-		newItem = this->hashCurve(i,y);
+		newItem = this->hashCurve(i,y,true);
 
 		// cout << "Inserting in LSH item ";
 		// newItem->print();cout << endl;
@@ -42,18 +43,25 @@ void Discrete::insert(item* i){
 	}
 }
 
-item* Discrete::hashCurve(item* i,int y){
+item* Discrete::hashCurve(item* i,int y,bool insert){
 
 	Curve* newCurve,*originalCurve;
 	item* newItem;
 
 	newCurve = this->Polygonization(i);
-	// originalCurve = newCurve;
+
+	if(insert) this->items.push_back(newCurve);
+
+	originalCurve = new Curve(*newCurve);
+	// cout << "Original curve is ";
+	// newCurve->print();
 	// newCurve->print();
 	newCurve = this->Snapping(newCurve,y);
-	// cout << "Got here" << endl;
+	// cout << "Snapping returned ";newCurve->print();
 	newItem = this->Vectorization(newCurve,i);
-	newItem = this->Padding(newItem,newCurve);
+	// cout << "Vectorization returned ";newItem->print();
+	newItem = this->Padding(newItem,originalCurve);
+	// cout << "Padding returned ";newItem->print();
 
 	// cout << "Hashed item " << newItem->getID() << " with curve " << newItem->getCurve()->getID() << endl;
 
@@ -105,11 +113,15 @@ item* Discrete::Vectorization(Curve* i,item* original){
 
 item* Discrete::Padding(item* i,Curve* curve){
 
-	if(i->getVector()->size() == (unsigned long int)this->dimension*2)
-		return NULL;
+	if(i->getVector()->size() == (unsigned long int)this->dimension*2){
+
+		i->setCurve(curve);
+		return i;
+	}
 
 	int diff = (this->dimension) - (curve->getSize());
 
+	// cout << "Dimension is " << this->dimension << " size of curve is " << curve->getSize() << endl;
 	// cout << "Difference for " << i->getID() << " is " << diff << endl;
 
 	for(int y=0;y<diff;y++){
@@ -125,6 +137,8 @@ item* Discrete::Padding(item* i,Curve* curve){
 
 	// cout << "Original curve's size of " << curve->getID() << " is " << curve->getSize() << endl;
 	i->setCurve(curve);
+	// cout << "Set curve is ";
+	// curve->print();
 
 	return i;
 }
@@ -136,9 +150,11 @@ pair<double,Curve*> Discrete::findNN(item* queryItem){
 
 	for(int i=0;i<this->L;i++){
 
-		item* hashedItem = this->hashCurve(queryItem,i);
+		item* hashedItem = this->hashCurve(queryItem,i,false);
 
 		pair<double,item*> results = (this->LSH.at(i)->findkNN(1,hashedItem)).at(0);
+
+		// cout << "results.first is " << results.first << endl;
 
 		if(minimum > results.first){
 
@@ -147,5 +163,30 @@ pair<double,Curve*> Discrete::findNN(item* queryItem){
 		}
 	}
 
+	// cout << endl << "RETURNING NOW " << minimum << endl << endl;
 	return make_pair(minimum,returnItem->getCurve());
+}
+
+pair<double,Curve*> Discrete::findNNbrute(item* queryItem){
+
+	double minimum = numeric_limits<double>::max();
+	Curve* returnItem;	
+	
+	for(vector<Curve*>::iterator it = this->items.begin();it != this->items.end(); it++){
+
+		// cout << "Starting with curve:" << endl;
+		// (*it)->print();
+
+		int distance = distFrechetBrute((*it),this->Polygonization(queryItem));
+
+		if(minimum > distance){
+
+			// cout << "Got here" << endl;
+			minimum = distance;
+			returnItem = *it;
+		}
+	}
+
+	cout << "Ending" << endl;
+	return make_pair(minimum,returnItem);
 }

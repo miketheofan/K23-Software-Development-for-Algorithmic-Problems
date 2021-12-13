@@ -20,6 +20,10 @@ Hi::~Hi(){
 
 int32_t Hi::Hashi(item *p){
 
+	// cout << "Entered for item ";
+	// p->print();
+	// cout << endl;
+
 	/* We calculate the scaler product between vectors p and (randomly generated) v. */
 	double scalerProduct = inner_product(p->getVector()->begin(),p->getVector()->end(),this->v->begin(),0.0);
 

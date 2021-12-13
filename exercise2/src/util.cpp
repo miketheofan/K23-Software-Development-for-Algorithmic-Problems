@@ -4,6 +4,13 @@
 spaced with other metrics. */
 double dist(int distance,item x,item y){
 
+	// cout << endl << "Entered for item ";
+	// x.print();
+	// // cout << endl;
+	// cout << "And for item ";
+	// y.print();
+	// cout << endl;
+
 	if(x.getVector()->size() != y.getVector()->size()){
 
 		cerr << "Cannot compute Euclidean Distance between vertexes from different dimensions." << endl;
@@ -22,11 +29,9 @@ double dist(int distance,item x,item y){
 double distFrechet(item* x,item* y){
 
 	// cout << "Entered for itemX ";
-	// x.print();
+	// x->print();
 	// cout << "And for itemY ";
-	// y.print();
-
-	double infinite = std::numeric_limits<int>::max();
+	// y->print();
 
 	// int size = x.getVector()->size()/2;
 	// double array[size][size];
@@ -34,6 +39,11 @@ double distFrechet(item* x,item* y){
 	Curve* curveX = x->getCurve();
 	// cout << "curveX is " << curveX->getID() << endl;
 	Curve* curveY = y->getCurve();
+
+	// cout << "Entered for itemX ";
+	// curveX->print();
+	// cout << "And for itemY ";
+	// curveY->print();
 
 	if(curveX->getSize() != curveY->getSize()){
 
@@ -54,33 +64,102 @@ double distFrechet(item* x,item* y){
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
 			else if(i == 1 && j > 1){
 
-				cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				cout << "array[1]["<<j<<"] IS NOW" << max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j)))) << endl;
-				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
+				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
+				array[1][j] = useless;
 			}
 			else if(i > 1 && j == 1){
 
-				cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				cout << "array["<<i<<"][1] IS NOW: " << max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1)))) << endl;
-				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
+				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
+				array[i][1] = useless;
 			}
 			else if(i > 1 && j > 1){
 
-				cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				cout << "array["<<i<<"]["<<j<<"] IS NOW: " << max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))}) << endl;
-				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(j)))});
+				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
+				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
+				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
+				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
+				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
+				array[i][j] = useless;
 			}
-			// else
-			// 	array[i][j] = infinite;
 
-	cout << "Returning " << array[size][size] << endl;
+	// cout << "Returning " << array[size-1][size-1] << endl;
 
-	return array[size][size];
+	return array[size-1][size-1];
+}
+
+double distFrechetBrute(Curve* curveX,Curve* curveY){
+
+	// cout << "Entered for itemX ";
+	// x->print();
+	// cout << "And for itemY ";
+	// y->print();
+
+	// int size = x.getVector()->size()/2;
+	// double array[size][size];
+
+	// Curve* curveX = x->getCurve();
+	// cout << "curveX is " << curveX->getID() << endl;
+	// Curve* curveY = y->getCurve();
+
+	// cout << "Entered for itemX ";
+	// curveX->print();
+	// cout << "And for itemY ";
+	// curveY->print();
+
+	if(curveX->getSize() != curveY->getSize()){
+
+		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
+		return 0;
+	}
+
+	int size = curveX->getSize();
+
+	double array[size][size];
+	// for(int i=0;i<size;i++)
+	// 	for(int j=0;j<size;j++)
+	// 		array[i][j] = 0;
+
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			if(i == 0 && j == 0)
+				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
+			else if(i == 1 && j > 1){
+
+				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
+				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
+				array[1][j] = useless;
+			}
+			else if(i > 1 && j == 1){
+
+				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
+				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
+				array[i][1] = useless;
+			}
+			else if(i > 1 && j > 1){
+
+				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
+				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
+				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
+				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
+				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
+				array[i][j] = useless;
+			}
+
+	// cout << "Returning " << array[size-1][size-1] << endl;
+
+	return array[size-1][size-1];
 }
 
 /* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
@@ -195,6 +274,9 @@ void readDataset(string fileName,Discrete* disc,vector<item*> *dataset){
 		/* We create an item *only once* and insert in dataset. */
 		item* newItem = new item(id,words);
 		dataset->push_back(newItem);
+
+		// cout << "Inserting in discrete ";
+		// newItem->print();
 
 		/* And then insert pointer to LSH for Discrete Frechet. */
 		disc->insert(newItem);
@@ -427,13 +509,13 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 		auto endHypercube = high_resolution_clock::now();
 
 		auto startTrue = high_resolution_clock::now();
-		vector<pair<double,item*>> trueResults = brutekNN(1,&queryItem,dataFile);
+		pair<double,Curve*> trueResults = disc->findNNbrute(&queryItem);
 		auto endTrue = high_resolution_clock::now();
 
 		writeToFile(outputFile,"Approximate Nearest neigbor: ");
 		writeToFile(outputFile,tempPair.second->getID() + "\n");
 		writeToFile(outputFile,"True Nearest neigbor: ");
-		writeToFile(outputFile,trueResults.at(0).second->getID());
+		writeToFile(outputFile,trueResults.second->getID());
 		writeToFile(outputFile,"\n");
 			
 		writeToFile(outputFile,"distanceApproximate: ");
@@ -441,7 +523,7 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 		writeToFile(outputFile,"\n");
 
 		writeToFile(outputFile,"distanceTrue: ");
-		writeToFile(outputFile,to_string(trueResults.at(0).first));
+		writeToFile(outputFile,to_string(trueResults.first));
 		writeToFile(outputFile,"\n");
 
 		totalItems++;

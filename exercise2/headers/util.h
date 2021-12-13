@@ -23,9 +23,10 @@ int module(int,int);
 int countItems(string);
 double dist(int,item,item);
 double distFrechet(item*,item*);
-void answerQueries(HyperCube*,string,string,int/*,int,int*/,string);
-void answerQueries(Hash*,string,string,int/*int,int,*/,string);
-void answerQueries(Discrete*,string,string,int/*int,int,*/,string);
+double distFrechetBrute(Curve*,Curve*);
+void answerQueries(HyperCube*,string,string,int,string);
+void answerQueries(Hash*,string,string,int,string);
+void answerQueries(Discrete*,string,string,int,string);
 int getDimension(string);
 void writeToFile(string,string);
 
