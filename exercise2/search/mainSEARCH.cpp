@@ -67,7 +67,7 @@ int main(int argc,char** argv){
 			readDataset(inputFile,disc,&dataset);
 		}else if(metric == "continuous"){
 
-			cont = new Continuous(k,w,countItems(inputFile)/4,getDimension(inputFile),delta,metric);
+			cont = new Continuous(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta,metric);
 			readDataset(inputFile,cont,&dataset);
 		}
 
@@ -158,6 +158,8 @@ int main(int argc,char** argv){
 
 			if(metric == "discrete")
 				answerQueries(disc,queryFile,inputFile,1,outputFile);
+			else if(metric == "continuous")
+				answerQueries(cont,queryFile,inputFile,1,outputFile);
 		}
 	
 		string inputFile = "";

@@ -13,6 +13,8 @@ using namespace std;
 #include "./items.h"
 #include "./HashTable.h"
 #include "./G.h"
+#include "./frechet.hpp"
+#include "./curve.hpp"
 
 class Hash{
 

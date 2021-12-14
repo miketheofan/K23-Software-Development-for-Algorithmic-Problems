@@ -30,6 +30,7 @@ public:
 	int32_t getTrick();
 	void setTrick(int32_t);
 	void setTrue(item*);
+	void setVector(vector<double>);
 	Curve* getCurve();
 	void setCurve(Curve*);
 	vector<double> *getVector();

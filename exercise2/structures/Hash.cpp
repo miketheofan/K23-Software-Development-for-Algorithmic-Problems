@@ -144,8 +144,13 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 
 					if(algorithm == "L2")
 						distance = dist(2,*queryItem,*tempBucket->getValue());
-					else
+					else if(algorithm == "discrete")
 						distance = distFrechet(queryItem,tempBucket->getValue());
+					else{
+
+						Curve();
+						distance = Frechet::Continuous::Distance().value;
+					}
 
 					if(distance < minimum){
 

@@ -575,6 +575,78 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
 }
 
+void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
+
+	ifstream fp;
+	fp.open(fileName);
+
+	string line,id,word;
+	int counter =0;
+
+	double totalApproximate =0;
+	double totalTrue =0;
+	double totalItems =0;
+
+	/* We get every line (query) of the file given. */
+	while(getline(fp,line)){
+
+		vector<double> words;
+		stringstream linestream(line);
+
+		while(linestream >> word){
+
+			if(++counter == 1){
+
+				id = word;
+				continue;
+			}
+
+			words.push_back(stod(word));
+
+		}
+
+		counter =0;
+
+		/* Statically create query item. */
+		item queryItem(id,words);
+
+		/* And produce the output that was given in the paper of the project. 
+		We use writeToFile function in order to write output in output.txt file. */
+		writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
+
+		auto startHypercube = high_resolution_clock::now();
+		pair<double,item*> tempPair = cont->findNN(&queryItem);
+		auto endHypercube = high_resolution_clock::now();
+
+		// auto startTrue = high_resolution_clock::now();
+		// pair<double,Curve*> trueResults = disc->findNNbrute(&queryItem);
+		// auto endTrue = high_resolution_clock::now();
+
+		writeToFile(outputFile,"Approximate Nearest neigbor: ");
+		writeToFile(outputFile,tempPair.second->getID() + "\n");
+		// writeToFile(outputFile,"True Nearest neigbor: ");
+		// writeToFile(outputFile,trueResults.second->getID());
+		// writeToFile(outputFile,"\n");
+			
+		writeToFile(outputFile,"distanceApproximate: ");
+		writeToFile(outputFile,to_string(tempPair.first));
+		writeToFile(outputFile,"\n");
+
+		// writeToFile(outputFile,"distanceTrue: ");
+		// writeToFile(outputFile,to_string(trueResults.first));
+		// writeToFile(outputFile,"\n");
+
+		// totalItems++;
+		// totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
+		// totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
+
+		writeToFile(outputFile,"\n");
+	}
+
+	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
+	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+}
+
 /* The following function returns the dimension in which items from inputFile are. */
 int getDimension(string fileName){
 

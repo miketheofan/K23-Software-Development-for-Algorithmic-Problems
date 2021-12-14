@@ -187,6 +187,6 @@ pair<double,Curve*> Discrete::findNNbrute(item* queryItem){
 		}
 	}
 
-	cout << "Ending" << endl;
+	// cout << "Ending" << endl;
 	return make_pair(minimum,returnItem);
 }

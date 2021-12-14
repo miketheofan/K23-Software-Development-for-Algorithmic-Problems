@@ -1,92 +1,62 @@
 Query: 1
-Approximate Nearest neigbor: 55
-True Nearest neigbor: 74
-distanceApproximate: 163.526756
-distanceTrue: 159.000000
+Approximate Nearest neigbor: 63
+distanceApproximate: 518.308788
 
 Query: 2
-Approximate Nearest neigbor: 17
-True Nearest neigbor: 10
-distanceApproximate: 151.433154
-distanceTrue: 144.000000
+Approximate Nearest neigbor: 37
+distanceApproximate: 99989.167053
 
 Query: 3
-Approximate Nearest neigbor: 11
-True Nearest neigbor: 74
-distanceApproximate: 161.743624
-distanceTrue: 159.000000
+Approximate Nearest neigbor: 66
+distanceApproximate: 553.338956
 
 Query: 4
-Approximate Nearest neigbor: 30
-True Nearest neigbor: 10
-distanceApproximate: 162.659153
-distanceTrue: 156.000000
+Approximate Nearest neigbor: 8
+distanceApproximate: 513.856011
 
 Query: 5
-Approximate Nearest neigbor: 75
-True Nearest neigbor: 10
-distanceApproximate: 168.439900
-distanceTrue: 166.000000
+Approximate Nearest neigbor: 3
+distanceApproximate: 471.826239
 
 Query: 6
-Approximate Nearest neigbor: 29
-True Nearest neigbor: 10
-distanceApproximate: 156.160174
-distanceTrue: 146.000000
+Approximate Nearest neigbor: 9
+distanceApproximate: 244891.330390
 
 Query: 7
-Approximate Nearest neigbor: 21
-True Nearest neigbor: 74
-distanceApproximate: 160.527256
-distanceTrue: 158.000000
+Approximate Nearest neigbor: 43
+distanceApproximate: 99876.910985
 
 Query: 8
-Approximate Nearest neigbor: 28
-True Nearest neigbor: 9
-distanceApproximate: 167.836230
-distanceTrue: 165.000000
+Approximate Nearest neigbor: 8
+distanceApproximate: 141394.143938
 
 Query: 9
-Approximate Nearest neigbor: 22
-True Nearest neigbor: 10
-distanceApproximate: 148.394744
-distanceTrue: 148.000000
+Approximate Nearest neigbor: 46
+distanceApproximate: 99951.169878
 
 Query: 10
-Approximate Nearest neigbor: 14
-True Nearest neigbor: 53
-distanceApproximate: 169.177422
-distanceTrue: 165.000000
+Approximate Nearest neigbor: 5
+distanceApproximate: 99999.330498
 
 Query: 11
-Approximate Nearest neigbor: 3
-True Nearest neigbor: 17
-distanceApproximate: 157.699081
-distanceTrue: 152.000000
+Approximate Nearest neigbor: 2
+distanceApproximate: 483.044511
 
 Query: 12
-Approximate Nearest neigbor: 24
-True Nearest neigbor: 74
-distanceApproximate: 163.379925
-distanceTrue: 159.000000
+Approximate Nearest neigbor: 23
+distanceApproximate: 99981.066328
 
 Query: 13
-Approximate Nearest neigbor: 28
-True Nearest neigbor: 21
-distanceApproximate: 156.974520
-distanceTrue: 155.000000
+Approximate Nearest neigbor: 72
+distanceApproximate: 331565.693829
 
 Query: 14
 Approximate Nearest neigbor: 74
-True Nearest neigbor: 10
-distanceApproximate: 157.762480
-distanceTrue: 155.000000
+distanceApproximate: 282799.219129
 
 Query: 15
-Approximate Nearest neigbor: 22
-True Nearest neigbor: 74
-distanceApproximate: 166.883193
-distanceTrue: 162.000000
+Approximate Nearest neigbor: 56
+distanceApproximate: 445.003371
 
-tApproximateAverage: 93.866667
-tTrueAverage: 569.600000
+tApproximateAverage: -nan
+tTrueAverage: -nan

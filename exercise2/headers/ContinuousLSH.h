@@ -19,6 +19,7 @@ private:
 	int delta;
 	int L;
 	long double M;
+	double epsilon;
 	string algorithm;
 	vector<item*> items;
 	GridContinuous* grid;
@@ -26,12 +27,14 @@ private:
 
 public:
 
-	Continuous(int,int,int,int,int,string);
+	Continuous(int,int,int,int,int,int,string);
 	void insert(item*);
-	void Filtering();
-	void Snapping();
-	void MinMax();
-	void Padding();
+	item* hashCurve(item*);
+	item* Filtering(item*);
+	item* Snapping(item*);
+	item* MinMax(item*);
+	item* Padding(item*);
+	pair<double,item*> findNN(item*);
 };
 
 #endif

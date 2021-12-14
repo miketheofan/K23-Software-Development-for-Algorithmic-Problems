@@ -34,6 +34,11 @@ void item::setTrue(item* i){
 	this->trueItem = i;
 }
 
+void item::setVector(vector<double> v){
+	this->coordinates = v;
+}
+
+
 void item::setCurve(Curve* curve){
 	this->originCurve = curve;
 }
