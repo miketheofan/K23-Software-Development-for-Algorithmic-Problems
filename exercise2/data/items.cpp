@@ -39,11 +39,11 @@ void item::setVector(vector<double> v){
 }
 
 
-void item::setCurve(Curve* curve){
-	this->originCurve = curve;
+void item::setCurve(curve* c){
+	this->originCurve = c;
 }
 
-Curve* item::getCurve(){
+curve* item::getCurve(){
 	return this->originCurve;
 }
 
@@ -80,4 +80,37 @@ void item::setFlag(int flag){
 
 int item::getFlag(){
 	return this->flag;
+}
+
+const Curve& item::Camouflage(){
+
+	// cout << "Entered Camouflage for " << this->trueItem->getID() << " with size " << this->trueItem->getDimension() << endl;
+	// cout << "ITEM'S is " << this->getID() << " with size " << this->getDimension() << endl;
+	// this->trueItem->print();
+	Curve* tempCurve = new Curve(this->getDimension(),this->getID());
+
+	// item* tempItem;
+	// if(!query)
+	// 	tempItem = this->trueItem;
+	// else
+	// 	tempItem = this;
+
+	item* tempItem;
+	if(this->trueItem != NULL)
+		tempItem = this->trueItem;
+	else
+		tempItem = this;
+
+	// cout << "true item is " << tempItem->getID() << endl;
+
+	for(int i=0;i<(double)tempItem->getVector()->size();i++){
+
+		Point* tempPoint = new Point(tempItem->getDimension());
+		tempPoint->set(i,tempItem->getVector()->at(i));
+
+		tempCurve->push_back(*tempPoint);
+	}
+
+	return *tempCurve;
+
 }

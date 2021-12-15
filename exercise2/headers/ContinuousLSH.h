@@ -10,6 +10,8 @@ using namespace std;
 #include "./Grid.h"
 #include "./Hash.h"
 #include "./GridContinuous.h"
+#include "./frechet.hpp"
+#include "./point.hpp"
 
 class Continuous{
 
@@ -29,12 +31,13 @@ public:
 
 	Continuous(int,int,int,int,int,int,string);
 	void insert(item*);
-	item* hashCurve(item*);
+	item* hashCurve(item*,item*);
 	item* Filtering(item*);
 	item* Snapping(item*);
 	item* MinMax(item*);
 	item* Padding(item*);
 	pair<double,item*> findNN(item*);
+	pair<double,item*> findNNbrute(item*);
 };
 
 #endif

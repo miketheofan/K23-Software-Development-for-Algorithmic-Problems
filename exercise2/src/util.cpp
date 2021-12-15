@@ -36,9 +36,9 @@ double distFrechet(item* x,item* y){
 	// int size = x.getVector()->size()/2;
 	// double array[size][size];
 
-	Curve* curveX = x->getCurve();
+	curve* curveX = x->getCurve();
 	// cout << "curveX is " << curveX->getID() << endl;
-	Curve* curveY = y->getCurve();
+	curve* curveY = y->getCurve();
 
 	// cout << "Entered for itemX ";
 	// curveX->print();
@@ -94,7 +94,7 @@ double distFrechet(item* x,item* y){
 	return array[size-1][size-1];
 }
 
-double distFrechetBrute(Curve* curveX,Curve* curveY){
+double distFrechetBrute(curve* curveX,curve* curveY){
 
 	// cout << "Entered for itemX ";
 	// x->print();
@@ -543,11 +543,11 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 		writeToFile(outputFile,"Query: " + queryItem.getID() + "\n");
 
 		auto startHypercube = high_resolution_clock::now();
-		pair<double,Curve*> tempPair = disc->findNN(&queryItem);
+		pair<double,curve*> tempPair = disc->findNN(&queryItem);
 		auto endHypercube = high_resolution_clock::now();
 
 		auto startTrue = high_resolution_clock::now();
-		pair<double,Curve*> trueResults = disc->findNNbrute(&queryItem);
+		pair<double,curve*> trueResults = disc->findNNbrute(&queryItem);
 		auto endTrue = high_resolution_clock::now();
 
 		writeToFile(outputFile,"Approximate Nearest neigbor: ");
@@ -597,11 +597,16 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 
 			if(++counter == 1){
 
+				// cout << "Got id " << word << endl;
 				id = word;
 				continue;
 			}
 
+			// cout << "Got number " << word << endl;
+
 			words.push_back(stod(word));
+
+			// cout << "Counter is: " << counter << endl;
 
 		}
 
@@ -609,6 +614,9 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 
 		/* Statically create query item. */
 		item queryItem(id,words);
+		item queryItem2(id,words);
+
+		// cout << "Created query item with size " << queryItem.getDimension() << endl;
 
 		/* And produce the output that was given in the paper of the project. 
 		We use writeToFile function in order to write output in output.txt file. */
@@ -618,27 +626,27 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 		pair<double,item*> tempPair = cont->findNN(&queryItem);
 		auto endHypercube = high_resolution_clock::now();
 
-		// auto startTrue = high_resolution_clock::now();
-		// pair<double,Curve*> trueResults = disc->findNNbrute(&queryItem);
-		// auto endTrue = high_resolution_clock::now();
+		auto startTrue = high_resolution_clock::now();
+		pair<double,item*> trueResults = cont->findNNbrute(&queryItem2);
+		auto endTrue = high_resolution_clock::now();
 
 		writeToFile(outputFile,"Approximate Nearest neigbor: ");
 		writeToFile(outputFile,tempPair.second->getID() + "\n");
-		// writeToFile(outputFile,"True Nearest neigbor: ");
-		// writeToFile(outputFile,trueResults.second->getID());
-		// writeToFile(outputFile,"\n");
+		writeToFile(outputFile,"True Nearest neigbor: ");
+		writeToFile(outputFile,trueResults.second->getID());
+		writeToFile(outputFile,"\n");
 			
 		writeToFile(outputFile,"distanceApproximate: ");
 		writeToFile(outputFile,to_string(tempPair.first));
 		writeToFile(outputFile,"\n");
 
-		// writeToFile(outputFile,"distanceTrue: ");
-		// writeToFile(outputFile,to_string(trueResults.first));
-		// writeToFile(outputFile,"\n");
+		writeToFile(outputFile,"distanceTrue: ");
+		writeToFile(outputFile,to_string(trueResults.first));
+		writeToFile(outputFile,"\n");
 
-		// totalItems++;
-		// totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
-		// totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
+		totalItems++;
+		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
+		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
 
 		writeToFile(outputFile,"\n");
 	}

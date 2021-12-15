@@ -3,7 +3,7 @@
 Continuous::Continuous(int k,int w,int L,int size,int dimension,int delta,string algorithm) : dimension(dimension), delta(delta), L(L), algorithm(algorithm){
 
 	this->grid = new GridContinuous(delta);
-	this->LSH = new Hash(k,w,L,size,dimension*2,"L2");
+	this->LSH = new Hash(k,w,L,size,dimension*2,this->algorithm);
 	this->M = 100000;
 	this->epsilon = 0.5;
 }
@@ -11,18 +11,17 @@ Continuous::Continuous(int k,int w,int L,int size,int dimension,int delta,string
 void Continuous::insert(item* i){
 
 	item* originalItem = new item(*i);
-	this->items.push_back(originalItem);
+	// this->items.push_back(originalItem);
 
-	item* hashedCurve = this->hashCurve(i);
+	item* hashedCurve = this->hashCurve(i,originalItem);
 
 	hashedCurve->setTrue(originalItem);
-
-	// cout << "Inserting item with size " << hashedCurve->getVector()->size() << endl;
+	this->items.push_back(hashedCurve);
 
 	this->LSH->insert(hashedCurve);
 }
 
-item* Continuous::hashCurve(item* i){
+item* Continuous::hashCurve(item* i,item* originalItem){
 
 	item* newItem;
 
@@ -35,6 +34,8 @@ item* Continuous::hashCurve(item* i){
 	// cout << "Size after minmax is " << newItem->getVector()->size() << endl;
 	newItem = this->Padding(newItem);
 	// cout << "Size after padding is " << newItem->getVector()->size() << endl;
+
+	newItem->setTrue(originalItem);
 
 	return newItem;
 }
@@ -93,7 +94,7 @@ item* Continuous::MinMax(item* i){
 		}
 
 		// min = tempVector->at(j);
-		if(tempVector->at(j) > min && tempVector->at(j) < tempVector->at(j+1))
+		if(tempVector->at(j) >= min && tempVector->at(j) <= tempVector->at(j+1))
 			continue;
 		else{
 
@@ -126,7 +127,7 @@ pair<double,item*> Continuous::findNN(item* queryItem){
 	// double minimum = numeric_limits<double>::max();
 	// item* returnItem;
 
-	item* hashedItem = this->hashCurve(queryItem);
+	item* hashedItem = this->hashCurve(queryItem,queryItem);
 
 	pair<double,item*> results = (this->LSH->findkNN(1,hashedItem)).at(0);
 
@@ -140,4 +141,37 @@ pair<double,item*> Continuous::findNN(item* queryItem){
 
 	// cout << endl << "RETURNING NOW " << minimum << endl << endl;
 	return make_pair(results.first,results.second);
+}
+
+pair<double,item*> Continuous::findNNbrute(item* queryItem){
+
+	// cout << "Entered for query item with size " << queryItem->getDimension() << endl;
+
+	double minimum = numeric_limits<double>::max();
+	item* returnItem;	
+	
+	// queryItem->setTrue(queryItem);
+	const Curve& tempCurve = queryItem->Camouflage();
+
+	for(vector<item*>::iterator it = this->items.begin();it != this->items.end(); it++){
+
+		// cout << "query's dimension is " << queryItem->getDimension() << endl;
+		// cout << "current item's dimension is " << (*it)->getDimension() << endl;
+
+		// queryItem->print();
+
+		double distance = Frechet::Continuous::distance((*it)->Camouflage(),tempCurve).value;
+		// cout << "Distance is " << distance << endl;
+		// distance = Frechet::Continuous::distance(queryItem->Camouflage(),tempBucket->getValue()->Camouflage()).value;
+
+		if(minimum > distance){
+
+			// cout << "Got here" << endl;
+			minimum = distance;
+			returnItem = *it;
+		}
+	}
+
+	// cout << "Ending" << endl;
+	return make_pair(minimum,returnItem);
 }

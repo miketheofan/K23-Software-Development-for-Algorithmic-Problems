@@ -20,7 +20,7 @@ private:
 	int L;
 	long double M;
 	string algorithm;
-	vector<Curve*> items;
+	vector<curve*> items;
 	vector<Grid*> grids;
 	vector<Hash*> LSH;
 
@@ -29,13 +29,13 @@ public:
 	Discrete(int,int,int,int,int,int,string);
 	void insert(item*);
 	item* hashCurve(item*,int,bool);
-	Curve* Polygonization(item*);
-	Curve* Snapping(Curve*,int);
-	// Curve* DuplicatesRemoval(Curve*);
-	item* Vectorization(Curve*,item*);
-	item* Padding(item*,Curve*);
-	pair<double,Curve*> findNN(item*);
-	pair<double,Curve*> findNNbrute(item*);
+	curve* Polygonization(item*);
+	curve* Snapping(curve*,int);
+	// Curve* DuplicatesRemoval(curve*);
+	item* Vectorization(curve*,item*);
+	item* Padding(item*,curve*);
+	pair<double,curve*> findNN(item*);
+	pair<double,curve*> findNNbrute(item*);
 
 };
 

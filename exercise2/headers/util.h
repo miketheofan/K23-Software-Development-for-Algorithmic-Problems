@@ -25,7 +25,7 @@ int module(int,int);
 int countItems(string);
 double dist(int,item,item);
 double distFrechet(item*,item*);
-double distFrechetBrute(Curve*,Curve*);
+double distFrechetBrute(curve*,curve*);
 void answerQueries(HyperCube*,string,string,int,string);
 void answerQueries(Hash*,string,string,int,string);
 void answerQueries(Discrete*,string,string,int,string);

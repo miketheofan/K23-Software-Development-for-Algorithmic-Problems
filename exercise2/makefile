@@ -12,7 +12,7 @@ SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/
 CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.cpp
 HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/util.h $(HEADER_FILES)/Curve.H
 OUT1 = outSEARCH
-ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 1 -M 10 -probes 2 -o output.txt -algorithm Frechet -metric continuous -delta 2.5
+ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 1 -M 10 -probes 2 -o output.txt -algorithm Hypercube -metric discrete -delta 2.5
 CC = g++ -O2 -std=c++11
 FLAGS = -g -c -Ο3
 
@@ -77,8 +77,8 @@ point.o: point.cpp
 out1:
 	@./$(OUT1) $(ARGS1)
 
-debug:
-	@valgrind ./$(OUT1) $(ARGS1)
+debug: 
+	@valgrind --track-origins=yes ./$(OUT1) $(ARGS1)
 
 clean:
 	@rm $(OUT1)

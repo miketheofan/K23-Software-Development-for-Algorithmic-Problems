@@ -9,18 +9,18 @@ Grid::Grid(double delta) : delta(delta){
   	this->t.push_back(distribution(generator));
 } 
 
-Curve* Grid::Hashing(Curve* curve){
+curve* Grid::Hashing(curve* c){
 
 	// curve->print();
 
-	Curve* newCurve = new Curve(curve->getID());
+	curve* newCurve = new curve(c->getID());
 	// vector<double> temp;
 
 	double previousSnapX = -1, currentSnapX;
 	double previousSnapY = -1, currentSnapY;
 
   	// for(int i=0;i<curve->getDimension();i++)
-	for(vector<item*>::iterator it = curve->getCoordinates()->begin();it != curve->getCoordinates()->end();it++){
+	for(vector<item*>::iterator it = c->getCoordinates()->begin();it != c->getCoordinates()->end();it++){
 
 		// cout << "Entered for ";
 		// (*it)->print();

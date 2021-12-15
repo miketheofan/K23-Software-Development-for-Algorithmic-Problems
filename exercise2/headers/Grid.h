@@ -18,7 +18,7 @@ private:
 public:
 
 	Grid(double);
-	Curve* Hashing(Curve*);
+	curve* Hashing(curve*);
 };
 
 #endif

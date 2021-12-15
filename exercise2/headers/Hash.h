@@ -14,7 +14,7 @@ using namespace std;
 #include "./HashTable.h"
 #include "./G.h"
 #include "./frechet.hpp"
-#include "./curve.hpp"
+#include "./point.hpp"
 
 class Hash{
 

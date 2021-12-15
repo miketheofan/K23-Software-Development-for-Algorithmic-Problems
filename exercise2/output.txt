@@ -1,62 +1,32 @@
 Query: 1
-Approximate Nearest neigbor: 63
-distanceApproximate: 518.308788
+Approximate Nearest neigbor: 27
+True Nearest neigbor: 1
+distanceApproximate: 370.137812
+distanceTrue: 361.678034
 
 Query: 2
-Approximate Nearest neigbor: 37
-distanceApproximate: 99989.167053
+Approximate Nearest neigbor: 46
+True Nearest neigbor: 2
+distanceApproximate: 475.532333
+distanceTrue: 325.289102
 
 Query: 3
-Approximate Nearest neigbor: 66
-distanceApproximate: 553.338956
+Approximate Nearest neigbor: 72
+True Nearest neigbor: 3
+distanceApproximate: 283.584203
+distanceTrue: 271.260023
 
 Query: 4
-Approximate Nearest neigbor: 8
-distanceApproximate: 513.856011
+Approximate Nearest neigbor: 50
+True Nearest neigbor: 4
+distanceApproximate: 467.801240
+distanceTrue: 336.020833
 
 Query: 5
-Approximate Nearest neigbor: 3
-distanceApproximate: 471.826239
+Approximate Nearest neigbor: 71
+True Nearest neigbor: 5
+distanceApproximate: 367.690087
+distanceTrue: 299.663144
 
-Query: 6
-Approximate Nearest neigbor: 9
-distanceApproximate: 244891.330390
-
-Query: 7
-Approximate Nearest neigbor: 43
-distanceApproximate: 99876.910985
-
-Query: 8
-Approximate Nearest neigbor: 8
-distanceApproximate: 141394.143938
-
-Query: 9
-Approximate Nearest neigbor: 46
-distanceApproximate: 99951.169878
-
-Query: 10
-Approximate Nearest neigbor: 5
-distanceApproximate: 99999.330498
-
-Query: 11
-Approximate Nearest neigbor: 2
-distanceApproximate: 483.044511
-
-Query: 12
-Approximate Nearest neigbor: 23
-distanceApproximate: 99981.066328
-
-Query: 13
-Approximate Nearest neigbor: 72
-distanceApproximate: 331565.693829
-
-Query: 14
-Approximate Nearest neigbor: 74
-distanceApproximate: 282799.219129
-
-Query: 15
-Approximate Nearest neigbor: 56
-distanceApproximate: 445.003371
-
-tApproximateAverage: -nan
-tTrueAverage: -nan
+tApproximateAverage: 0.000000
+tTrueAverage: 3.000000

@@ -83,8 +83,15 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 						if(this->algorithm == "L2")
 							/* Calculate its' distance with query item. */
 							distance = dist(2,*queryItem,*tempBucket->getValue());
-						else
+						else if(this->algorithm == "discrete")
 							distance = distFrechet(queryItem,tempBucket->getValue());
+						else{
+
+							// Points(queryItem->getDimension(),queryItem->getVector());
+							distance = Frechet::Continuous::distance(queryItem->Camouflage(),tempBucket->getValue()->Camouflage()).value;
+							// cout << "Got out" << endl;
+							// cout << "Distance returned " << distance << endl;
+						}
 
 						/* If it is lower than the previous minimum distance. */
 						if(distance < minimum){
@@ -148,8 +155,9 @@ vector<pair<double,item*>> Hash::findkNN(int k,item* queryItem){
 						distance = distFrechet(queryItem,tempBucket->getValue());
 					else{
 
-						Curve();
-						distance = Frechet::Continuous::Distance().value;
+						// Points(queryItem->getDimension(),queryItem->getVector());
+						distance = Frechet::Continuous::distance(queryItem->Camouflage(),tempBucket->getValue()->Camouflage()).value;
+						// cout << "Distance returned " << distance << endl;
 					}
 
 					if(distance < minimum){

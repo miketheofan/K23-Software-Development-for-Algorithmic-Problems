@@ -5,7 +5,7 @@ HyperCube::HyperCube(int k,int w,int M,int probes,int dimension) : k(k), w(w), M
 
 	this->cube = new HashTable(pow(2,this->k));
 
-	/* We create k edges for the hyper cube that will be used to store the items. */
+	/* We create k edges for the Hypercube that will be used to store the items. */
 	for(int i=0;i<this->k;i++){
 
 		unordered_map<int32_t,int> temp;

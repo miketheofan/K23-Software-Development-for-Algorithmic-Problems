@@ -1,14 +1,14 @@
 #include "../headers/Curve.h"
 
-Curve::Curve(string id): id(id){}
+curve::curve(string id): id(id){}
 
-Curve::Curve(const Curve &c){
+curve::curve(const curve &c){
 
 	this->id = c.id;
 	this->coordinates = c.coordinates;
 }
 
-void Curve::addCoordinate(item* i){
+void curve::addCoordinate(item* i){
 
 	// cout << "Inserting in curve " << this->id;
 	// i->print();
@@ -16,15 +16,15 @@ void Curve::addCoordinate(item* i){
 	this->coordinates.push_back(i);
 }
 
-vector<item*>* Curve::getCoordinates(){
+vector<item*>* curve::getCoordinates(){
 	return &this->coordinates;
 }
 
-string Curve::getID(){
+string curve::getID(){
 	return this->id;
 }
 
-void Curve::print(){
+void curve::print(){
 
 	int count =0;
 	for(vector<item*>::iterator it = this->coordinates.begin();it != this->coordinates.end();it++){
@@ -35,10 +35,10 @@ void Curve::print(){
 	}
 }
 
-int Curve::getSize(){
+int curve::getSize(){
 	return this->coordinates.size();
 }
 
-item* Curve::getCoordinateat(int index){
+item* curve::getCoordinateat(int index){
 	return this->coordinates.at(index);
 }

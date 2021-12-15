@@ -45,14 +45,14 @@ void Discrete::insert(item* i){
 
 item* Discrete::hashCurve(item* i,int y,bool insert){
 
-	Curve* newCurve,*originalCurve;
+	curve* newCurve,*originalCurve;
 	item* newItem;
 
 	newCurve = this->Polygonization(i);
 
 	if(insert) this->items.push_back(newCurve);
 
-	originalCurve = new Curve(*newCurve);
+	originalCurve = new curve(*newCurve);
 	// cout << "Original curve is ";
 	// newCurve->print();
 	// newCurve->print();
@@ -68,15 +68,15 @@ item* Discrete::hashCurve(item* i,int y,bool insert){
 	return newItem;
 }
 
-Curve* Discrete::Snapping(Curve* curve,int index){
-  	return this->grids.at(index)->Hashing(curve);
+curve* Discrete::Snapping(curve* c,int index){
+  	return this->grids.at(index)->Hashing(c);
 }
 
-Curve* Discrete::Polygonization(item* i){
+curve* Discrete::Polygonization(item* i){
 
 	int counter =0;
 
-	Curve* tempCurve = new Curve(i->getID());
+	curve* tempCurve = new curve(i->getID());
 
 	for(vector<double>::iterator it = i->getVector()->begin();it != i->getVector()->end();it++){
 
@@ -94,7 +94,7 @@ Curve* Discrete::Polygonization(item* i){
 	return tempCurve;
 }
 
-item* Discrete::Vectorization(Curve* i,item* original){
+item* Discrete::Vectorization(curve* i,item* original){
 
 	// item* newItem;
 	vector<double> temp;
@@ -111,15 +111,15 @@ item* Discrete::Vectorization(Curve* i,item* original){
 	return newItem;
 }
 
-item* Discrete::Padding(item* i,Curve* curve){
+item* Discrete::Padding(item* i,curve* c){
 
 	if(i->getVector()->size() == (unsigned long int)this->dimension*2){
 
-		i->setCurve(curve);
+		i->setCurve(c);
 		return i;
 	}
 
-	int diff = (this->dimension) - (curve->getSize());
+	int diff = (this->dimension) - (c->getSize());
 
 	// cout << "Dimension is " << this->dimension << " size of curve is " << curve->getSize() << endl;
 	// cout << "Difference for " << i->getID() << " is " << diff << endl;
@@ -132,18 +132,18 @@ item* Discrete::Padding(item* i,Curve* curve){
 		temp.push_back(this->M);
 		temp.push_back(this->M);
 
-		curve->addCoordinate(new item(i->getID(),temp));
+		c->addCoordinate(new item(i->getID(),temp));
 	}
 
 	// cout << "Original curve's size of " << curve->getID() << " is " << curve->getSize() << endl;
-	i->setCurve(curve);
+	i->setCurve(c);
 	// cout << "Set curve is ";
 	// curve->print();
 
 	return i;
 }
 
-pair<double,Curve*> Discrete::findNN(item* queryItem){
+pair<double,curve*> Discrete::findNN(item* queryItem){
 
 	double minimum = numeric_limits<double>::max();
 	item* returnItem;
@@ -167,12 +167,12 @@ pair<double,Curve*> Discrete::findNN(item* queryItem){
 	return make_pair(minimum,returnItem->getCurve());
 }
 
-pair<double,Curve*> Discrete::findNNbrute(item* queryItem){
+pair<double,curve*> Discrete::findNNbrute(item* queryItem){
 
 	double minimum = numeric_limits<double>::max();
-	Curve* returnItem;	
+	curve* returnItem;	
 	
-	for(vector<Curve*>::iterator it = this->items.begin();it != this->items.end(); it++){
+	for(vector<curve*>::iterator it = this->items.begin();it != this->items.end(); it++){
 
 		// cout << "Starting with curve:" << endl;
 		// (*it)->print();

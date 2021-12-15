@@ -5,7 +5,7 @@ int main(int argc,char** argv){
 	string inputFile = "";
 	string queryFile = "";
 	string outputFile = "";
-	int k;
+	int k = -1;
 	int L = 5;
 	int M = 10;
 	int probes = 2;
@@ -48,19 +48,20 @@ int main(int argc,char** argv){
 
 	if(algorithm == "LSH"){
 
-		k = 4;
+		if(k==-1) k = 5;
+
 		hash = new Hash(k,L,w,countItems(inputFile)/4,getDimension(inputFile));
 		readDataset(inputFile,hash,&dataset);		
 	
 	}else if(algorithm == "Hypercube"){ 
 
-		k = 14;		
+		if(k==-1) k = 14;		
 		cube = new HyperCube(k,w,M,probes,getDimension(inputFile));
 		readDataset(inputFile,cube,&dataset);
 
 	}else if(algorithm == "Frechet"){
 
-		k = 4;
+		if(k==-1) k = 4;
 		if(metric == "discrete"){
 
 			disc = new Discrete(k,w,L,countItems(inputFile)/4,getDimension(inputFile),delta,metric);

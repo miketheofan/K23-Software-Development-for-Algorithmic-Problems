@@ -8,7 +8,7 @@ using namespace std;
 
 #include "./items.h"
 
-class Curve{
+class curve{
 
 private:
 
@@ -18,8 +18,8 @@ private:
 
 public:
 
-	Curve(string);
-	Curve(const Curve &);
+	curve(string);
+	curve(const curve &);
 	void addCoordinate(item*);
 	string getID();
 	int getSize();

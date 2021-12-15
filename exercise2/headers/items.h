@@ -7,7 +7,10 @@
 
 using namespace std;
 
-class Curve;
+#include "./point.hpp"
+#include "./curve.hpp"
+
+class curve;
 
 class item{
 
@@ -18,7 +21,7 @@ private:
 	vector<double> coordinates;
 	int flag = -1;
 	item* trueItem;
-	Curve* originCurve;
+	curve* originCurve;
 
 public:
 
@@ -31,14 +34,15 @@ public:
 	void setTrick(int32_t);
 	void setTrue(item*);
 	void setVector(vector<double>);
-	Curve* getCurve();
-	void setCurve(Curve*);
+	curve* getCurve();
+	void setCurve(curve*);
 	vector<double> *getVector();
 	int getDimension();
 	double getCoordinatein(int);
 	void print();
 	void setFlag(int);
 	int getFlag();
+	const Curve& Camouflage();
 };
 
 #endif
