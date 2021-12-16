@@ -227,11 +227,21 @@ vector<pair<item*,double>> Hash::findRange(int r,item* queryItem){
           	
 				totalItems++;
 
-				if(this->algorithm == "L2")
-					/* Calculate query's item distance with this item */
-	              	distance = dist(2,*queryItem,*tempBucket->getValue());
-	            else
-	            	distance = distFrechet(queryItem,tempBucket->getValue());  
+				// if(this->algorithm == "L2")
+				// 	/* Calculate query's item distance with this item */
+	   //            	distance = dist(2,*queryItem,*tempBucket->getValue());
+	   //          else
+	   //          	distance = distFrechet(queryItem,tempBucket->getValue());  
+				if(algorithm == "L2")
+						distance = dist(2,*queryItem,*tempBucket->getValue());
+				else if(algorithm == "discrete")
+					distance = distFrechet(queryItem,tempBucket->getValue());
+				else{
+
+					// Points(queryItem->getDimension(),queryItem->getVector());
+					distance = Frechet::Continuous::distance(queryItem->Camouflage(),tempBucket->getValue()->Camouflage()).value;
+					// cout << "Distance returned " << distance << endl;
+				}
                 
                 /* And if it is in range add it to the vector. */
                 if(distance < r)

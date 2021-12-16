@@ -9,22 +9,30 @@ BRUTE_FILES = ./brute/
 CUBE_FILES = ./CUBE/
 
 SEARCH_OBJS = $(SEARCH_FILES)/mainSEARCH.o $(SOURCE_FILES)/util.o $(DATA_FILES)/items.o $(DATA_FILES)/Curve.o $(DATA_FILES)/Grid.o $(DATA_FILES)/GridContinuous.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(BRUTE_FILES)/brute.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o $(STRUCTURES_FILES)/DiscreteLSH.o $(STRUCTURES_FILES)/ContinuousLSH.o $(SOURCE_FILES)/simplification.o $(SOURCE_FILES)/config.o $(SOURCE_FILES)/interval.o $(SOURCE_FILES)/frechet.o $(SOURCE_FILES)/curve.o $(SOURCE_FILES)/point.o  
-CLUSTER_OBJS = $(CLUSTER_FILES)/mainCLUSTER.cpp
+CLUSTER_OBJS = $(CLUSTER_FILES)/mainCluster.cpp $(STRUCTURES_FILES)/Cluster.o $(SOURCE_FILES)/utilCLUSTER.o $(DATA_FILES)/items.o $(DATA_FILES)/Curve.o $(DATA_FILES)/Grid.o $(DATA_FILES)/GridContinuous.o $(STRUCTURES_FILES)/Hash.o $(STRUCTURES_FILES)/HashTable.o $(STRUCTURES_FILES)/G.o $(STRUCTURES_FILES)/H.o $(STRUCTURES_FILES)/HyperCube.o $(STRUCTURES_FILES)/DiscreteLSH.o $(STRUCTURES_FILES)/ContinuousLSH.o $(SOURCE_FILES)/simplification.o $(SOURCE_FILES)/config.o $(SOURCE_FILES)/interval.o $(SOURCE_FILES)/frechet.o $(SOURCE_FILES)/curve.o $(SOURCE_FILES)/point.o
 HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_FILES)/util.h $(HEADER_FILES)/Curve.H
 OUT1 = outSEARCH
+OUT2 = outCLUSTER
 ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 1 -M 10 -probes 2 -o output.txt -algorithm Hypercube -metric discrete -delta 2.5
-CC = g++ -O2 -std=c++11
+ARGS2 = -i $(TESTS_FILES)/dataset.csv -c $(TESTS_FILES)/cluster.conf -o output.txt -update Mean Vector -assignment LSH_Frechet -complete
+CC = g++ -O2 -std=c++14
 FLAGS = -g -c -Ο3
 
-all: $(SEARCH_OBJS) #$(CLUSTER_OBJS)
+all: $(SEARCH_OBJS) $(CLUSTER_OBJS)
 	$(CC) -g $(SEARCH_OBJS) -o $(OUT1)
-#	$(CC) -g $(CLUSTER_OBJS) -o $(OUT3)
+	$(CC) -g $(CLUSTER_OBJS) -o $(OUT2)
 
 mainSEARCH.o: mainSEARCH.cpp
 	$(CC) $(FLAGS) $(SEARCH_FILES)mainSEARCH.cpp
 
+mainCluster.o: mainCluster.cpp
+	$(CC) $(FLAGS) $(CLUSTER_FILES)mainCluster.cpp
+
 util.o: util.cpp
 	$(CC) $(FLAGS) $(SOURCE_FILES)util.cpp
+
+utilCLUSTER.o: utilCLUSTER.cpp
+	$(CC) $(FLAGS) $(SOURCE_FILES)utilCLUSTER.cpp
 
 items.o: items.cpp
 	$(CC) $(FLAGS) $(DATA_FILES)items.cpp
@@ -40,6 +48,9 @@ brute.o: brute.cpp
 
 HyperCube.o: HyperCube.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)HyperCube.cpp	
+
+Cluster.o: Cluster.cpp
+	$(CC) $(FLAGS) $(STRUCTURES_FILES)Cluster.cpp	
 
 DiscreteLSH.o: DiscreteLSH.cpp
 	$(CC) $(FLAGS) $(STRUCTURES_FILES)DiscreteLSH.cpp	
@@ -76,6 +87,9 @@ point.o: point.cpp
 
 out1:
 	@./$(OUT1) $(ARGS1)
+
+out2:
+	@./$(OUT2) $(ARGS2)
 
 debug: 
 	@valgrind --track-origins=yes ./$(OUT1) $(ARGS1)

@@ -36,6 +36,8 @@ public:
 	item* Padding(item*,curve*);
 	pair<double,curve*> findNN(item*);
 	pair<double,curve*> findNNbrute(item*);
+	vector<pair<item*,double>> rangeSearch(int,item*);
+
 
 };
 

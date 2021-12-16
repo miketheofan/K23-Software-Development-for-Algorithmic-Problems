@@ -21,6 +21,10 @@ void Continuous::insert(item* i){
 	this->LSH->insert(hashedCurve);
 }
 
+vector<item*> Continuous::getItems(){
+	return this->items;
+}
+
 item* Continuous::hashCurve(item* i,item* originalItem){
 
 	item* newItem;
@@ -174,4 +178,17 @@ pair<double,item*> Continuous::findNNbrute(item* queryItem){
 
 	// cout << "Ending" << endl;
 	return make_pair(minimum,returnItem);
+}
+
+vector<pair<item*,double>> Continuous::rangeSearch(int r,item* queryItem){
+
+	// item* hashedItem = this->hashCurve(queryItem,queryItem);
+	vector<pair<item*,double>> hashedItems = this->LSH->findRange(r,this->hashCurve(queryItem,queryItem));
+	vector<pair<item*,double>> originalItems;
+
+
+	for(vector<pair<item*,double>>::iterator it = hashedItems.begin();it != hashedItems.end(); it++)
+		originalItems.push_back(make_pair((*it).first,(*it).second));
+
+	return originalItems;
 }

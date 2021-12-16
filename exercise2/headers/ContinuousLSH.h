@@ -31,6 +31,7 @@ public:
 
 	Continuous(int,int,int,int,int,int,string);
 	void insert(item*);
+	vector<item*> getItems();
 	item* hashCurve(item*,item*);
 	item* Filtering(item*);
 	item* Snapping(item*);
@@ -38,6 +39,8 @@ public:
 	item* Padding(item*);
 	pair<double,item*> findNN(item*);
 	pair<double,item*> findNNbrute(item*);
+	vector<pair<item*,double>> rangeSearch(int,item*);
+
 };
 
 #endif

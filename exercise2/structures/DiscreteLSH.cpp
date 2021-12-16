@@ -190,3 +190,17 @@ pair<double,curve*> Discrete::findNNbrute(item* queryItem){
 	// cout << "Ending" << endl;
 	return make_pair(minimum,returnItem);
 }
+
+vector<pair<item*,double>> Discrete::rangeSearch(int r,item* queryItem){
+
+	vector<pair<item*,double>> final;
+
+	for(int i=0;i<this->L;i++){
+
+		// this->hashCurve(queryItem,i,false);
+		vector<pair<item*,double>> results = (this->LSH.at(i)->findRange(r,this->hashCurve(queryItem,i,false)));
+		final.insert(final.end(),results.begin(),results.end());
+	}
+
+	return final;
+}
