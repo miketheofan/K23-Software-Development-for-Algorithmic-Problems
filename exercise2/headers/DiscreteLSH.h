@@ -28,6 +28,7 @@ public:
 
 	Discrete(int,int,int,int,int,int,string);
 	void insert(item*);
+	vector<item*> getItems();
 	item* hashCurve(item*,int,bool);
 	curve* Polygonization(item*);
 	curve* Snapping(curve*,int);

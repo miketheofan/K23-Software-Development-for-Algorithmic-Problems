@@ -5,6 +5,7 @@ Cluster::Cluster(item* centroid){
 
 	/* First we store item given as this current cluster's centroid. */
 	this->centroid = new item(*centroid);
+	this->centroid->setCurve(Polygonization(this->centroid));
 	this->dimension = this->centroid->getDimension();
 	
 	/* We also insert the centroid in the item's vector. That is because the 'random' centroid with 
@@ -38,6 +39,50 @@ pair<string,vector<string>> Cluster::getCompleteCluster(){
 		ids.push_back((*it)->getID());
 
 	return make_pair(this->centroid->getID(),ids);
+}
+
+bool Cluster::UpdateCurve(){
+
+	vector<vector<double>> array;
+	vector<vector<double>> tempArray;
+
+	bool flag = false;
+
+	for(int i=0;i<(double)this->items.size();i+=2){
+
+		cout << "i is " << i << " size is " << this->items.size() << endl;
+
+		if(i+1 <= (double)this->items.size())
+			array.push_back(MeanCurve(*(this->items.at(i)->getVector()),*(this->items.at(i+1)->getVector())));
+		else
+			array.push_back(*(this->items.at(i)->getVector()));
+	}
+
+	do{
+
+		tempArray = array;
+		array.clear();
+
+		for(int i=0;i<(double)tempArray.size();i+=2)
+			if(i+1 <= (double)tempArray.size())
+				array.push_back(MeanCurve(tempArray.at(i),tempArray.at(i+1)));
+			else
+				array.push_back(tempArray.at(i));
+
+	}while(array.size() != 1);
+
+	/* If centroid did not change raise a flag. */
+	if(*(this->centroid->getVector()) == array.at(0))
+		flag = true;
+
+	/* Delete previous centroid(that is why we needed to insert first centroid in items vector because otherwise
+	we would lose it). */
+	delete this->centroid;
+
+	/* And create a new centroid for this cluster. */
+	this->centroid = new item("newItem",array.at(0));
+
+	return flag;
 }
 
 /* The following is our implementation of the Update function. */
@@ -112,8 +157,8 @@ vector<item*> Cluster::getItems(){
 	return this->items;
 }
 
-Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w, int totalItems)
-: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w), totalItems(totalItems) {}
+Clustering::Clustering(int K,int L,int kLSH,int M,int kCUBE,int probes,int w, int totalItems, string update, string assignment)
+: K(K), L(L), kLSH(kLSH), M(M), kCUBE(kCUBE), probes(probes), w(w), totalItems(totalItems), update(update), assignment(assignment) {}
 
 Clustering::~Clustering(){
 
@@ -127,6 +172,8 @@ int Clustering::noItems(){
 
 void Clustering::insert(item* item){
 	this->items.push_back(item);
+	// item->createCurve();
+	// this->curves.push_back(Polygonization(item));
 }
 
 vector<Cluster*> Clustering::getClusters(){
@@ -174,7 +221,13 @@ void Clustering::kMeansPP(){
 			/* And for every item calculate its distance from all centroids. */
 			for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
 
-				double distance = dist(2,**it,*(*it2)->getCentroid());
+				double distance;
+
+				if(this->update == "Mean Frechet")
+					distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+				else
+					distance = dist(2,**it,*(*it2)->getCentroid());
+				
 				distance = pow(distance,2);
 				
 				sum += distance;
@@ -209,7 +262,7 @@ void Clustering::Assign(string assignMethod){
 
 	Hash *h;
 	HyperCube *c;
-	Continuous *cont;
+	Discrete *disc;
 
 	/* If assign method is LSH then fill a Hash structure using the items vector. */
 	if(assignMethod == "LSH"){
@@ -227,11 +280,12 @@ void Clustering::Assign(string assignMethod){
 
 	if(assignMethod == "LSH_Frechet"){
 
-		cont = new Continuous(this->kLSH,this->w,this->L,this->totalItems/4,this->clusters.at(0)->getDimension(),2.5,"continuous");
-		this->fillContinuous(cont);
+		disc = new Discrete(this->kLSH,this->w,this->L,this->totalItems/4,this->clusters.at(0)->getDimension(),2.5,"discrete");
+		this->fillDiscrete(disc);
 	}
 
-	while(1){
+	// while(1){
+	for(int j=0;j<2;j++){
 
 		/* Every time clear all clusters, because we will re-fill them using the corresponding Update function. */
 		this->clearClusters();
@@ -243,7 +297,7 @@ void Clustering::Assign(string assignMethod){
 		else if(assignMethod == "Hypercube")
 			this->Hypercube(c);	
 		else if(assignMethod == "LSH_Frechet")
-			this->lshFrechet(cont);
+			this->lshFrechet(disc);
 		else{
 
 			cerr << "Not valid assignment method given." << endl;
@@ -258,7 +312,7 @@ void Clustering::Assign(string assignMethod){
 
 	if(assignMethod == "LSH") delete h;
 	if(assignMethod == "Hypercube") delete c;
-	if(assignMethod == "LSH_Frechet") delete cont;
+	if(assignMethod == "LSH_Frechet") delete disc;
 }
 
 /* The following function is our implementation for the Lloyd algorithm. */
@@ -274,7 +328,12 @@ void Clustering::Lloyd(){
 		/* Get the closest cluster to this certain item. */
 		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
 
-			int distance = dist(2,**it,*(*it2)->getCentroid());
+			double distance;
+
+			if(this->update == "Mean Frechet")
+				distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+			else
+				distance = dist(2,**it,*(*it2)->getCentroid());
 
 			if( distance < minimum ){
 
@@ -306,7 +365,8 @@ void Clustering::LSH(Hash *h){
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	while(endCond != lastendCond){
+	// while(endCond != lastendCond){
+	for(int i=0;i<5;i++){
 
 		lastendCond = endCond;
 		endCond = 0;
@@ -381,7 +441,8 @@ void Clustering::Hypercube(HyperCube *c){
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	while(endCond != lastendCond){
+	// while(endCond != lastendCond){
+	for(int i=0;i<5;i++){
 
 		lastendCond = endCond;
 		endCond = 0;
@@ -441,10 +502,10 @@ void Clustering::Hypercube(HyperCube *c){
 
 }
 
-void Clustering::lshFrechet(Continuous* cont){
+void Clustering::lshFrechet(Discrete* disc){
 
 	/* Range is initialized with value similar to the minimum distance between centroids divided by 2. */
-	double range = this->minDistCentroids()/2;
+	double range = this->minDistCentroidsCurve()*5;
 
 	int pos = 0;
 
@@ -455,7 +516,8 @@ void Clustering::lshFrechet(Continuous* cont){
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	while(endCond != lastendCond){
+	// while(endCond != lastendCond){
+	for(int i=0;i<3;i++){
 
 		lastendCond = endCond;
 		endCond = 0;
@@ -464,7 +526,9 @@ void Clustering::lshFrechet(Continuous* cont){
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
 
 			/* use the range search function of Hypercube in order to find items in range 'range'. */
-			temp = cont->rangeSearch(range,(*it)->getCentroid());
+			temp = disc->rangeSearch(range,(*it)->getCentroid());
+
+			cout << "Range search returned " << temp.size() << " items." << endl;
 
 			/* For every item that was returned by range search */
 			for(vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
@@ -485,8 +549,8 @@ void Clustering::lshFrechet(Continuous* cont){
 					item *newCentroid = (*it)->getCentroid();
 					item *oldCentroid = this->clusters.at((*it2).first->getFlag())->getCentroid();
 
-					double distanceNew = dist(2,*(*it2).first,*newCentroid);
-					double distanceOld = dist(2,*(*it2).first,*oldCentroid);
+					double distanceNew = distFrechet((*it2).first,newCentroid);
+					double distanceOld = distFrechet((*it2).first,oldCentroid);
 
 					/* If item is closer to current cluster, insert it. */
 					if( distanceNew < distanceOld ){
@@ -510,18 +574,24 @@ void Clustering::lshFrechet(Continuous* cont){
 	
 	}
 
+	cout << "Got out entering assign rest" << endl;
+
 	/* For any items that were not inserted using range search, insert them using Lloyd's algorithm(manually). */
-	this->assignRest(cont->getItems());
+	this->assignRest(disc->getItems());
 }
 
 /* The following function is used by reverse assignment to manually insert the remaining items in closest clusters. */
 void Clustering::assignRest(vector<item*> items){
+
+	int counter = 0;
 
 	/* For every item in items vector. */
 	for(vector<item*>::iterator it = items.begin(); it != items.end(); it++){
 
 		/* If item is already assigned to any cluster */
 		if(this->exists(*it)) continue;
+
+		counter++;
 
 		double minimum = numeric_limits<double>::max();
 
@@ -530,7 +600,12 @@ void Clustering::assignRest(vector<item*> items){
 		/* Find the closest cluster and insert it. */
 		for(vector<Cluster*>::iterator it2 = this->clusters.begin(); it2 != this->clusters.end(); it2++){
 
-			int distance = dist(2,**it,*(*it2)->getCentroid());
+			double distance;
+
+			if(this->update == "Mean Frechet")
+				distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+			else	
+				distance = dist(2,**it,*(*it2)->getCentroid());
 
 			if( distance < minimum ){
 
@@ -541,6 +616,8 @@ void Clustering::assignRest(vector<item*> items){
 
 		minCluster->insert(*it);
 	}
+
+	cout << "Assigned rest a total of " << counter << " items." << endl;
 }
 
 /* The following function is our implementation for the Update function. */
@@ -548,10 +625,18 @@ double Clustering::Update(){
 
 	double count = 0;
 
-	/* For every cluster, compute the Mean, update the centroid and return how many centroids remained the same. */
-	for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
-		if((*it)->Update() == true)
-			count++;
+	if(this->update == "Mean Vector"){
+
+		/* For every cluster, compute the Mean, update the centroid and return how many centroids remained the same. */
+		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+			if((*it)->Update() == true)
+				count++;
+	}else{
+
+		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+			if((*it)->UpdateCurve() == true)
+				count++;
+	}
 
 	/* Finally return the percentage of clusters that stayed the same. */
 	return count/this->clusters.size();	
@@ -581,10 +666,10 @@ void Clustering::fillHash(Hash* hash){
 		hash->insert(*i);
 }
 
-void Clustering::fillContinuous(Continuous* cont){
+void Clustering::fillDiscrete(Discrete* disc){
 
 	for(vector<item*>::iterator i = items.begin(); i!=items.end(); i++)
-		cont->insert(*i);
+		disc->insert(*i);
 }
 
 
@@ -599,6 +684,25 @@ double Clustering::minDistCentroids(){
 			if( i == j ) continue;
 
 			double distance = dist(2,*this->clusters.at(i)->getCentroid(),*this->clusters.at(j)->getCentroid());
+
+			if(distance < minimum)
+				minimum = distance;
+
+		}
+
+	return minimum;
+}
+
+double Clustering::minDistCentroidsCurve(){
+	
+	double minimum = numeric_limits<double>::max();
+
+	for(unsigned long int i=0; i < this->clusters.size(); i++)
+		for(unsigned long int j=0; j < this->clusters.size(); j++){
+
+			if( i == j ) continue;
+
+			double distance = distFrechet(this->clusters.at(i)->getCentroid(),this->clusters.at(j)->getCentroid());
 
 			if(distance < minimum)
 				minimum = distance;

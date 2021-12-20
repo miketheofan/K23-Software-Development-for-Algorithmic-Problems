@@ -8,7 +8,7 @@ using namespace std;
 #include "./items.h"
 #include "../headers/HyperCube.h"
 #include "../headers/Hash.h"
-#include "../headers/ContinuousLSH.h"
+#include "../headers/DiscreteLSH.h"
 
 class Cluster{
 
@@ -25,6 +25,7 @@ public:
 	item* getCentroid();
 	void insert(item*);
 	bool Update();
+	bool UpdateCurve();
 	void clearCluster();
 	int print();
 	int getDimension();
@@ -46,12 +47,15 @@ private:
 	int probes;
 	int w;
 	int totalItems;
+	string update;
+	string assignment;
 	vector<item*> items;
+	vector<curve*> curves;
 	vector<Cluster*> clusters;
 
 public:
 
-	Clustering(int,int,int,int,int,int,int,int);
+	Clustering(int,int,int,int,int,int,int,int,string,string);
 	~Clustering();
 	int noItems();
 	void insert(item*);
@@ -63,14 +67,15 @@ public:
 	pair<string,vector<string>> getCompleteClusterat(int);
 	void LSH(Hash*);
 	void Hypercube(HyperCube*);
-	void lshFrechet(Continuous*);
+	void lshFrechet(Discrete*);
 	double Update();
 	void clearClusters();
 	void print();
 	void fillCube(HyperCube*);
 	void fillHash(Hash*);
-	void fillContinuous(Continuous*);
+	void fillDiscrete(Discrete*);
 	double minDistCentroids();
+	double minDistCentroidsCurve();
 	void assignRest(vector<item*>);
 	bool exists(item*);
 	pair<vector<double>,double> Silhouette();

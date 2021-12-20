@@ -25,7 +25,8 @@ int main(int argc,char **argv){
 		else if(!strcmp(argv[i],"-o"))
 			outputFile = argv[++i];
 		else if(!strcmp(argv[i],"-update")){
-			update = argv[++i]; 
+			update = argv[++i];
+			update += " "; 
 			update += argv[++i];
 		}else if(!strcmp(argv[i],"-assignment"))
 			assignment = argv[++i];

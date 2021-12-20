@@ -8,12 +8,22 @@ curve::curve(const curve &c){
 	this->coordinates = c.coordinates;
 }
 
+curve::~curve(){}
+
 void curve::addCoordinate(item* i){
 
 	// cout << "Inserting in curve " << this->id;
 	// i->print();
 
 	this->coordinates.push_back(i);
+}
+
+void curve::setOriginal(item* i){
+	this->originalItem = i;
+}
+
+item* curve::getOriginal(){
+	return this->originalItem;
 }
 
 vector<item*>* curve::getCoordinates(){

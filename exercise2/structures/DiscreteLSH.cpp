@@ -43,6 +43,15 @@ void Discrete::insert(item* i){
 	}
 }
 
+vector<item*> Discrete::getItems(){
+
+	vector<item*> tempVector;
+	for(vector<curve*>::iterator it = this->items.begin(); it != this->items.end(); it++)
+		tempVector.push_back((*it)->getOriginal());
+
+	return tempVector;
+}
+
 item* Discrete::hashCurve(item* i,int y,bool insert){
 
 	curve* newCurve,*originalCurve;
@@ -50,8 +59,11 @@ item* Discrete::hashCurve(item* i,int y,bool insert){
 
 	newCurve = this->Polygonization(i);
 
-	if(insert) this->items.push_back(newCurve);
-
+	if(insert){ 
+	
+		newCurve->setOriginal(i);
+		this->items.push_back(newCurve);
+	}
 	originalCurve = new curve(*newCurve);
 	// cout << "Original curve is ";
 	// newCurve->print();
@@ -197,8 +209,8 @@ vector<pair<item*,double>> Discrete::rangeSearch(int r,item* queryItem){
 
 	for(int i=0;i<this->L;i++){
 
-		// this->hashCurve(queryItem,i,false);
 		vector<pair<item*,double>> results = (this->LSH.at(i)->findRange(r,this->hashCurve(queryItem,i,false)));
+		cout << "Here it returned " << results.size() << endl;
 		final.insert(final.end(),results.begin(),results.end());
 	}
 

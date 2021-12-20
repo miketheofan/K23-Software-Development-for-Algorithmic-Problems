@@ -20,7 +20,10 @@ public:
 
 	curve(string);
 	curve(const curve &);
+	~curve();
 	void addCoordinate(item*);
+	void setOriginal(item*);
+	item* getOriginal();
 	string getID();
 	int getSize();
 	vector<item*>* getCoordinates();

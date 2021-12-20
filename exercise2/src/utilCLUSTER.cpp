@@ -38,6 +38,9 @@ double distFrechet(item* x,item* y){
 	// cout << "And for itemY ";
 	// curveY->print();
 
+	// cout << "curveY size is " << curveY->getSize() << endl;
+	// cout << "curveX size is " << curveX->getSize() << endl;
+
 	if(curveX->getSize() != curveY->getSize()){
 
 		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
@@ -86,6 +89,132 @@ double distFrechet(item* x,item* y){
 
 	return array[size-1][size-1];
 }
+
+vector<vector<double>> distFrechetMean(curve* curveX,curve* curveY){
+
+	int size = curveX->getSize();
+	int size2 = curveY->getSize();
+
+	vector<vector<double>> array;
+	array.assign(size,vector<double>(size2,0));
+
+	if(curveX->getSize() != curveY->getSize()){
+
+		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
+		return array;
+	}
+
+	// double** array = new double[size][size2];
+	// *array = new double[size];//[size][size2];
+
+	// for(int i=0;i<size;i++)
+	// 	for(int j=0;j<size;j++)
+	// 		array[i][j] = 0;
+
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size2;j++)
+			if(i == 0 && j == 0)
+				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
+			else if(i == 1 && j > 1){
+
+				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
+				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));;
+			}
+			else if(i > 1 && j == 1){
+
+				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
+				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));;
+			}
+			else if(i > 1 && j > 1){
+
+				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
+				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
+				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
+				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});;
+			}
+
+	// cout << "Returning " << array[size-1][size-1] << endl;
+
+	return array;
+}
+
+double distFrechet(curve* curveX,item* y){
+
+	// cout << "Entered for itemX ";
+	// x->print();
+	// cout << "And for itemY ";
+	// y->print();
+
+	// int size = x.getVector()->size()/2;
+	// double array[size][size];
+
+	// curve* curveX = x->getCurve();
+	// cout << "curveX is " << curveX->getID() << endl;
+	curve* curveY = y->getCurve();
+
+	// cout << "Entered for itemX ";
+	// curveX->print();
+	// cout << "And for itemY ";
+	// curveY->print();
+
+	// cout << "curveY size is " << curveY->getSize() << endl;
+	// cout << "curveX size is " << curveX->getSize() << endl;
+
+	if(curveX->getSize() != curveY->getSize()){
+
+		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
+		return 0;
+	}
+
+	int size = curveX->getSize();
+
+	double array[size][size];
+	// for(int i=0;i<size;i++)
+	// 	for(int j=0;j<size;j++)
+	// 		array[i][j] = 0;
+
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			if(i == 0 && j == 0)
+				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
+			else if(i == 1 && j > 1){
+
+				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
+				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
+				array[1][j] = useless;
+			}
+			else if(i > 1 && j == 1){
+
+				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
+				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
+				array[i][1] = useless;
+			}
+			else if(i > 1 && j > 1){
+
+				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
+				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
+				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
+				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
+				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
+				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
+				array[i][j] = useless;
+			}
+
+	// cout << "Returning " << array[size-1][size-1] << endl;
+
+	return array[size-1][size-1];
+}
+
 
 double distFrechetBrute(curve* curveX,curve* curveY){
 
@@ -338,7 +467,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 	if(method == "Classic"){
 
 		/* Initialize a clustering structure using the parameters that we need from the paramters given. */
-		Clustering clustering1(K,L,kLSH,M,kCUBE,probes,w,totalItems);
+		Clustering clustering1(K,L,kLSH,M,kCUBE,probes,w,totalItems,update,method);
 
 		/* Fill the structure using the dataset vector. */
 		readDatasetCLUSTER(inputFile,&clustering1,&dataset);
@@ -413,7 +542,7 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 	else if(method == "LSH"){
 
 		/* Initialize a clustering structure using the parameters that we need from the paramters given. */
-		Clustering clustering2(K,L,kLSH,M,kCUBE,probes,w,totalItems);
+		Clustering clustering2(K,L,kLSH,M,kCUBE,probes,w,totalItems,update,method);
 
 		/* Fill the structure using the dataset vector. */
 		readDatasetCLUSTER(inputFile,&clustering2,&dataset);
@@ -484,11 +613,82 @@ void functionality(string inputFile,string outputFile,int K, int L, int kLSH, in
 
 /********************HYPERCUBE***************/
 
+	else if(method == "LSH_Frechet"){
+
+		/* Initialize a clustering structure using the parameters that we need from the paramters given. */
+		Clustering clustering3(K,L,kLSH,M,kCUBE,probes,w,totalItems,update,method);
+
+		/* Fill the structure using the dataset vector. */
+		readDatasetCLUSTER(inputFile,&clustering3,&dataset);
+
+		auto startClustering = high_resolution_clock::now();
+
+		/* Initialize clusters using the k-means++ algorithm. */
+		clustering3.kMeansPP();
+		/* And finally call the assign function in order to fill the clusters. */
+		clustering3.Assign("LSH_Frechet");
+
+		auto endClustering = high_resolution_clock::now();
+
+		writeToFile(outputFile,"Algorithm: LSH_Frechet\n");
+
+		for(int i=0;i<K;i++){
+
+			writeToFile(outputFile,"CLUSTER-" + to_string(i) + " {");
+
+			pair<int,item*> stats = clustering3.getClusterat(i);
+
+			writeToFile(outputFile,"size: " + to_string(stats.first) + ",");
+			writeToFile(outputFile,"centroid: ");
+
+			vector<double> *coordinates = stats.second->getVector();
+
+			for(unsigned long int j=0;j<coordinates->size();j++)
+				writeToFile(outputFile,to_string(coordinates->at(j)) + " ");
+			
+			writeToFile(outputFile,"}\n");
+		}
+
+		writeToFile(outputFile,"clustering_time: " + to_string((double)duration_cast<seconds>(endClustering - startClustering).count()) + "\n");
+
+		/* Here we call the silhouette function in order to write the results in the output file. */
+		pair<vector<double>,double> test1 = clustering3.Silhouette();
+
+		writeToFile(outputFile,"Silhouette: [");
+
+		vector<double> result = test1.first;
+
+		for(vector<double>::iterator it = result.begin(); it != result.end(); it++)
+			writeToFile(outputFile,to_string(*it) + ",");
+
+		writeToFile(outputFile,to_string(test1.second) + "]\n");
+
+		/* If complete flag was given then also write all items of each cluster in the output file. */
+		if(complete){
+
+			for(int i=0;i<K;i++){
+
+				writeToFile(outputFile,"CLUSTER-" + to_string(i) + " {");
+
+				pair<string,vector<string>> result = clustering3.getCompleteClusterat(i);
+
+				writeToFile(outputFile, result.first + ", " );
+
+				for(vector<string>::iterator it = result.second.begin(); it != result.second.end(); it++)
+					writeToFile(outputFile,(*it) + ",");
+
+				writeToFile(outputFile,"}\n");
+
+			}
+		}
+
+	}
+
 	/* If method given is Hypercube */
 	else{
 
 		/* Initialize a clustering structure using the parameters that we need from the paramters given. */
-		Clustering clustering3(K,L,kLSH,M,kCUBE,probes,w,totalItems);
+		Clustering clustering3(K,L,kLSH,M,kCUBE,probes,w,totalItems,update,method);
 
 		/* Fill the structure using the dataset vector. */
 		readDatasetCLUSTER(inputFile,&clustering3,&dataset);
@@ -572,4 +772,91 @@ int countItems(string fileName){
 
 	return n;
 
+}
+
+curve* Polygonization(item* i){
+
+	int counter =0;
+
+	curve* tempCurve = new curve(i->getID());
+
+	for(vector<double>::iterator it = i->getVector()->begin();it != i->getVector()->end();it++){
+
+		vector<double> temp;
+	
+		temp.push_back(++counter);
+		// cout << "Inserted " << counter << " in curve " << i->getID() << endl;
+		temp.push_back(*it);
+		// cout << "Inserted " << (*it) << " in curve " << i->getID() << endl;
+		tempCurve->addCoordinate(new item(i->getID(),temp));
+	}
+	
+	tempCurve->setOriginal(i);
+
+	// tempCurve->addCoordinate(new item(i->getID(),temp));
+	
+	return tempCurve;
+}
+
+vector<double> MeanCurve(vector<double> c1,vector<double> c2){
+
+	cout << "Entered for vector with size " << c1.size() << " and vector with size " << c2.size() << endl;
+
+	if(c1.size() == 0) return c2;
+	if(c2.size() == 0) return c1;
+
+	cout << "Finally got here" << endl;
+
+	vector<pair<double,double>> traversal;
+
+	item item1("tempItem",c1);
+	item item2("tempItem",c2);
+
+	vector<vector<double>> C = distFrechetMean(Polygonization(&item1),Polygonization(&item2));
+
+	cout << "Finally got here too" << endl;
+
+	int size1 = c1.size()-1, size2 = c2.size()-1;
+
+	traversal.push_back(make_pair(size1,size2));
+
+	int minIdx;
+
+	while(size1 != 0 && size2 != 0){
+
+		cout << "Ending now" << endl;
+		minIdx = min({C[size1-1][size2],C[size1][size2-1],C[size1-1][size2-1]});
+	
+		switch(minIdx){
+
+			case 0:{
+
+				traversal.push_back(make_pair(--size1,size2));
+				break;
+			
+			}case 1:{
+
+				traversal.push_back(make_pair(size1,--size2));
+				break;
+
+			}default:{
+
+				traversal.push_back(make_pair(--size1,--size2));
+				break;
+
+			}
+		}
+	}
+	// cout << "Ending now" << endl;
+
+	reverse(traversal.begin(),traversal.end());
+
+	vector<double> result;
+
+	for(vector<pair<double,double>>::iterator it = traversal.begin();it != traversal.end(); it++)
+		result.push_back(((*it).first+(*it).second)/2);
+
+	// cout << "Ending now" << endl;
+
+	return result;
 }
