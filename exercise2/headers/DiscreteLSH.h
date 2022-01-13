@@ -27,6 +27,7 @@ private:
 public:
 
 	Discrete(int,int,int,int,int,int,string);
+	~Discrete();
 	void insert(item*);
 	vector<item*> getItems();
 	item* hashCurve(item*,int,bool);

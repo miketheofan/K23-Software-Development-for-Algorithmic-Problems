@@ -2,6 +2,7 @@
 
 Grid::Grid(double delta) : delta(delta){
 
+	/* We initialize one randomly generated using uniform distrubution t, for each dimension. */
 	default_random_engine generator;
   	uniform_real_distribution<double> distribution(0,this->delta);
 
@@ -9,30 +10,22 @@ Grid::Grid(double delta) : delta(delta){
   	this->t.push_back(distribution(generator));
 } 
 
+Grid::~Grid(){}
+
+/* The following is a function that hashes a curve given, used be the snapping function. It gets every coordinate from
+each dimension and uses the according formula. */
 curve* Grid::Hashing(curve* c){
 
-	// curve->print();
-
 	curve* newCurve = new curve(c->getID());
-	// vector<double> temp;
 
 	double previousSnapX = -1, currentSnapX;
 	double previousSnapY = -1, currentSnapY;
 
-  	// for(int i=0;i<curve->getDimension();i++)
 	for(vector<item*>::iterator it = c->getCoordinates()->begin();it != c->getCoordinates()->end();it++){
-
-		// cout << "Entered for ";
-		// (*it)->print();
-		// cout << endl;
 
 		vector<double>* tempVector = (*it)->getVector();
 
-		// cout << "Got here" << endl;
-
 		vector<double> newVector;
-
-		// cout << tempVector->at(1) << " -> " << floor((tempVector->at(1)-this->t.at(0))/this->delta + 1/2)*this->delta + this->t.at(0) << endl;
 
 		currentSnapX = floor((tempVector->at(0)-this->t.at(0))/this->delta + 1/2)*this->delta + this->t.at(0);
 		currentSnapY = floor((tempVector->at(1)-this->t.at(1))/this->delta + 1/2)*this->delta + this->t.at(1);
@@ -40,9 +33,7 @@ curve* Grid::Hashing(curve* c){
 		if(!(previousSnapX == currentSnapX && previousSnapY == currentSnapY)){
 
 			newVector.push_back( floor((tempVector->at(0)-this->t.at(0))/this->delta + 1/2)*this->delta + this->t.at(0));
-			// cout << "Got here" << endl;
 			newVector.push_back( floor((tempVector->at(1)-this->t.at(1))/this->delta + 1/2)*this->delta + this->t.at(1));
-			// cout << "Got here" << endl;
 
 			newCurve->addCoordinate(new item((*it)->getID(),newVector));
 		}
@@ -52,5 +43,4 @@ curve* Grid::Hashing(curve* c){
   	}
 
   	return newCurve;
-  	// return new item("tempItem",temp);
 }

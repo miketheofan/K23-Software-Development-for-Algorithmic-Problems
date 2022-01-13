@@ -30,6 +30,7 @@ private:
 public:
 
 	Continuous(int,int,int,int,int,int,string);
+	~Continuous();
 	void insert(item*);
 	vector<item*> getItems();
 	item* hashCurve(item*,item*);

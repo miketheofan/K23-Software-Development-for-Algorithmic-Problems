@@ -13,11 +13,12 @@ class Grid{
 private:
 
 	double delta;
-	vector<double> t; // ΝΑ ΣΒΗΣΤΕΙ: Shift each dimension by t.at(i)
+	vector<double> t;
 
 public:
 
 	Grid(double);
+	~Grid();
 	curve* Hashing(curve*);
 };
 

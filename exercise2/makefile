@@ -15,7 +15,7 @@ HEADERS = $(SEARCH_FILES)/mainSEARCH.h $(CLUSTER_FILES)/mainCLUSTER.h $(HEADER_F
 OUT1 = outSEARCH
 OUT2 = outCLUSTER
 OUT3 = outTEST
-ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 1 -M 10 -probes 2 -o output.txt -algorithm Hypercube -metric discrete -delta 2.5
+ARGS1 = -i $(TESTS_FILES)/dataset.csv -q $(TESTS_FILES)/query.csv -k 4 -L 1 -M 10 -probes 2 -o output.txt -algorithm Frechet -metric continuous -delta 2.5
 ARGS2 = -i $(TESTS_FILES)/dataset.csv -c $(TESTS_FILES)/cluster.conf -o output.txt -update Mean Curve -assignment Classic -complete -silhouette
 CC = g++ -O2 -std=c++14
 FLAGS = -g -c -O3
@@ -101,7 +101,7 @@ out3:
 	@./$(OUT3)	
 
 debug: 
-	@valgrind --track-origins=yes ././$(OUT2) $(ARGS2)
+	@valgrind --track-origins=yes ./$(OUT2) $(ARGS2)
 
 clean:
 	@rm $(OUT1)

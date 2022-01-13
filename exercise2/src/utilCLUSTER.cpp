@@ -19,27 +19,11 @@ double dist(int distance,item x,item y){
 	return pow(result,1.0/distance);
 }
 
+/* The following is our implementation for the frechet metric. */
 double distFrechet(item* x,item* y){
 
-	// cout << "Entered for itemX ";
-	// x->print();
-	// cout << "And for itemY ";
-	// y->print();
-
-	// int size = x.getVector()->size()/2;
-	// double array[size][size];
-
 	curve* curveX = x->getCurve();
-	// cout << "curveX is " << curveX->getID() << endl;
 	curve* curveY = y->getCurve();
-
-	// cout << "Entered for itemX ";
-	// curveX->print();
-	// cout << "And for itemY ";
-	// curveY->print();
-
-	// cout << "curveY size is " << curveY->getSize() << endl;
-	// cout << "curveX size is " << curveX->getSize() << endl;
 
 	if(curveX->getSize() != curveY->getSize()){
 
@@ -50,46 +34,26 @@ double distFrechet(item* x,item* y){
 	int size = curveX->getSize();
 
 	double array[size][size];
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
 
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
-
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = useless;
-			}
-			else if(i > 1 && j == 1){
-
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = useless;
-			}
-			else if(i > 1 && j > 1){
-
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = useless;
-			}
-
-	// cout << "Returning " << array[size-1][size-1] << endl;
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
 	return array[size-1][size-1];
 }
 
+/* The following is our impelemntation for the discrete metric that will be used for the mean curve algorithm. The difference is that it takes 2 curves as argument and
+it returns the whole array instead of the last element of the array. */
 vector<vector<double>> distFrechetMean(curve* curveX,curve* curveY){
 
 	int size = curveX->getSize();
@@ -104,67 +68,23 @@ vector<vector<double>> distFrechetMean(curve* curveX,curve* curveY){
 		return array;
 	}
 
-	// double** array = new double[size][size2];
-	// *array = new double[size];//[size][size2];
-
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
-
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size2;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
-
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));;
-			}
-			else if(i > 1 && j == 1){
-
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));;
-			}
-			else if(i > 1 && j > 1){
-
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});;
-			}
-
-	// cout << "Returning " << array[size-1][size-1] << endl;
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
 	return array;
 }
 
 double distFrechet(curve* curveX,item* y){
 
-	// cout << "Entered for itemX ";
-	// x->print();
-	// cout << "And for itemY ";
-	// y->print();
-
-	// int size = x.getVector()->size()/2;
-	// double array[size][size];
-
-	// curve* curveX = x->getCurve();
-	// cout << "curveX is " << curveX->getID() << endl;
 	curve* curveY = y->getCurve();
-
-	// cout << "Entered for itemX ";
-	// curveX->print();
-	// cout << "And for itemY ";
-	// curveY->print();
-
-	// cout << "curveY size is " << curveY->getSize() << endl;
-	// cout << "curveX size is " << curveX->getSize() << endl;
 
 	if(curveX->getSize() != curveY->getSize()){
 
@@ -175,65 +95,56 @@ double distFrechet(curve* curveX,item* y){
 	int size = curveX->getSize();
 
 	double array[size][size];
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
 
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = useless;
-			}
-			else if(i > 1 && j == 1){
+	return array[size-1][size-1];
+}
 
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = useless;
-			}
-			else if(i > 1 && j > 1){
+double distFrechet(curve* curveX,curve* curveY){
 
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = useless;
-			}
+	if(curveX->getSize() != curveY->getSize()){
 
-	// cout << "Returning " << array[size-1][size-1] << endl;
+		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
+		return 0;
+	}
+
+	int size = curveX->getSize();
+
+	double array[size][size];
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
+
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			if(i == 0 && j == 0)
+				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
 	return array[size-1][size-1];
 }
 
 
+/* The following is our impelemntation for the discrete metric that will be used for true nearest neigbour. The difference is that it takes 2 curves as argument.*/
 double distFrechetBrute(curve* curveX,curve* curveY){
-
-	// cout << "Entered for itemX ";
-	// x->print();
-	// cout << "And for itemY ";
-	// y->print();
-
-	// int size = x.getVector()->size()/2;
-	// double array[size][size];
-
-	// Curve* curveX = x->getCurve();
-	// cout << "curveX is " << curveX->getID() << endl;
-	// Curve* curveY = y->getCurve();
-
-	// cout << "Entered for itemX ";
-	// curveX->print();
-	// cout << "And for itemY ";
-	// curveY->print();
 
 	if(curveX->getSize() != curveY->getSize()){
 
@@ -244,42 +155,20 @@ double distFrechetBrute(curve* curveX,curve* curveY){
 	int size = curveX->getSize();
 
 	double array[size][size];
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
 
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
-
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = useless;
-			}
-			else if(i > 1 && j == 1){
-
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = useless;
-			}
-			else if(i > 1 && j > 1){
-
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = useless;
-			}
-
-	// cout << "Returning " << array[size-1][size-1] << endl;
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
 	return array[size-1][size-1];
 }
@@ -774,6 +663,7 @@ int countItems(string fileName){
 
 }
 
+/* The following function takes a Point given and returns a 2D Curve. */
 curve* Polygonization(item* i){
 
 	int counter =0;
@@ -785,36 +675,28 @@ curve* Polygonization(item* i){
 		vector<double> temp;
 	
 		temp.push_back(++counter);
-		// cout << "Inserted " << counter << " in curve " << i->getID() << endl;
 		temp.push_back(*it);
-		// cout << "Inserted " << (*it) << " in curve " << i->getID() << endl;
 		tempCurve->addCoordinate(new item(i->getID(),temp));
 	}
 	
 	tempCurve->setOriginal(i);
-
-	// tempCurve->addCoordinate(new item(i->getID(),temp));
 	
 	return tempCurve;
 }
 
+/* The following is our implementation for the mean curve algorithm. */
 vector<double> MeanCurve(vector<double> c1,vector<double> c2){
-
-	cout << "Entered for vector with size " << c1.size() << " and vector with size " << c2.size() << endl;
 
 	if(c1.size() == 0) return c2;
 	if(c2.size() == 0) return c1;
-
-	cout << "Finally got here" << endl;
 
 	vector<pair<double,double>> traversal;
 
 	item item1("tempItem",c1);
 	item item2("tempItem",c2);
 
+	/* We first calculate the C vector from which we will get the data. */
 	vector<vector<double>> C = distFrechetMean(Polygonization(&item1),Polygonization(&item2));
-
-	cout << "Finally got here too" << endl;
 
 	int size1 = c1.size()-1, size2 = c2.size()-1;
 
@@ -822,9 +704,9 @@ vector<double> MeanCurve(vector<double> c1,vector<double> c2){
 
 	int minIdx;
 
+	/* We follow the algorithm exactly as suggested at the paper of the project. */
 	while(size1 != 0 && size2 != 0){
 
-		cout << "Ending now" << endl;
 		minIdx = min({C[size1-1][size2],C[size1][size2-1],C[size1-1][size2-1]});
 	
 		switch(minIdx){
@@ -847,16 +729,20 @@ vector<double> MeanCurve(vector<double> c1,vector<double> c2){
 			}
 		}
 	}
-	// cout << "Ending now" << endl;
-
+	/* We reverse the array. */
 	reverse(traversal.begin(),traversal.end());
 
 	vector<double> result;
 
-	for(vector<pair<double,double>>::iterator it = traversal.begin();it != traversal.end(); it++)
-		result.push_back(((*it).first+(*it).second)/2);
+	int count =0;
 
-	// cout << "Ending now" << endl;
+	/* And return a vector which will be the optimal traversal between the curves given. */
+	for(vector<pair<double,double>>::iterator it = traversal.begin();it != traversal.end(); it++){
+
+		if(count++ == (double)c1.size())
+			break;
+		result.push_back(((*it).first+(*it).second)/2);
+	}
 
 	return result;
 }

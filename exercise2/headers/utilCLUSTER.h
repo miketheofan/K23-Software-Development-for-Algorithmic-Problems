@@ -19,6 +19,7 @@ double dist(int,item,item);
 double distFrechet(item*,item*);
 vector<vector<double>> distFrechetMean(curve*,curve*);
 double distFrechet(curve*,item*);
+double distFrechet(curve*,curve*);
 double distFrechetBrute(curve*,curve*);
 void readConf(string,int *,int *,int *,int *,int *,int *);
 void readDatasetCLUSTER(string,Clustering*,vector<item*>*);

@@ -1,6 +1,7 @@
 #include "../headers/items.h"
 
 item::item(string itemID,vector<double> coordinates) : itemID(itemID){
+	
 	this->coordinates = coordinates;
 	this->trueItem = NULL;
 	this->originCurve = NULL;
@@ -32,6 +33,10 @@ void item::setTrick(int32_t trick){
 
 void item::setTrue(item* i){
 	this->trueItem = i;
+}
+
+item* item::getTrue(){
+	return this->trueItem;
 }
 
 void item::setVector(vector<double> v){
@@ -82,26 +87,16 @@ int item::getFlag(){
 	return this->flag;
 }
 
+/* The following is a function that "transforms" a Point to the Curve class given by our instructors. */
 const Curve& item::Camouflage(){
 
-	// cout << "Entered Camouflage for " << this->trueItem->getID() << " with size " << this->trueItem->getDimension() << endl;
-	// cout << "ITEM'S is " << this->getID() << " with size " << this->getDimension() << endl;
-	// this->trueItem->print();
 	Curve* tempCurve = new Curve(this->getDimension(),this->getID());
-
-	// item* tempItem;
-	// if(!query)
-	// 	tempItem = this->trueItem;
-	// else
-	// 	tempItem = this;
 
 	item* tempItem;
 	if(this->trueItem != NULL)
 		tempItem = this->trueItem;
 	else
 		tempItem = this;
-
-	// cout << "true item is " << tempItem->getID() << endl;
 
 	for(int i=0;i<(double)tempItem->getVector()->size();i++){
 

@@ -35,6 +35,18 @@ int main(int argc,char **argv){
 		else if(!strcmp(argv[i],"-silhouette"))
 			silhouette = true;
 
+	if(assignment == "LSH_Frechet" && update == "Mean Vector"){
+
+		cerr << "Cannot start LSH Frechet with update method Mean Vector." << endl;
+		exit(-1);
+	}
+
+	if((assignment == "LSH" || assignment == "Hypercube") && update == "Mean Curve"){
+
+		cerr << "Cannot start LSH or Hypercube with update method Mean Curve." << endl;
+		exit(-1);
+	}
+
 	/* If input file not given then exit program. */
 	if(inputFile == ""){
 

@@ -10,11 +10,8 @@ curve::curve(const curve &c){
 
 curve::~curve(){}
 
+/* The following function adds a Point to the curve. */
 void curve::addCoordinate(item* i){
-
-	// cout << "Inserting in curve " << this->id;
-	// i->print();
-
 	this->coordinates.push_back(i);
 }
 

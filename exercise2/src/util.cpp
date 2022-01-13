@@ -4,13 +4,6 @@
 spaced with other metrics. */
 double dist(int distance,item x,item y){
 
-	// cout << endl << "Entered for item ";
-	// x.print();
-	// // cout << endl;
-	// cout << "And for item ";
-	// y.print();
-	// cout << endl;
-
 	if(x.getVector()->size() != y.getVector()->size()){
 
 		cerr << "Cannot compute Euclidean Distance between vertexes from different dimensions." << endl;
@@ -26,25 +19,13 @@ double dist(int distance,item x,item y){
 	return pow(result,1.0/distance);
 }
 
+/* The following is our implementation for the frechet metric. */
 double distFrechet(item* x,item* y){
 
-	// cout << "Entered for itemX ";
-	// x->print();
-	// cout << "And for itemY ";
-	// y->print();
-
-	// int size = x.getVector()->size()/2;
-	// double array[size][size];
-
 	curve* curveX = x->getCurve();
-	// cout << "curveX is " << curveX->getID() << endl;
 	curve* curveY = y->getCurve();
 
-	// cout << "Entered for itemX ";
-	// curveX->print();
-	// cout << "And for itemY ";
-	// curveY->print();
-
+	/* If curves are different size, return. */
 	if(curveX->getSize() != curveY->getSize()){
 
 		cerr << "Cannot compute Frechet distance between vertexes from different dimensions." << endl;
@@ -53,65 +34,29 @@ double distFrechet(item* x,item* y){
 
 	int size = curveX->getSize();
 
+	/* Then we initialize the array that we will use to store the data. */
 	double array[size][size];
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
 
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = useless;
-			}
-			else if(i > 1 && j == 1){
-
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = useless;
-			}
-			else if(i > 1 && j > 1){
-
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = useless;
-			}
-
-	// cout << "Returning " << array[size-1][size-1] << endl;
-
+	/* And finally we return the last element of the 2D array. */
 	return array[size-1][size-1];
 }
 
+/* The following is our impelemntation for the discrete metric that will be used for true nearest neigbour. The difference is that it takes 2 curves as argument.*/
 double distFrechetBrute(curve* curveX,curve* curveY){
-
-	// cout << "Entered for itemX ";
-	// x->print();
-	// cout << "And for itemY ";
-	// y->print();
-
-	// int size = x.getVector()->size()/2;
-	// double array[size][size];
-
-	// Curve* curveX = x->getCurve();
-	// cout << "curveX is " << curveX->getID() << endl;
-	// Curve* curveY = y->getCurve();
-
-	// cout << "Entered for itemX ";
-	// curveX->print();
-	// cout << "And for itemY ";
-	// curveY->print();
 
 	if(curveX->getSize() != curveY->getSize()){
 
@@ -122,42 +67,21 @@ double distFrechetBrute(curve* curveX,curve* curveY){
 	int size = curveX->getSize();
 
 	double array[size][size];
-	// for(int i=0;i<size;i++)
-	// 	for(int j=0;j<size;j++)
-	// 		array[i][j] = 0;
+	for(int i=0;i<size;i++)
+		for(int j=0;j<size;j++)
+			array[i][j] = 0;
 
 	for(int i=0;i<size;i++)
 		for(int j=0;j<size;j++)
 			if(i == 0 && j == 0)
 				array[i][j] = dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j));
-			else if(i == 1 && j > 1){
+			else if(i == 1 && j > 1)
+				array[1][j] = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
+			else if(i > 1 && j == 1)
+				array[i][1] = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
+			else if(i > 1 && j > 1)
+				array[i][j] = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
 
-				// cout << "array[1]["<<j-1<<"] is " << array[1][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(1) is " << dist(2,*curveX->getCoordinateat(1),*curveY->getCoordinateat(j)) << endl;
-				double useless = max(array[1][j-1],dist(2,*(curveX->getCoordinateat(1)),*(curveY->getCoordinateat(j))));
-				// cout << "array[1]["<<j<<"] IS NOW: " << useless << endl;
-				array[1][j] = useless;
-			}
-			else if(i > 1 && j == 1){
-
-				// cout << "array["<<i-1<<"][1] is " << array[i-1][1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(1)) << endl;
-				double useless = max(array[i-1][1],dist(2,*(curveX->getCoordinateat(i)),*(curveY->getCoordinateat(1))));
-				// cout << "array["<<i<<"][1] IS NOW: " << useless << endl;
-				array[i][1] = useless;
-			}
-			else if(i > 1 && j > 1){
-
-				// cout << "array["<<i-1<<"]["<<j<<"] is " << array[i-1][j] << endl;
-				// cout << "array["<<i-1<<"]["<<j-1<<"] is " << array[i-1][j-1] << endl;
-				// cout << "array["<<i<<"]["<<j-1<<"] is " << array[i][j-1] << endl;
-				// cout << "dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j) is " << dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j)) << endl;
-				double useless = max({array[i-1][j],array[i-1][j-1],array[i][j-1],dist(2,*curveX->getCoordinateat(i),*curveY->getCoordinateat(j))});
-				// cout << "array["<<i<<"]["<<j<<"] IS NOW: " << useless << endl;
-				array[i][j] = useless;
-			}
-
-	// cout << "Returning " << array[size-1][size-1] << endl;
 
 	return array[size-1][size-1];
 }
@@ -242,6 +166,8 @@ void readDataset(string fileName,Hash* hash,vector<item*> *dataset){
 	}
 }
 
+/* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
+item in Discrete LSH structure. */
 void readDataset(string fileName,Discrete* disc,vector<item*> *dataset){
 
 	ifstream fp;
@@ -275,14 +201,13 @@ void readDataset(string fileName,Discrete* disc,vector<item*> *dataset){
 		item* newItem = new item(id,words);
 		dataset->push_back(newItem);
 
-		// cout << "Inserting in discrete ";
-		// newItem->print();
-
 		/* And then insert pointer to LSH for Discrete Frechet. */
 		disc->insert(newItem);
 	}
 }
 
+/* The following function reads every data from fileName given, and inserts every item in dataset and also a pointer to each
+item in Continuous LSH structure. */
 void readDataset(string fileName,Continuous* cont,vector<item*> *dataset){
 
 	ifstream fp;
@@ -356,8 +281,8 @@ int countItems(string fileName){
 
 }
 
-/* The following function implements the main functionality of answering the queries. */
-void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
+/* The following function implements the main functionality of answering the queries for Hypercube. */
+void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,string outputFile){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -368,6 +293,9 @@ void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,/*int N
 	double totalApproximate =0;
 	double totalTrue =0;
 	double totalItems =0;
+
+	vector<double> mafVector;
+	double mafMaximum;
 
 	/* We get every line (query) of the file given. */
 	while(getline(fp,line)){
@@ -418,6 +346,8 @@ void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,/*int N
 		writeToFile(outputFile,to_string(trueResults.at(0).first));
 		writeToFile(outputFile,"\n");
 
+		mafVector.push_back(tempVector.at(0).first/trueResults.at(0).first);
+
 		totalItems++;
 		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
 		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
@@ -426,12 +356,16 @@ void answerQueries(HyperCube* cube,string fileName,string dataFile,int M,/*int N
 
 	}
 
+	mafMaximum = *max_element(mafVector.begin(),mafVector.end());
+
 	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
 	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+
+	writeToFile(outputFile,"MAF: " + to_string(mafMaximum)+"\n");
 }
 
-/* The following function implements the main functionality of answering the queries. */
-void answerQueries(Hash* hash,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
+/* The following function implements the main functionality of answering the queries for Hash. */
+void answerQueries(Hash* hash,string fileName,string dataFile,int M,string outputFile){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -442,6 +376,9 @@ void answerQueries(Hash* hash,string fileName,string dataFile,int M,/*int N,int 
 	double totalApproximate =0;
 	double totalTrue =0;
 	double totalItems =0;
+
+	vector<double> mafVector;
+	double mafMaximum;
 
 	/* We get every line (query) of the file given. */
 	while(getline(fp,line)){
@@ -492,6 +429,8 @@ void answerQueries(Hash* hash,string fileName,string dataFile,int M,/*int N,int 
 		writeToFile(outputFile,to_string(trueResults.at(0).first));
 		writeToFile(outputFile,"\n");
 
+		mafVector.push_back(tempVector.at(0).first/trueResults.at(0).first);
+
 		totalItems++;
 		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
 		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
@@ -499,11 +438,17 @@ void answerQueries(Hash* hash,string fileName,string dataFile,int M,/*int N,int 
 		writeToFile(outputFile,"\n");
 	}
 
+	mafMaximum = *max_element(mafVector.begin(),mafVector.end());
+
 	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
 	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+
+	writeToFile(outputFile,"MAF: " + to_string(mafMaximum)+"\n");
+
 }
 
-void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
+/* The following function implements the main functionality of answering the queries for Discrete LSH. */
+void answerQueries(Discrete* disc,string fileName,string dataFile,int M,string outputFile){
 
 	ifstream fp;
 	fp.open(fileName);
@@ -514,6 +459,9 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 	double totalApproximate =0;
 	double totalTrue =0;
 	double totalItems =0;
+
+	vector<double> mafVector;
+	double mafMaximum;
 
 	/* We get every line (query) of the file given. */
 	while(getline(fp,line)){
@@ -564,6 +512,8 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 		writeToFile(outputFile,to_string(trueResults.first));
 		writeToFile(outputFile,"\n");
 
+		mafVector.push_back(tempPair.first/trueResults.first);
+
 		totalItems++;
 		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
 		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
@@ -571,10 +521,15 @@ void answerQueries(Discrete* disc,string fileName,string dataFile,int M,/*int N,
 		writeToFile(outputFile,"\n");
 	}
 
+	mafMaximum = *max_element(mafVector.begin(),mafVector.end());
+
 	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
 	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+
+	writeToFile(outputFile,"MAF: " + to_string(mafMaximum)+"\n");
 }
 
+/* The following function implements the main functionality of answering the queries for Continuous LSH. */
 void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int N,int R,*/string outputFile){
 
 	ifstream fp;
@@ -587,6 +542,9 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 	double totalTrue =0;
 	double totalItems =0;
 
+	vector<double> mafVector;
+	double mafMaximum;
+
 	/* We get every line (query) of the file given. */
 	while(getline(fp,line)){
 
@@ -597,26 +555,20 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 
 			if(++counter == 1){
 
-				// cout << "Got id " << word << endl;
 				id = word;
 				continue;
 			}
 
-			// cout << "Got number " << word << endl;
-
 			words.push_back(stod(word));
-
-			// cout << "Counter is: " << counter << endl;
 
 		}
 
 		counter =0;
 
-		/* Statically create query item. */
+		/* Statically create query items. */
 		item queryItem(id,words);
+		/* Second copy of query item is used in case the first one is changed from the functionality of findNN. */
 		item queryItem2(id,words);
-
-		// cout << "Created query item with size " << queryItem.getDimension() << endl;
 
 		/* And produce the output that was given in the paper of the project. 
 		We use writeToFile function in order to write output in output.txt file. */
@@ -644,6 +596,8 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 		writeToFile(outputFile,to_string(trueResults.first));
 		writeToFile(outputFile,"\n");
 
+		mafVector.push_back(tempPair.first/trueResults.first);
+
 		totalItems++;
 		totalApproximate += (double)duration_cast<milliseconds>(endHypercube - startHypercube).count();
 		totalTrue += (double)duration_cast<milliseconds>(endTrue - startTrue).count();
@@ -651,8 +605,12 @@ void answerQueries(Continuous* cont,string fileName,string dataFile,int M,/*int 
 		writeToFile(outputFile,"\n");
 	}
 
+	mafMaximum = *max_element(mafVector.begin(),mafVector.end());
+
 	writeToFile(outputFile,"tApproximateAverage: " + to_string(totalApproximate/totalItems) + "\n");
 	writeToFile(outputFile,"tTrueAverage: "+ to_string(totalTrue/totalItems) + "\n");
+
+	writeToFile(outputFile,"MAF: " + to_string(mafMaximum)+"\n");
 }
 
 /* The following function returns the dimension in which items from inputFile are. */

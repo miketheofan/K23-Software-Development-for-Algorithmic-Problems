@@ -41,6 +41,7 @@ pair<string,vector<string>> Cluster::getCompleteCluster(){
 	return make_pair(this->centroid->getID(),ids);
 }
 
+/* The following is our implementation for the Mean Curve algorithm. */
 bool Cluster::UpdateCurve(){
 
 	vector<vector<double>> array;
@@ -48,28 +49,32 @@ bool Cluster::UpdateCurve(){
 
 	bool flag = false;
 
+	/* First we calculate the optimal traversal between all Curves in cluster. */
 	for(int i=0;i<(double)this->items.size();i+=2){
 
-		cout << "i is " << i << " size is " << this->items.size() << endl;
-
-		if(i+1 <= (double)this->items.size())
+		if(i+1 <= (double)this->items.size()-1)
 			array.push_back(MeanCurve(*(this->items.at(i)->getVector()),*(this->items.at(i+1)->getVector())));
 		else
 			array.push_back(*(this->items.at(i)->getVector()));
 	}
 
-	do{
+	/* At each loop we calculate the optimal traversal between all items in vector. We do this until vector
+	has size 1, which means that we have reached the root of the tree. */
+	while(array.size() > 1){
 
 		tempArray = array;
 		array.clear();
 
 		for(int i=0;i<(double)tempArray.size();i+=2)
-			if(i+1 <= (double)tempArray.size())
+			if(i+1 <= (double)tempArray.size()-1)
 				array.push_back(MeanCurve(tempArray.at(i),tempArray.at(i+1)));
 			else
 				array.push_back(tempArray.at(i));
 
-	}while(array.size() != 1);
+	}
+
+	if(array.size() == 0)
+		return true;
 
 	/* If centroid did not change raise a flag. */
 	if(*(this->centroid->getVector()) == array.at(0))
@@ -172,8 +177,6 @@ int Clustering::noItems(){
 
 void Clustering::insert(item* item){
 	this->items.push_back(item);
-	// item->createCurve();
-	// this->curves.push_back(Polygonization(item));
 }
 
 vector<Cluster*> Clustering::getClusters(){
@@ -224,7 +227,7 @@ void Clustering::kMeansPP(){
 				double distance;
 
 				if(this->update == "Mean Frechet")
-					distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+					distance = distFrechet(Polygonization(*it),Polygonization((*it2)->getCentroid()));
 				else
 					distance = dist(2,**it,*(*it2)->getCentroid());
 				
@@ -284,7 +287,6 @@ void Clustering::Assign(string assignMethod){
 		this->fillDiscrete(disc);
 	}
 
-	// while(1){
 	for(int j=0;j<2;j++){
 
 		/* Every time clear all clusters, because we will re-fill them using the corresponding Update function. */
@@ -307,7 +309,6 @@ void Clustering::Assign(string assignMethod){
 		/* If exit case was fulfilled then Assignment is complete. */
 		if(this->Update() == 1)
 			break;
-
 	}
 
 	if(assignMethod == "LSH") delete h;
@@ -331,7 +332,7 @@ void Clustering::Lloyd(){
 			double distance;
 
 			if(this->update == "Mean Frechet")
-				distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+				distance = distFrechet(Polygonization(*it),Polygonization((*it2)->getCentroid()));
 			else
 				distance = dist(2,**it,*(*it2)->getCentroid());
 
@@ -358,18 +359,11 @@ void Clustering::LSH(Hash *h){
 
 	int pos = 0;
 
-	int endCond = -1;
-	int lastendCond = 0;
-
 	vector<pair<item*,double>> temp;
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	// while(endCond != lastendCond){
 	for(int i=0;i<5;i++){
-
-		lastendCond = endCond;
-		endCond = 0;
 
 		/* For every cluster */
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
@@ -387,7 +381,6 @@ void Clustering::LSH(Hash *h){
 					(*it)->insert(it2->first);
 					/* and set its flag accoridingly, in order for later loops to know that item is already assigned. */
 					(*it2).first->setFlag(pos);
-					endCond++;
 
 				/* Otherwise, if item is already assigned, then compare the distance of the cluster that it is already assigned
 				with the distance to this current cluster. */
@@ -406,7 +399,6 @@ void Clustering::LSH(Hash *h){
 						(*it)->insert(it2->first);
 						(*it2).first->setFlag(pos);
 
-						endCond++;
 					}
 				}
 			}
@@ -434,18 +426,11 @@ void Clustering::Hypercube(HyperCube *c){
 
 	int pos = 0;
 
-	int endCond = -1;
-	int lastendCond = 0;
-
 	vector<pair<item*,double>> temp;
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	// while(endCond != lastendCond){
 	for(int i=0;i<5;i++){
-
-		lastendCond = endCond;
-		endCond = 0;
 
 		/* For every cluster */
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
@@ -463,7 +448,6 @@ void Clustering::Hypercube(HyperCube *c){
 					(*it)->insert(it2->first);
 					/* and set its flag accoridingly, in order for later loops to know that item is already assigned. */
 					(*it2).first->setFlag(pos);
-					endCond++;
 
 				/* Otherwise, if item is already assigned, then compare the distance of the cluster that it is already assigned
 				with the distance to this current cluster. */
@@ -482,7 +466,6 @@ void Clustering::Hypercube(HyperCube *c){
 						(*it)->insert(it2->first);
 						(*it2).first->setFlag(pos);
 
-						endCond++;
 					}
 				}
 			}
@@ -505,22 +488,15 @@ void Clustering::Hypercube(HyperCube *c){
 void Clustering::lshFrechet(Discrete* disc){
 
 	/* Range is initialized with value similar to the minimum distance between centroids divided by 2. */
-	double range = this->minDistCentroidsCurve()*5;
+	double range = 500;
 
 	int pos = 0;
-
-	int endCond = -1;
-	int lastendCond = 0;
 
 	vector<pair<item*,double>> temp;
 
 	/* Our implementation ends when by multiplying the range, not any more item was assigned to a cluster, compared to the
 	previous loop. */
-	// while(endCond != lastendCond){
 	for(int i=0;i<3;i++){
-
-		lastendCond = endCond;
-		endCond = 0;
 
 		/* For every cluster */
 		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
@@ -528,38 +504,33 @@ void Clustering::lshFrechet(Discrete* disc){
 			/* use the range search function of Hypercube in order to find items in range 'range'. */
 			temp = disc->rangeSearch(range,(*it)->getCentroid());
 
-			cout << "Range search returned " << temp.size() << " items." << endl;
-
 			/* For every item that was returned by range search */
 			for(vector<pair<item*,double> >::iterator it2 = temp.begin(); it2 != temp.end(); it2++ ){
 				
 				/* If they haven't been assigned to a cluster yet */
-				if( (*it2).first->getFlag() == -1 ){
-					
+				if( (*it2).first->getTrue()->getFlag() == -1 ){
+
 					/* Insert it to cluster */
-					(*it)->insert(it2->first);
+					(*it)->insert(it2->first->getTrue());
 					/* and set its flag accoridingly, in order for later loops to know that item is already assigned. */
-					(*it2).first->setFlag(pos);
-					endCond++;
+					(*it2).first->getTrue()->setFlag(pos);
 
 				/* Otherwise, if item is already assigned, then compare the distance of the cluster that it is already assigned
 				with the distance to this current cluster. */
 				}else{
 
 					item *newCentroid = (*it)->getCentroid();
-					item *oldCentroid = this->clusters.at((*it2).first->getFlag())->getCentroid();
+					item *oldCentroid = this->clusters.at((*it2).first->getTrue()->getFlag())->getCentroid();
 
-					double distanceNew = distFrechet((*it2).first,newCentroid);
-					double distanceOld = distFrechet((*it2).first,oldCentroid);
+					double distanceNew = distFrechet(Polygonization(newCentroid),Polygonization((*it2).first->getTrue()));
+					double distanceOld = distFrechet(Polygonization(oldCentroid),Polygonization((*it2).first->getTrue()));
 
 					/* If item is closer to current cluster, insert it. */
 					if( distanceNew < distanceOld ){
 						
-						(this->clusters.at((*it2).first->getFlag())->deleteItem((*it2).first));
-						(*it)->insert(it2->first);
-						(*it2).first->setFlag(pos);
-
-						endCond++;
+						(this->clusters.at((*it2).first->getTrue()->getFlag())->deleteItem((*it2).first));
+						(*it)->insert(it2->first->getTrue());
+						(*it2).first->getTrue()->setFlag(pos);
 					}
 				}
 			}
@@ -573,8 +544,6 @@ void Clustering::lshFrechet(Discrete* disc){
 		range *= 2; 
 	
 	}
-
-	cout << "Got out entering assign rest" << endl;
 
 	/* For any items that were not inserted using range search, insert them using Lloyd's algorithm(manually). */
 	this->assignRest(disc->getItems());
@@ -603,7 +572,7 @@ void Clustering::assignRest(vector<item*> items){
 			double distance;
 
 			if(this->update == "Mean Frechet")
-				distance = distFrechet(Polygonization(*it),(*it2)->getCentroid());
+				distance = distFrechet(Polygonization(*it),Polygonization((*it2)->getCentroid()));
 			else	
 				distance = dist(2,**it,*(*it2)->getCentroid());
 
@@ -616,8 +585,6 @@ void Clustering::assignRest(vector<item*> items){
 
 		minCluster->insert(*it);
 	}
-
-	cout << "Assigned rest a total of " << counter << " items." << endl;
 }
 
 /* The following function is our implementation for the Update function. */
@@ -633,9 +600,10 @@ double Clustering::Update(){
 				count++;
 	}else{
 
-		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++)
+		for(vector<Cluster*>::iterator it = this->clusters.begin(); it != this->clusters.end(); it++){
 			if((*it)->UpdateCurve() == true)
 				count++;
+		}
 	}
 
 	/* Finally return the percentage of clusters that stayed the same. */
@@ -743,7 +711,12 @@ pair<vector<double>,double> Clustering::Silhouette(){
 				if(cluster1 == cluster2)
 					continue;
 
-				double distance = dist(2,*(itemsInCluster.at(i)) , *(this->clusters.at(cluster2)->getCentroid()));
+				double distance;
+				if(this->update == "Mean Vector")
+					distance = dist(2,*(itemsInCluster.at(i)) , *(this->clusters.at(cluster2)->getCentroid()));
+				else
+					distance = distFrechet(Polygonization(itemsInCluster.at(i)),Polygonization(this->clusters.at(cluster2)->getCentroid()));
+
 				if(distance < min){
 					min = distance;
 					minCluster = cluster2;
@@ -762,7 +735,10 @@ pair<vector<double>,double> Clustering::Silhouette(){
 				if(i == j)
 					continue;
 
-				a += dist(2,*(itemsInCluster.at(i)) , *(itemsInCluster.at(j)));
+				if(this->update == "Mean Vector")
+					a += dist(2,*(itemsInCluster.at(i)) , *(itemsInCluster.at(j)));
+				else
+					a += distFrechet(Polygonization(itemsInCluster.at(i)) , Polygonization(itemsInCluster.at(j)));
 			}
 
 			if(sizeofItemsInCluster <= 1)
@@ -776,7 +752,10 @@ pair<vector<double>,double> Clustering::Silhouette(){
 			
 			/* compute b according to the paper */
 			for (int k=0 ; k < sizeofItemsInClosestCluster ; k++)
-				b += dist(2,*(itemsInCluster.at(i)) , *(itemsInClosestCluster.at(k)));
+				if(this->update == "Mean Vector")
+					b += dist(2,*(itemsInCluster.at(i)) , *(itemsInClosestCluster.at(k)));
+				else
+					b += distFrechet(Polygonization(itemsInCluster.at(i)) , Polygonization(itemsInClosestCluster.at(k)));
 			
 			if(sizeofItemsInClosestCluster <= 1)
 				b = 0;

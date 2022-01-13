@@ -9,7 +9,7 @@ int main(int argc,char** argv){
 	int L = 5;
 	int M = 10;
 	int probes = 2;
-	double delta;
+	double delta = 2.5;
 	string algorithm = "";
 	string metric = "";
 
@@ -46,6 +46,7 @@ int main(int argc,char** argv){
 	Discrete* disc;
 	Continuous* cont;
 
+	/* We check for the algorithm that user entered to be used, in order to intialize our data accordingly. */
 	if(algorithm == "LSH"){
 
 		if(k==-1) k = 5;
@@ -100,7 +101,7 @@ int main(int argc,char** argv){
 	
 	}
 
-	string check;
+	string check = "";
 
 	do{
 
@@ -173,6 +174,8 @@ int main(int argc,char** argv){
 
 		delete hash;
 		delete cube;
+		delete disc;
+		delete cont;
 
 		cout << "Do you want to run the program with different data and queries(Y/N): ";
 		cin >> check;
