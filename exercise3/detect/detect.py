@@ -34,6 +34,33 @@ def create_dataset(X, y, time_steps=1):
 
     return np.array(X_train), np.array(y_train)
 
+def add_dates_to_array(tempList):
+
+	df_dates = []
+	dateCount = 1
+	for j in range (0,len(tempList)):
+		df_dates.append(dateCount)
+		dateCount = dateCount + 1
+
+	array = []
+	array.append(df_dates)
+	array.append(tempList)
+
+	newArray = []
+	for i in range (0,len(tempList)-1):
+		newArray.append([array[0][i],array[1][i]])
+
+	# newArray = pd.DataFrame(newArray)
+
+	# print(newArray)
+	# quit()
+
+	names = ['date','close']
+	values = [_ for _ in range (0,len(newArray))]
+	df = pd.DataFrame(newArray, index=values, columns=names)
+
+	return df
+
 if __name__ == "__main__":
 
 	for i in range(len(sys.argv)):
@@ -57,33 +84,43 @@ if __name__ == "__main__":
 				timestamp.append(float(word))
 			dataset.append(timestamp)
 
-	df = pd.DataFrame(dataset)
+	df = add_dates_to_array(dataset[0])
 
-	training_set = df.iloc[2, :3000].values
-	test_set = df.iloc[2, 3000:].values
+	# print(df)
+	# quit()
 
-	print(training_set.shape,test_set.shape)
+	train_size = int(len(df)*0.80)
+	test_size = len(df) - train_size
 
-	training_set = np.reshape(training_set,(len(training_set),-1))
-	test_set = np.reshape(test_set,(len(test_set),-1))
+	training_set = df.iloc[0 :train_size]
+	test_set = df.iloc[train_size:len(df)]
+
+	# print(training_set.shape,test_set.shape)
+	# quit()
+
+	# training_set = np.reshape(training_set,(len(training_set),-1))
+	# test_set = np.reshape(test_set,(len(test_set),-1))
 
 	scaler = StandardScaler()
-	scaler = scaler.fit(training_set)
+	scaler = scaler.fit(training_set[['close']])
 
-	training_set = scaler.transform(training_set)
-	test_set = scaler.transform(test_set)
+	training_set['close'] = scaler.transform(training_set[['close']])
+	test_set['close'] = scaler.transform(test_set[['close']])
 
-	TIME_STEPS = 60
+	# training_set = scaler.transform(training_set)
+	# test_set = scaler.transform(test_set)
+
+	TIME_STEPS = 30
 
 	X_train, y_train = create_dataset(
-	  pd.DataFrame(training_set),
-	  pd.DataFrame(training_set),
+	  training_set[['close']],
+	  training_set.close,		
 	  TIME_STEPS
 	)
 
 	X_test, y_test = create_dataset(
-	  pd.DataFrame(test_set),
-	  pd.DataFrame(test_set),
+	  test_set[['close']],
+	  test_set.close,		
 	  TIME_STEPS
 	)
 
@@ -113,6 +150,11 @@ if __name__ == "__main__":
 	    shuffle=False
 	)
 
+	# plt.plot(history.history['loss'], color = "red", label = "‘Real TESLA Stock Price’")
+	# plt.plot(history.history['val_loss'], color = "blue", label = "‘Real TESLA Stock Price’")
+	# plt.legend()
+	# plt.show()
+
 	X_train_pred = model.predict(X_train)
 	train_mae_loss = np.mean(np.abs(X_train_pred,X_train),axis = 1)
 	
@@ -120,39 +162,40 @@ if __name__ == "__main__":
 	# plt.tight_layout()
 	# plt.show()
 
-	TRESHOLD = 1.70
+	THRESHOLD = 1.5
 
 	X_test_pred = model.predict(X_test)
 
 	test_mae_loss = np.mean(np.abs(X_test_pred - X_test), axis=1)
 	
-	test_score_df = pd.DataFrame(test_set)
+	test_score_df = pd.DataFrame(index=test_set[TIME_STEPS:].index)
 	test_score_df['loss'] = test_mae_loss
 	test_score_df['threshold'] = THRESHOLD
 	test_score_df['anomaly'] = test_score_df.loss > test_score_df.threshold
-	test_score_df['close'] = test[TIME_STEPS:].close
+	test_score_df['close'] = test_set[TIME_STEPS:].close
+
+	# plt.plot(test_score_df,test_score_df.loss,label='loss')
+	# plt.plot(test_score_df,test_score_df.threshold,label='threshold')
+	# plt.xticks(rotation=25)
+	# plt.legend()
+	# plt.show()	
 
 	anomalies = test_score_df[test_score_df.anomaly == True]
 
-	plt.plot(test_set,scaler.inverse_transform[TIME_STEPS:].close,label='close price');
-	sns.scatterplot(anomalies.index,scaler.inverse_transform(anomalies.close),color=sns.color_palette()[3],s=52,label='anomaly')
+	plt.plot(
+		test_set[TIME_STEPS:].index,
+		scaler.inverse_transform(test_set[TIME_STEPS:]),
+		label='close price'
+	);
+	
+	sns.scatterplot(
+		anomalies.index,
+		scaler.inverse_transform(anomalies[:,['loss','close']]),
+		color=sns.color_palette()[3],
+		s=52,
+		label='anomaly'
+	)
 
 	plt.xticks(rotation=25)
 	plt.legend()
 	plt.show()
-
-	# X_train_pred = X_train_pred.reshape(-1,)
-
-	# print(X_train_pred)
-
-	# plt.plot(history.history['loss'], color = "red", label = "‘Real TESLA Stock Price’")
-	# plt.plot(history.history['val_loss'], color = "blue", label = "‘Real TESLA Stock Price’")
-	# plt.legend()
-	# plt.show()
-	# train_mae_loss = np.mean(np.abs(X_train_pred - X_train), axis=1)
-
-	# test_score_df = pd.DataFrame(index=test[TIME_STEPS:].index)
-	# test_score_df['loss'] = test_mae_loss
-	# test_score_df['threshold'] = THRESHOLD
-	# test_score_df['anomaly'] = test_score_df.loss > test_score_df.threshold
-	# test_score_df['close'] = test[TIME_STEPS:].close
