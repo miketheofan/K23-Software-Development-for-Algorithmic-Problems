@@ -1,6 +1,6 @@
 # K23-Software Development for Algorithmic Problems
 
-Projects for the course "K23:Software Development for Algorithmic Problems" 2022 by professor [Ioannis Emiris](https://cgi.di.uoa.gr/~emiris/).
+Projects for the course "_K23:Software Development for Algorithmic Problems_" 2022 by professor [Ioannis Emiris](https://cgi.di.uoa.gr/~emiris/).
 
 ## Project 1
 
